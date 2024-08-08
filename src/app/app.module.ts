@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -15,14 +16,15 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    ToastrModule.forRoot({
+    ToastrModule.forRoot({ //Toastr service için evrensel olarak bazı tasarımsal parametreler
       timeOut: 5000,
       positionClass: 'toast-top-right',
       preventDuplicates: true,
       closeButton: true,
       progressBar: true,
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxSpinnerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
