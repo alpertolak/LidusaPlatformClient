@@ -26,7 +26,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     BrowserAnimationsModule,
     NgxSpinnerModule,
   ],
-  providers: [],
+  providers: [
+    { provide: "baseUrl", useValue: "https://localhost:7147/api", multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
