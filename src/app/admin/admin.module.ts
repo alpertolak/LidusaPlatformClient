@@ -1,23 +1,16 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { JobsComponent } from './components/jobs/jobs.component';
-import { LayoutModule } from './layout/layout.module';
+import { LayoutModule } from './layout/layout.module'
+import { ComponentsModule } from './components/components.module';
 
-export const adminRoutes: Routes = [
-  //{ path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'jobs', component: JobsComponent }
-];
 
 @NgModule({
   declarations: [
   ],
   imports: [
+    ComponentsModule,
     CommonModule,
     LayoutModule,
-    RouterModule.forChild(adminRoutes)
 
   ],
   exports:[

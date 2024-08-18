@@ -6,11 +6,13 @@ import { JobsModule } from './jobs/jobs.module';
 
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     DashboardModule,
+    JobsModule
+  ], 
+  exports: [
     JobsModule
   ]
 })
