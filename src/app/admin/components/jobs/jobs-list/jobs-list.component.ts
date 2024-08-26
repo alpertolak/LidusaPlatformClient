@@ -2,10 +2,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { _MatTableDataSource, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 import { List_Job } from 'src/app/contracts/jobs/list-jobs';
 import { ListJobsPagination } from 'src/app/contracts/jobs/list-pagination';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { JobService } from 'src/app/services/common/jobs/job.service';
+
+declare var $: any
 
 @Component({
   selector: 'app-jobs-list',
@@ -18,10 +21,11 @@ export class JobsListComponent implements OnInit {
 
   constructor(
     private jobService: JobService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService
   ) { }
 
-  displayedColumns: string[] = ['Hizmet'];
+  displayedColumns: string[] = ['Hizmet', "Edit", "Delete"];
   dataSource: MatTableDataSource<List_Job>
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -43,6 +47,21 @@ export class JobsListComponent implements OnInit {
   }
   async ngOnInit() {
     await this.getJobs()
+  }
+
+  delete(id: string,name:string, event: any) {
+    this.spinner.show(SpinnerType.save)
+
+    this.jobService.deleteJob(id, () => { // successCallback
+      const buton: HTMLButtonElement = event.srcElement
+      $(buton.parentElement?.parentElement).fadeOut(300)
+      this.spinner.hide(SpinnerType.save)
+      this.toastr.success(`${name} isimli hizmet silinmiştir`)
+    }, (errorMessage) => { //ErrorCallBack
+      this.spinner.hide(SpinnerType.save)
+      this.toastr.error(errorMessage.toString())
+
+    })
   }
 
 }

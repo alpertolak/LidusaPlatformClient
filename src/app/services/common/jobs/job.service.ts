@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { Create_Job } from 'src/app/contracts/jobs/create-Job';
 import { HttpErrorResponse } from '@angular/common/http';
-import { List_Job } from 'src/app/contracts/jobs/list-jobs';
 import { ListJobsPagination } from 'src/app/contracts/jobs/list-pagination';
+import { Job } from 'src/app/contracts/jobs/job';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class JobService {
         let message = ""
         _error.forEach((v, index) => {
           v.value.forEach((_v, _index) => {
-            message += `${_v}`
+            message += `${_v}\n`
           });
         });
         errorCallBack(message)
@@ -31,7 +31,7 @@ export class JobService {
   }
 
   async read(page: number = 0, size: number = 5, successCallBack: () => void, errorCallBack: (errorMessage: String) => void): Promise<ListJobsPagination> {
-    const promiseData: Promise<ListJobsPagination> = this.httpService.Get<ListJobsPagination> ({
+    const promiseData: Promise<ListJobsPagination> = this.httpService.Get<ListJobsPagination>({
       controller: "jobs",
       queryString: `page=${page}&size=${size}`
     }).toPromise()
@@ -39,5 +39,13 @@ export class JobService {
     promiseData.then(d => successCallBack()).catch((errorResponse: HttpErrorResponse) => errorCallBack(errorResponse.message))
 
     return await promiseData
+  }
+
+  deleteJob(id: string, successCallBack: () => void, errorCallBack: (errorMessage: String) => void): void {
+    const promiseData : Promise<any> = this.httpService.Delete({
+      controller: "jobs"
+    }, id).toPromise()
+
+    promiseData.then(d => successCallBack()).catch((errorResponse: HttpErrorResponse) => errorCallBack(errorResponse.message))
   }
 }

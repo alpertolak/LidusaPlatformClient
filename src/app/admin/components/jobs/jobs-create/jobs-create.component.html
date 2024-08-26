@@ -1,15 +1,13 @@
-<form>
-    <mat-form-field class="form-eleman">
-        <mat-label>Meslek İsmi</mat-label>
-        <input matInput #txtJobName>
-    </mat-form-field>
-    <mat-form-field class="form-eleman" style="max-height: 255px;">
-        <mat-label>Açıklama</mat-label>
-        <textarea matInput #txtJobDescription></textarea>
-    </mat-form-field>
-    <button (click)="CreateJob(txtJobName.value,txtJobDescription.value)">
-        <span class="shadow"></span>
-        <span class="edge"></span>
-        <span class="front text">Yeni Kayıt</span>
-      </button>
-</form>
+<mat-form-field class="form-elemt">
+    <mat-label>Meslek İsmi</mat-label>
+    <input matInput #txtJobName>
+</mat-form-field>
+<mat-form-field class="form-textArena">
+    <mat-label>Açıklama</mat-label>
+    <textarea matInput #txtJobDescription></textarea>
+</mat-form-field>
+<button (click)="CreateJob(txtJobName.value,txtJobDescription.value)">
+    <span class="shadow"></span>
+    <span class="edge"></span>
+    <span class="front text">Yeni Kayıt</span>
+</button>

@@ -1,9 +1,8 @@
-import { APP_INITIALIZER, ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import {  ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { HttpClientService } from 'src/app/services/common/http-client.service';
 import { Create_Job } from 'src/app/contracts/jobs/create-Job';
 import { JobService } from 'src/app/services/common/jobs/job.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -20,7 +19,6 @@ import { ToastrService } from 'ngx-toastr';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-//@Output() createdjob: EventEmitter<Create_Job> = new EventEmitter() buna bak gerçay hocanın videodan
 
 export class JobsCreateComponent {
 
@@ -33,12 +31,12 @@ export class JobsCreateComponent {
 
 
   CreateJob(jobName: string, jobDescription: string) {
-
+    
     //yeni job bilgileri form üzerinden alınıyor
     const newJob: Create_Job = new Create_Job()
     newJob.JobName = jobName
     newJob.JobDescription = jobDescription
-
+    
     this.spinner.show(SpinnerType.save)
     this.jobService.createJob(newJob, () => {
       this.spinner.hide(SpinnerType.save)
@@ -46,6 +44,7 @@ export class JobsCreateComponent {
       this.createdJobs.emit(newJob)
     }, errorMessage => {
       this.spinner.hide(SpinnerType.save)
+      console.log(errorMessage.toString())
       this.toastrService.error(errorMessage.toString(), "Hata")
     })
   }

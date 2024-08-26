@@ -11,9 +11,9 @@ import { JobsListComponent } from "./jobs-list/jobs-list.component";
 export class JobsComponent {
 
 
-  @ViewChild(JobsListComponent) jobListComponent :JobsListComponent
+  @ViewChild(JobsListComponent) jobListComponent: JobsListComponent
 
   createdJob(createdJob: Create_Job) {
-  this.jobListComponent.getJobs()
-   }
+    this.jobListComponent.getJobs()
+  }
 }

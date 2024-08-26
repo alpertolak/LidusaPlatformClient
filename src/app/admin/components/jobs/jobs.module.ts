@@ -6,11 +6,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { JobsCreateComponent } from './jobs-create/jobs-create.component';
 import { RouterModule } from '@angular/router';
+import {MatDialogModule} from '@angular/material/dialog';
+import { JobDeleteDialogComponent } from 'src/app/dialogs/job-delete-dialog/job-delete-dialog.component';
 
 
 @NgModule({
   declarations: [
     JobsComponent,
+    JobDeleteDialogComponent
   ],
   imports: [
     CommonModule,
@@ -18,6 +21,7 @@ import { RouterModule } from '@angular/router';
     MatPaginatorModule,
     JobsCreateComponent, //component import ediliyor çünkü standalone özelliği true
     JobsListComponent,
+    MatDialogModule,
     RouterModule.forChild([
       { path: "", component: JobsComponent }
     ])
