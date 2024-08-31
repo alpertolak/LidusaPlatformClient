@@ -7,20 +7,32 @@ import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { JobsCreateComponent } from './jobs-create/jobs-create.component';
 import { RouterModule } from '@angular/router';
 import {MatDialogModule} from '@angular/material/dialog';
-import { JobDeleteDialogComponent } from 'src/app/dialogs/job-delete-dialog/job-delete-dialog.component';
+import { DeleteDirective } from 'src/app/directives/admin/delete.directive';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
+
 
 
 @NgModule({
   declarations: [
     JobsComponent,
-    JobDeleteDialogComponent
+    JobsListComponent,
+    JobsCreateComponent,
+    DeleteDirective,
+    DeleteDialogComponent
+
   ],
   imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
-    JobsCreateComponent, //component import ediliyor çünkü standalone özelliği true
-    JobsListComponent,
     MatDialogModule,
     RouterModule.forChild([
       { path: "", component: JobsComponent }

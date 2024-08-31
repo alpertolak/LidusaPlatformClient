@@ -20,16 +20,16 @@ import { LayoutModule } from "./admin/layout/layout.module";
     HttpClientModule,
     AppRoutingModule,
     ToastrModule.forRoot({
-        timeOut: 5000,
-        positionClass: 'toast-top-right',
-        preventDuplicates: true,
-        closeButton: true,
-        progressBar: true,
+      timeOut: 5000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      closeButton: true,
+      progressBar: true,
     }),
     BrowserAnimationsModule,
     NgxSpinnerModule,
     LayoutModule
-],
+  ],
   providers: [
     { provide: "baseUrl", useValue: "https://localhost:7147/api", multi: true },
   ],

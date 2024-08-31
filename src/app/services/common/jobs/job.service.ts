@@ -4,6 +4,7 @@ import { Create_Job } from 'src/app/contracts/jobs/create-Job';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ListJobsPagination } from 'src/app/contracts/jobs/list-pagination';
 import { Job } from 'src/app/contracts/jobs/job';
+import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -41,11 +42,11 @@ export class JobService {
     return await promiseData
   }
 
-  deleteJob(id: string, successCallBack: () => void, errorCallBack: (errorMessage: String) => void): void {
-    const promiseData : Promise<any> = this.httpService.Delete({
+  async deleteJob(id: string) {
+    const deleteObservable: Observable<any> = this.httpService.Delete<any>({
       controller: "jobs"
-    }, id).toPromise()
+    }, id)
 
-    promiseData.then(d => successCallBack()).catch((errorResponse: HttpErrorResponse) => errorCallBack(errorResponse.message))
+    await firstValueFrom(deleteObservable);
   }
 }

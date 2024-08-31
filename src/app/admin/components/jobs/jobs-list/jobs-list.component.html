@@ -14,8 +14,7 @@
 
     <ng-container matColumnDef="Delete">
       <th mat-header-cell *matHeaderCellDef style="width: 60px;"> </th>
-      <td mat-cell *matCellDef="let element"><img src="../../../../../assets/icons/delete.png"
-        style="width: 30px; height: 30px; cursor: pointer;" (click)="delete(element.id,element.jobName,$event)"></td>
+      <td mat-cell *matCellDef="let element" appDelete [id]="element.id" controller="jobs" (callback)="getJobs()"></td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

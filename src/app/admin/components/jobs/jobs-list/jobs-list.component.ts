@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { List_Job } from 'src/app/contracts/jobs/list-jobs';
 import { ListJobsPagination } from 'src/app/contracts/jobs/list-pagination';
+import { DeleteDirective } from 'src/app/directives/admin/delete.directive';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { JobService } from 'src/app/services/common/jobs/job.service';
 
@@ -14,8 +15,6 @@ declare var $: any
   selector: 'app-jobs-list',
   templateUrl: './jobs-list.component.html',
   styleUrls: ['./jobs-list.component.css'],
-  standalone: true,
-  imports: [MatTableModule, MatPaginatorModule],
 })
 export class JobsListComponent implements OnInit {
 
@@ -47,21 +46,6 @@ export class JobsListComponent implements OnInit {
   }
   async ngOnInit() {
     await this.getJobs()
-  }
-
-  delete(id: string,name:string, event: any) {
-    this.spinner.show(SpinnerType.save)
-
-    this.jobService.deleteJob(id, () => { // successCallback
-      const buton: HTMLButtonElement = event.srcElement
-      $(buton.parentElement?.parentElement).fadeOut(300)
-      this.spinner.hide(SpinnerType.save)
-      this.toastr.success(`${name} isimli hizmet silinmiştir`)
-    }, (errorMessage) => { //ErrorCallBack
-      this.spinner.hide(SpinnerType.save)
-      this.toastr.error(errorMessage.toString())
-
-    })
   }
 
 }

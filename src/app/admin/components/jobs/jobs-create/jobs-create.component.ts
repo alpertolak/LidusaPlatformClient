@@ -14,8 +14,6 @@ import { ToastrService } from 'ngx-toastr';
   selector: 'app-jobs-create',
   templateUrl: './jobs-create.component.html',
   styleUrls: ['./jobs-create.component.css'],
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
