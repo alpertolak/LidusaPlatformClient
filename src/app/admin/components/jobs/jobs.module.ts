@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
+import { FileUploadModule } from 'src/app/services/common/file-upload/file-upload.module';
 
 
 
@@ -26,6 +27,7 @@ import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dial
 
   ],
   imports: [
+    FileUploadModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

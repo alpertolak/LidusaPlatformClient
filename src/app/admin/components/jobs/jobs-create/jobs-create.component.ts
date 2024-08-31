@@ -1,4 +1,4 @@
-import {  ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,7 +8,7 @@ import { JobService } from 'src/app/services/common/jobs/job.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { ToastrService } from 'ngx-toastr';
-
+import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 
 @Component({
   selector: 'app-jobs-create',
@@ -16,7 +16,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./jobs-create.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 
 export class JobsCreateComponent {
 
@@ -26,15 +25,20 @@ export class JobsCreateComponent {
     private toastrService: ToastrService) { }
 
   @Output() createdJobs: EventEmitter<Create_Job> = new EventEmitter()
-
+  @Output() fileUploadOptions: Partial<FileUploadOptions> = {
+    action: "upload",
+    controller: "jobs",
+    explanation: "Resimleri sürükleyin veya seçin...",
+    accept: ".png, .jpg, .pdf"
+  }
 
   CreateJob(jobName: string, jobDescription: string) {
-    
+
     //yeni job bilgileri form üzerinden alınıyor
     const newJob: Create_Job = new Create_Job()
     newJob.JobName = jobName
     newJob.JobDescription = jobDescription
-    
+
     this.spinner.show(SpinnerType.save)
     this.jobService.createJob(newJob, () => {
       this.spinner.hide(SpinnerType.save)

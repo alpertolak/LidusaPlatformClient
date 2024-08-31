@@ -32,9 +32,9 @@ export class DeleteDirective implements OnInit {
     this._renderer.appendChild(this.element.nativeElement, img);
   }
 
-  //gençay 22.DERS
+  //gençay 22.DERS - 23.DERS
   @Input() id: string; // silme işlemi için id parametresi, directive'in kullanıldığı component'ten input olarak alıyor
-  @Input() controller: string
+  @Input() controller: string //delete directive'i evrensel olark tanımlayabilmek için kullanıldığı yerde istek yappılacak controller bilgisni alıyoruz
   @Output() callback: EventEmitter<any> = new EventEmitter(); // silme işlemi tamalandığında listeyi yenilemek için kullanılan output nesnesi
 
   @HostListener("click")
