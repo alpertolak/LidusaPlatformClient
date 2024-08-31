@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
 import { FileUploadModule } from 'src/app/services/common/file-upload/file-upload.module';
+import { DialogsModule } from 'src/app/dialogs/dialogs.module';
 
 
 
@@ -23,10 +24,10 @@ import { FileUploadModule } from 'src/app/services/common/file-upload/file-uploa
     JobsListComponent,
     JobsCreateComponent,
     DeleteDirective,
-    DeleteDialogComponent
 
   ],
   imports: [
+    DialogsModule,
     FileUploadModule,
     MatFormFieldModule,
     MatInputModule,
@@ -35,7 +36,6 @@ import { FileUploadModule } from 'src/app/services/common/file-upload/file-uploa
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
-    MatDialogModule,
     RouterModule.forChild([
       { path: "", component: JobsComponent }
     ])

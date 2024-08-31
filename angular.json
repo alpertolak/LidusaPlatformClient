@@ -18,9 +18,6 @@
         "@schematics/angular:guard": {
           "skipTests": true
         },
-        "@schematics/angular:module": {
-          "skipTests": false
-        },
         "@schematics/angular:pipe": {
           "skipTests": true
         },
