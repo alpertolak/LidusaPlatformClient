@@ -3,12 +3,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteDialogComponent } from 'src/app/dialogs/delete-dialog/delete-dialog.component';
-import { DeleteState } from 'src/app/Enums/DeleteState';
-import { SpinnerType } from 'src/app/Enums/enums';
+import { DialogState, SpinnerType } from 'src/app/Enums/enums';
+import { DialogOptions, DialogService } from 'src/app/services/common/dialog.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
-import { JobService } from 'src/app/services/common/jobs/job.service';
 
 declare var $: any
+
 @Directive({
   selector: '[appDelete]'
 })
@@ -20,7 +20,8 @@ export class DeleteDirective implements OnInit {
     private httpClientService: HttpClientService,
     private spinnerService: NgxSpinnerService,
     public dialog: MatDialog,
-    private toastrService:ToastrService,
+    private toastrService: ToastrService,
+    private dialogService: DialogService,
   ) { }
 
   ngOnInit(): void {
@@ -39,35 +40,27 @@ export class DeleteDirective implements OnInit {
 
   @HostListener("click")
   onClick() {
-    this.openDialog(async () => {
-      this.spinnerService.show(SpinnerType.save)
-      const td: HTMLTableCellElement = this.element.nativeElement
-      this.httpClientService.Delete({
-        controller: this.controller
-      }, this.id).subscribe(data => {
-        $(td.parentElement).fadeOut(300, () => {
+    this.dialogService.openDialog({
+      componentType: DeleteDialogComponent,
+      data: DialogState.yes,
+      options:{width:"350px"},
+      afterClose: () => {
+        this.spinnerService.show(SpinnerType.save)
+        const td: HTMLTableCellElement = this.element.nativeElement
+        this.httpClientService.Delete({
+          controller: this.controller
+        }, this.id).subscribe(data => {
+          $(td.parentElement).fadeOut(300, () => {
+            this.spinnerService.hide(SpinnerType.save)
+            this.callback.emit()
+            this.toastrService.success("Hizmet Silinmiştir", "Başarılı")
+          })
+        }, (errorResponse) => {
           this.spinnerService.hide(SpinnerType.save)
           this.callback.emit()
-          this.toastrService.success("Hizmet Silinmiştir","Başarılı")
+          this.toastrService.error("Hizmet Silinemedi", "Hata")
         })
-      },(errorResponse) =>{
-        this.spinnerService.hide(SpinnerType.save)
-        this.callback.emit()
-        this.toastrService.error("Hizmet Silinemedi","Hata")
-      })
-    })
-  }
-
-  openDialog(afterClosed: any): void {
-    const dialogRef = this.dialog.open(DeleteDialogComponent, {
-      width: "300px",
-      data: DeleteState.yes
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == DeleteState.yes) {
-        afterClosed()
       }
-    });
+    })
   }
 }

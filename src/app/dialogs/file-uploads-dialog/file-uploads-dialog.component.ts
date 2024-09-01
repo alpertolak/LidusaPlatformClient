@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { BaseDialog } from '../base/base-dialog';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DeleteState } from 'src/app/Enums/DeleteState';
+import { DialogState } from 'src/app/Enums/enums';
 
 @Component({
   selector: 'app-file-uploads-dialog',
@@ -11,7 +11,7 @@ import { DeleteState } from 'src/app/Enums/DeleteState';
 export class FileUploadsDialogComponent extends BaseDialog<FileUploadsDialogComponent> {
 
   constructor(dialogRef: MatDialogRef<FileUploadsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DeleteState
+    @Inject(MAT_DIALOG_DATA) public data: DialogState
   ) {
     super(dialogRef)
   }

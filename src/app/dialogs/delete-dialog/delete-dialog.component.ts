@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { DeleteState } from 'src/app/Enums/DeleteState';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseDialog } from '../base/base-dialog';
+import { DialogState } from 'src/app/Enums/enums';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -11,7 +11,7 @@ import { BaseDialog } from '../base/base-dialog';
 export class DeleteDialogComponent extends BaseDialog<DeleteDialogComponent> {
 
   constructor(dialogRef: MatDialogRef<DeleteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DeleteState) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogState) {
     super(dialogRef)
   }
 }
