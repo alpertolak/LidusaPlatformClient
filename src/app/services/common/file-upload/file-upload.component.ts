@@ -6,7 +6,8 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { FileUploadsDialogComponent } from 'src/app/dialogs/file-uploads-dialog/file-uploads-dialog.component';
 import { DialogService } from '../dialog.service';
-import { DialogState } from 'src/app/Enums/enums';
+import { DialogState, SpinnerType } from 'src/app/Enums/enums';
+import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-file-upload',
@@ -20,7 +21,8 @@ export class FileUploadComponent {
     private httClientService: HttpClientService,
     private toastrService: ToastrService,
     private dialog: MatDialog,
-    private dialogService: DialogService) { }
+    private dialogService: DialogService,
+    private spinner: NgxSpinnerService) { }
 
   public files: NgxFileDropEntry[];
   @Input() options: Partial<FileUploadOptions>
@@ -37,16 +39,19 @@ export class FileUploadComponent {
     this.dialogService.openDialog({
       componentType: FileUploadsDialogComponent,
       data: DialogState.yes,
-      options:{width:"500px"},
+      options: { width: "500px" },
       afterClose: () => {
+        this.spinner.show(SpinnerType.save)
         this.httClientService.Post({
           controller: this.options.controller,
           action: this.options.action,
           queryString: this.options.queryString,
           headers: new HttpHeaders({ "response-type": "blob" })
         }, fileData).subscribe(result => {
+          this.spinner.hide(SpinnerType.save)
           this.toastrService.success("Dosyalar  yüklenmiştir", "Başarılı")
         }, (ErrorReponse: HttpErrorResponse) => {
+          this.spinner.hide(SpinnerType.save)
           this.toastrService.error(ErrorReponse.error, "Dosya yükleme başarısız")
 
         })

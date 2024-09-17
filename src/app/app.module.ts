@@ -9,13 +9,19 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AdminModule } from './admin/admin.module';
 import { LayoutModule } from "./admin/layout/layout.module";
+import { UiModule } from './ui/ui.module';
+import { RegisterModule } from './login/register/register.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    RouterModule,
     AdminModule,
+    UiModule,
+    RegisterModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
