@@ -1,21 +1,32 @@
 <div class="container">
-    <form class="form">
+    <form class="form" [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
         <p class="form-title">Kullanıcı Girişi</p>
         <div class="input-container">
-            <input type="email" placeholder="Email">
+
+            <input id="UserNameOrEmail" type="text" formControlName="UserNameOrEmail" placeholder="kullanıcı adı & Email"
+            [ngClass]="{'is-invalid':submitted && component.UserNameOrEmail?.errors}">
+
+            <!--Email Hata mesajı-->
+            <small class="errorMessage" style="float:left;" *ngIf="submitted && component.UserNameOrEmail.errors?.required">Bu alan zorunludur</small>
+
         </div>
-        <div class="input-container">
-            <input type="password" placeholder="şifre">
+        <div class="input-container" style="margin-bottom: 23px;">
+
+            <input id="password" formControlName="password" type="password" placeholder="şifre"
+            [ngClass]="{'is-invalid':submitted && component.password?.errors}">
+
+            <!--Email Hata mesajı-->
+            <small class="errorMessage" style="float:left;" *ngIf="submitted && component.password.errors?.required">Bu alan zorunludur</small>
         </div>
-        <button style="width: 100%;">
+        <button style="width: 100%">
             <span class="shadow"></span>
             <span class="edge"></span>
-            <span class="front text">Oluştur</span>
-            </button>
+            <span class="front text">Giriş Yap</span>
+        </button>
 
-        <p class="signup-link">
+        <p class="signup-link mt-2">
             Hesabım Yok
-            <a href="register">Hesap Aç</a>
+            <a href="register" class="login__link">Hesap Aç</a>
         </p>
     </form>
 </div>

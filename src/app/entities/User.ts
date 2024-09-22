@@ -1,8 +1,9 @@
-export class userCreate {
+export class User {
     name:string
     lastName:string
     userName:string
     email:string
-    phoneNumber:number
+    phoneNumber:string
     password:string
+    passwordConfirm:string
 }

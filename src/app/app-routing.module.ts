@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './admin/layout/layout.component';
 import { RegisterComponent } from './login/register/register.component';
 import { LoginComponent } from './login/login/login.component';
+import { AuthGuard } from './guards/common/auth.guard';
 
 const routes: Routes = [
   {
@@ -10,7 +11,7 @@ const routes: Routes = [
     path: "admin", component: LayoutComponent, children: [
       { path: "dashboard", loadChildren: () => import("././admin/components/dashboard/dashboard.module").then(module => module.DashboardModule) },
       { path: "jobs", loadChildren: () => import("././admin/components/jobs/jobs.module").then(module => module.JobsModule) }
-    ],
+    ], canActivate:[AuthGuard]
   },{
     //ui paneli için üst yönledirme
     path: "", component: LayoutComponent, pathMatch: 'full'

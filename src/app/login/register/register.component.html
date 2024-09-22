@@ -1,83 +1,96 @@
 <div class="container">
-    <div class="container">
-        <form class="form" [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
-            <p class="form-title">Hesap Oluştur</p>
-            <div class="input-container">
+    <form class="form" [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+        <p class="form-title">Hesap Oluştur</p>
+        <div class="input-container">
 
-                <input id="name"  type="text" placeholder="İsim" formControlName="name" style="width: 48%;" 
+            <input id="name" type="text" placeholder="İsim" formControlName="name" style="width: 48%;"
                 [ngClass]="{'is-invalid':submitted && component.name.errors}">
 
-                <input type="text" placeholder="Soy İsim" formControlName="lastName" style="float: right; width:48%;"
+            <input type="text" placeholder="Soy İsim" formControlName="lastName" style="float: right; width:48%;"
                 [ngClass]="{'is-invalid':submitted && component.lastName.errors}">
-            </div>
-            <div>
+        </div>
+        <div>
 
-                <!--isim hata mesajları-->
-                <small class="DividedErrorMessage" style="float:left;" *ngIf="submitted && component.name.errors?.required">Bu alan zorunludur</small>
-                <small class="DividedErrorMessage" style="float:left;" *ngIf="submitted && (component.name.errors?.minlength || component.name.errors?.maxlength)">3-15 karater arasında olabilir</small>
+            <!--isim hata mesajları-->
+            <small class="DividedErrorMessage" style="float:left;"
+                *ngIf="submitted && component.name.errors?.required">Bu alan zorunludur</small>
+            <small class="DividedErrorMessage" style="float:left;"
+                *ngIf="submitted && (component.name.errors?.minlength || component.name.errors?.maxlength)">3-15 karater
+                arasında olabilir</small>
 
-                <!--soyisim hata mesajları-->
-                <small class="DividedErrorMessage" style="float:right;" *ngIf="submitted && component.lastName.errors?.required">Bu alan zorunludur</small>
-                <small class="DividedErrorMessage" style="float:right;" *ngIf="submitted && (component.lastName.errors?.minlength || component.lastName.errors?.maxlength)">3-15 karater arasında olabilir</small>
+            <!--soyisim hata mesajları-->
+            <small class="DividedErrorMessage" style="float:right;"
+                *ngIf="submitted && component.lastName.errors?.required">Bu alan zorunludur</small>
+            <small class="DividedErrorMessage" style="float:right;"
+                *ngIf="submitted && (component.lastName.errors?.minlength || component.lastName.errors?.maxlength)">3-15
+                karater arasında olabilir</small>
 
-            </div>
-            <div class="input-container">
+        </div>
+        <div class="input-container">
 
-                <input type="text" placeholder="Kullanıcı Adı" formControlName="userName" style="width: 100%;"
+            <input type="text" placeholder="Kullanıcı Adı" formControlName="userName" style="width: 100%;"
                 [ngClass]="{'is-invalid':submitted && component.userName.errors}">
 
-                <!--username hata mesajları-->
-                <small class="errorMessage" *ngIf="submitted && component.userName.errors?.required">Bu alan zorunludur</small>
-                <small class="errorMessage" *ngIf="submitted && (component.userName.errors?.minlength || component.userName.errors?.maxlength)">Kullanıcı adı 3-50 karater arasında olabilir</small>
+            <!--username hata mesajları-->
+            <small class="errorMessage" *ngIf="submitted && component.userName.errors?.required">Bu alan
+                zorunludur</small>
+            <small class="errorMessage"
+                *ngIf="submitted && (component.userName.errors?.minlength || component.userName.errors?.maxlength)">Kullanıcı
+                adı 3-50 karater arasında olabilir</small>
 
-            </div>
-            <div class="input-container">
+        </div>
+        <div class="input-container">
 
-                <input type="email" placeholder="Email" formControlName="email" style="width: 100%;"
+            <input type="email" placeholder="Email" formControlName="email" style="width: 100%;"
                 [ngClass]="{'is-invalid':submitted && component.email.errors}">
 
-                 <!--email hata mesajları-->
-                 <small class="errorMessage invalid-feedback" style="float:left;" *ngIf="submitted && component.email.errors?.required">Bu alan zorunludur</small>
-                 <small class="errorMessage invalid-feedback" style="float:left;" *ngIf="submitted && component.email.errors?.email">Lütfen geçerli bir email adresi giriniz</small>
+            <!--email hata mesajları-->
+            <small class="errorMessage invalid-feedback" style="float:left;"
+                *ngIf="submitted && component.email.errors?.required">Bu alan zorunludur</small>
+            <small class="errorMessage invalid-feedback" style="float:left;"
+                *ngIf="submitted && component.email.errors?.email">Lütfen geçerli bir email adresi giriniz</small>
 
-            </div>
-            <div class="input-container">
+        </div>
+        <div class="input-container">
 
-                <input type="tel" placeholder="Telefon" formControlName="phoneNumber" style="width: 100%;"
+            <input type="tel" placeholder="Telefon" formControlName="phoneNumber" style="width: 100%;"
                 [ngClass]="{'is-invalid':submitted && component.phoneNumber.errors}">
 
-                 <!--phoneNumber hata mesajları-->
-                 <small class="errorMessage" style="float:left;" *ngIf="submitted && component.phoneNumber.errors?.required">Bu alan zorunludur</small>
+            <!--phoneNumber hata mesajları-->
+            <small class="errorMessage" style="float:left;"
+                *ngIf="submitted && component.phoneNumber.errors?.required">Bu alan zorunludur</small>
 
-            </div>
-            <div class="input-container">
+        </div>
+        <div class="input-container">
 
-                <input type="password" placeholder="Şifre" formControlName="password" style="width: 100%;"
+            <input type="password" placeholder="Şifre" formControlName="password" style="width: 100%;"
                 [ngClass]="{'is-invalid':submitted && component.password.errors}">
 
-                 <!--password hata mesajları-->
-                 <small class="errorMessage" style="float:left;" *ngIf="submitted && component.password.errors?.required">Bu alan zorunludur</small>
+            <!--password hata mesajları-->
+            <small class="errorMessage" style="float:left;" *ngIf="submitted && component.password.errors?.required">Bu
+                alan zorunludur</small>
 
-            </div>
-            <div class="input-container" style="margin-bottom: 18px;">
+        </div>
+        <div class="input-container" style="margin-bottom: 18px;">
 
-                <input type="password" placeholder="Şifre Tekrarı" formControlName="rePassword" style="width: 100%;"
-                [ngClass]="{'is-invalid':submitted && component.rePassword.errors}">
+            <input type="password" placeholder="Şifre Tekrarı" formControlName="passwordConfirm" style="width: 100%;"
+                [ngClass]="{'is-invalid':submitted && component.passwordConfirm.errors}">
 
-                 <!--rePassword hata mesajları-->
-                 <small class="errorMessage" style="float:left;" *ngIf="submitted && component.rePassword.errors?.required">Bu alan zorunludur</small>
-                 <small class="errorMessage" style="float:left;" *ngIf="submitted && frm.hasError('notSame')">girilen şifreler aynı değildir</small>
+            <!--passwordConfirm hata mesajları-->
+            <small class="errorMessage" style="float:left;"
+                *ngIf="submitted && component.passwordConfirm.errors?.required">Bu alan zorunludur</small>
+            <small class="errorMessage" style="float:left;" *ngIf="submitted && frm.hasError('notSame')">girilen
+                şifreler aynı değildir</small>
 
-            </div>
-            <button type="submit" style="width: 100%; margin-top: 2px;">
+        </div>
+        <button type="submit" style="width: 100%; margin: 8px 0;">
             <span class="shadow"></span>
             <span class="edge"></span>
             <span class="front text">Oluştur</span>
-            </button>
-            <p class="signup-link mt-2">
-                Hesabım Var
-                <a href="login">Giriş Yap</a>
-            </p>
-        </form>
-    </div>
+        </button>
+        <p class="signup-link mt-2">
+            Hesabım Var
+            <a href="login" class="register__link">Giriş Yap</a>
+        </p>
+    </form>
 </div>

@@ -1,6 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +11,8 @@ import { LayoutModule } from "./admin/layout/layout.module";
 import { UiModule } from './ui/ui.module';
 import { RegisterModule } from './login/register/register.module';
 import { RouterModule } from '@angular/router';
+import { LoginModule } from './login/login/login.module';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { RouterModule } from '@angular/router';
     AdminModule,
     UiModule,
     RegisterModule,
+    LoginModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
@@ -34,7 +36,13 @@ import { RouterModule } from '@angular/router';
     }),
     BrowserAnimationsModule,
     NgxSpinnerModule,
-    LayoutModule
+    LayoutModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => localStorage.getItem("accessToken"), //token bilgisi api istekleri için header'a yazdırılıyor.
+        allowedDomains: ["localhost:7147"], //güvenlik açığı olmaması için hangi domainlere istek yaparken token header'a koyulacak o belirtiliyor.
+      }
+    })
   ],
   providers: [
     { provide: "baseUrl", useValue: "https://localhost:7147/api", multi: true },

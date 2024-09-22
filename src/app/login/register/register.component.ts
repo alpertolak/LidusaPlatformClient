@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { userCreate } from 'src/app/entities/UserCreate';
+import { ToastrService } from 'ngx-toastr';
+import { Create_User } from 'src/app/contracts/users/create-user';
+import { User } from 'src/app/entities/User';
+import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +12,11 @@ import { userCreate } from 'src/app/entities/UserCreate';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private toastrService: ToastrService,
+  ) { }
 
   frm: FormGroup
   ngOnInit(): void {
@@ -43,14 +50,14 @@ export class RegisterComponent implements OnInit {
         Validators.required,
         Validators.minLength(3)
       ]],
-      rePassword: ["", [
+      passwordConfirm: ["", [
         Validators.required
       ]]
     }, {
       //şifre karşılaştırma işlemi GENÇAY 37.DERS
       validators: (group: AbstractControl): ValidationErrors | null => {
         let password = group.get("password")?.value
-        let rePassword = group.get("rePassword")?.value
+        let rePassword = group.get("passwordConfirm")?.value
         return password == rePassword ? null : { notSame: true }
       }
     })
@@ -62,10 +69,18 @@ export class RegisterComponent implements OnInit {
 
   submitted: boolean = false
 
-  onSubmit(data: userCreate) {
+  async onSubmit(user: User) {
+
     this.submitted = true
-    debugger
-    if (this.frm.invalid) return
-    console.log("hatasız")
+    if (this.frm.invalid) return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
+    
+    const result: any = await this.userService.create(user)
+
+    if (result.succeeded) {
+      this.toastrService.success(result.message, "Başarılı")
+    }else{
+      this.toastrService.error(result.message,"Hata")
+    }
+
   }
 }

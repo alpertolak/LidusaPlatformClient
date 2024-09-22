@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClientService } from './services/common/http-client.service';
+import { AuthService } from './services/common/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +8,7 @@ import { HttpClientService } from './services/common/http-client.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent { 
-  
+  constructor(private authService:AuthService){
+    authService.identityCheck()
+  }
 }
