@@ -6,7 +6,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { JobsCreateComponent } from './jobs-create/jobs-create.component';
 import { RouterModule } from '@angular/router';
-import {MatDialogModule} from '@angular/material/dialog';
 import { DeleteDirective } from 'src/app/directives/admin/delete.directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

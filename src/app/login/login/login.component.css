@@ -203,3 +203,9 @@ a {
   color: crimson;
   margin-top: -7px;
 }
+
+/*Google buton*/
+
+.google_btn{
+  width: 100px;
+}
