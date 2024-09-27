@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { AuthService } from 'src/app/services/common/auth.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
+import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
 import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
@@ -17,6 +18,7 @@ import { UserService } from 'src/app/services/common/models/user.service';
 export class LoginComponent implements OnInit {
 
   constructor(
+    private userAuthService: UserAuthService,
     private userService: UserService,
     private toastrService: ToastrService,
     private spinnerService: NgxSpinnerService,
@@ -30,7 +32,7 @@ export class LoginComponent implements OnInit {
     //google login için api post işlemi
     socialAuthService.authState.subscribe(async (user: SocialUser) => {
       this.spinnerService.show(SpinnerType.load)
-      await userService.googleLogin(user, () => {
+      await userAuthService.googleLogin(user, () => {
 
         //returnUrl Çalışması
         this.ActivatedRoute.queryParams.subscribe(params => {
@@ -67,7 +69,8 @@ export class LoginComponent implements OnInit {
     if (this.frm.invalid) return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
 
     this.spinnerService.show(SpinnerType.load)
-    this.userService.login(userLogin.UserNameOrEmail, userLogin.password, () => {
+    
+    this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, () => {
       this.authService.identityCheck();
 
       this.ActivatedRoute.queryParams.subscribe(params => {
