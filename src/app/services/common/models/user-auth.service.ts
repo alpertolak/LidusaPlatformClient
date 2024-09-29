@@ -14,7 +14,6 @@ export class UserAuthService {
     private httpService: HttpClientService,
     private toastrService: ToastrService,
   ) { }
-  
   async login(usernameOrEmail: string, password: string, callBackFunction: () => void): Promise<void> {
     const observable: Observable<any | Token_Response> = this.httpService.Post<any | Token_Response>({
       controller: "auth",
@@ -22,13 +21,29 @@ export class UserAuthService {
     }, { usernameOrEmail, password })
 
     const token: Token_Response = await firstValueFrom(observable) as Token_Response
-    if (token)
+    if (token) {
       localStorage.setItem("accessToken", token.token.accessToken);
-
-    this.toastrService.success("Kullanıcı girişi başarılı", "Başarılı")
+      localStorage.setItem("refreshToken", token.token.refreshToken);
+      this.toastrService.success("Kullanıcı girişi başarılı", "Başarılı")
+    }
 
     callBackFunction()
   }
+
+  async refreshTokenLogin(refreshToken: string, callBackFunction?: () => void): Promise<any> {
+    debugger
+    const observable: Observable<any | Token_Response> = await this.httpService.Post({
+      action: "refreshTokenLogin",
+      controller: "auth",
+    }, refreshToken)
+
+    const tokenResponse: Token_Response = await firstValueFrom(observable) as Token_Response
+    if (tokenResponse) {
+      localStorage.setItem("accessToken", tokenResponse.token.accessToken);
+      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
+    }
+  }
+
 
   async googleLogin(user: SocialUser, callBackFunction?: () => void) {
     const observable: Observable<SocialUser | Token_Response> = await this.httpService.Post<SocialUser | Token_Response>({
@@ -41,6 +56,7 @@ export class UserAuthService {
     if (tokenResponse) {
       // Eğer tokenResponse varsa, access token'ı localStorage'a kaydediyoruz
       localStorage.setItem("accessToken", tokenResponse.token.accessToken);
+      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
 
       // Başarılı giriş mesajı gösteriliyor
       this.toastrService.success("Google giriş başarılı", "Giriş Başarılı")

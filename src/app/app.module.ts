@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -16,6 +16,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { LoginComponent } from './login/login/login.component';
 import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpErrorHandlerInterceptorService } from './services/common/http-error-handler-interceptor.service';
 
 @NgModule({
     declarations: [
@@ -62,7 +63,9 @@ import { ReactiveFormsModule } from '@angular/forms';
                     }],
                     onError: err => console.log(err)
                 } as SocialAuthServiceConfig
-            }
+            },
+            //GENÇAY DERS.46
+            { provide: HTTP_INTERCEPTORS, useClass: HttpErrorHandlerInterceptorService, multi: true }
         ]
 })
 export class AppModule { }
