@@ -14,54 +14,75 @@ export class UserAuthService {
     private httpService: HttpClientService,
     private toastrService: ToastrService,
   ) { }
-  async login(usernameOrEmail: string, password: string, callBackFunction: () => void): Promise<void> {
-    const observable: Observable<any | Token_Response> = this.httpService.Post<any | Token_Response>({
-      controller: "auth",
-      action: "login"
-    }, { usernameOrEmail, password })
+  async login(usernameOrEmail: string, password: string, successCallBackFunction?: () => void, errorCallBackFunction?: () => void): Promise<void> {
+    // HTTP isteği oluştur ve bir Observable döndür
+const observable: Observable<any | Token_Response> = this.httpService.Post<any | Token_Response>({
+  controller: "auth",
+  action: "login"
+}, { usernameOrEmail, password })
 
-    const token: Token_Response = await firstValueFrom(observable) as Token_Response
-    if (token) {
-      localStorage.setItem("accessToken", token.token.accessToken);
-      localStorage.setItem("refreshToken", token.token.refreshToken);
-      this.toastrService.success("Kullanıcı girişi başarılı", "Başarılı")
-    }
+try {
+  // Observable'dan ilk değeri al ve token'a dönüştür
+  const token: Token_Response = await firstValueFrom(observable)
+  
+  if (token) {
+    // Token'ı localStorage'a kaydet
+    localStorage.setItem("accessToken", token.token.accessToken)
+    localStorage.setItem("refreshToken", token.token.refreshToken)
+    
+    // Başarılı giriş mesajı göster
+    this.toastrService.success("Kullanıcı girişi başarılı", "Başarılı")
+    
+    // Başarı durumunda callback fonksiyonunu çağır (eğer tanımlanmışsa)
+    if (successCallBackFunction) successCallBackFunction()
+  }
+} catch {
+  // Hata durumunda callback fonksiyonunu çağır (eğer tanımlanmışsa)
+  if (errorCallBackFunction) errorCallBackFunction()
+}
 
-    callBackFunction()
   }
 
-  async refreshTokenLogin(refreshToken: string, callBackFunction?: () => void): Promise<any> {
-    debugger
-    const observable: Observable<any | Token_Response> = await this.httpService.Post({
-      action: "refreshTokenLogin",
+  async refreshTokenLogin(refreshToken: string, successCallBackFunction?: () => void, errorCallBackFunction?: () => void): Promise<Token_Response> {
+    const observable: Observable<Token_Response | any> = this.httpService.Post({
+      action: "RefreshTokenLogin",
       controller: "auth",
-    }, refreshToken)
+    }, { RefreshToken: refreshToken })
 
-    const tokenResponse: Token_Response = await firstValueFrom(observable) as Token_Response
+    const tokenResponse: Token_Response = await firstValueFrom(observable)
+
     if (tokenResponse) {
-      localStorage.setItem("accessToken", tokenResponse.token.accessToken);
-      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
-    }
+      localStorage.setItem("accessToken", tokenResponse.token.accessToken)
+      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken)
+
+      if (successCallBackFunction) successCallBackFunction()
+    } else
+      if (errorCallBackFunction) errorCallBackFunction() //errorcallback fonksiyonu çağırılıyor
+
+    return tokenResponse;
   }
 
-
-  async googleLogin(user: SocialUser, callBackFunction?: () => void) {
+  async googleLogin(user: SocialUser, successCallBackFunction?: () => void, errorCallBackFunction?: () => void) {
     const observable: Observable<SocialUser | Token_Response> = await this.httpService.Post<SocialUser | Token_Response>({
       controller: "auth",
       action: "google-login"
     }, user)
     // Observable'dan gelen yanıtı Promise'e çevirerek token alıyoruz
-    const tokenResponse: Token_Response = await firstValueFrom(observable) as Token_Response;
+    const tokenResponse: Token_Response = await firstValueFrom(observable) as Token_Response
 
     if (tokenResponse) {
       // Eğer tokenResponse varsa, access token'ı localStorage'a kaydediyoruz
-      localStorage.setItem("accessToken", tokenResponse.token.accessToken);
-      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken);
+      localStorage.setItem("accessToken", tokenResponse.token.accessToken)
+      localStorage.setItem("refreshToken", tokenResponse.token.refreshToken)
 
       // Başarılı giriş mesajı gösteriliyor
       this.toastrService.success("Google giriş başarılı", "Giriş Başarılı")
+
+      //callback fonksiyonu var ise çağırılıyor
+      if (successCallBackFunction) successCallBackFunction()
     }
-    //callback fonksiyonu var ise çağırılıyor
-    if (callBackFunction) callBackFunction();
+    else {
+      if (errorCallBackFunction) errorCallBackFunction() //errorcallback fonksiyonu çağırılıyor
+    }
   }
 }

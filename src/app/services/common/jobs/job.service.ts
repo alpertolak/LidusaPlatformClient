@@ -3,7 +3,6 @@ import { HttpClientService } from '../http-client.service';
 import { Create_Job } from 'src/app/contracts/jobs/create-Job';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ListJobsPagination } from 'src/app/contracts/jobs/list-pagination';
-import { Job } from 'src/app/contracts/jobs/job';
 import { firstValueFrom, Observable } from 'rxjs';
 
 @Injectable({

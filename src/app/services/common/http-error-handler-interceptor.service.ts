@@ -12,11 +12,11 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
   constructor(private toastrService: ToastrService, private userAuthService: UserAuthService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    debugger
     return next.handle(req).pipe(catchError(error => {
+      console.log(error)
       switch (error.status) {
-        //TODO şu anda çalışmıyor düzelt
         case HttpStatusCode.Unauthorized:
-          this.toastrService.warning("Bu işlemi yapmak için yetkiniz bulunmamaktadır", "Yetkisiz İşlem")
           this.userAuthService.refreshTokenLogin(localStorage.getItem("refreshToken") as string).then(data => { })
           break
         case HttpStatusCode.InternalServerError:

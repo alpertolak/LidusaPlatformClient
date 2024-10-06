@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { firstValueFrom, Observable } from 'rxjs';
+import { Token_Response } from 'src/app/contracts/token/token-response';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { AuthService } from 'src/app/services/common/auth.service';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
@@ -46,7 +48,7 @@ export class LoginComponent implements OnInit {
   }
 
   frm: FormGroup
-  ngOnInit(): void {
+  async ngOnInit() {
     this.frm = this.formBuilder.group({
       UserNameOrEmail: ["", [
         Validators.required,
@@ -80,6 +82,9 @@ export class LoginComponent implements OnInit {
           this.router.navigate([returnUrl])
       })
       this.spinnerService.hide(SpinnerType.load)
+    },()=>{
+      this.spinnerService.hide(SpinnerType.load)
+      this.toastrService.error("Kullanıcı adı veya şifre hatalıdır","Giriş başarısız!")
     })
   }
 }

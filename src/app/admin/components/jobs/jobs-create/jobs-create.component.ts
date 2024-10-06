@@ -33,7 +33,7 @@ export class JobsCreateComponent {
   }
 
   CreateJob(jobName: string, jobDescription: string) {
-
+    debugger
     //yeni job bilgileri form üzerinden alınıyor
     const newJob: Create_Job = new Create_Job()
     newJob.JobName = jobName
@@ -41,6 +41,7 @@ export class JobsCreateComponent {
 
     this.spinner.show(SpinnerType.save)
     this.jobService.createJob(newJob, () => {
+      //TODO şu anda çalışmıyor, isteği api ye göndermiyor kontrol et
       this.spinner.hide(SpinnerType.save)
       this.toastrService.success("Hizmet Başarıyla kaydedilmiştir.", "Başarılı")
       this.createdJobs.emit(newJob)
