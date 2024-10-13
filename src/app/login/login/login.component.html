@@ -12,7 +12,7 @@
                 *ngIf="submitted && component.UserNameOrEmail.errors?.required">Bu alan zorunludur</small>
 
         </div>
-        <div class="input-container" style="margin-bottom: 23px;">
+        <div class="input-container" style="margin-bottom: 50px;">
 
             <input id="password" formControlName="password" type="password" placeholder="Şifre"
                 [ngClass]="{'is-invalid':submitted && component.password?.errors}">
@@ -20,6 +20,8 @@
             <!--Email Hata mesajı-->
             <small class="errorMessage" style="float:left;" *ngIf="submitted && component.password.errors?.required">Bu
                 alan zorunludur</small>
+                
+        <div style="float: right; margin-top: 6px;"><a routerLink="/password-reset" class="login__link">Şifremi unuttum</a></div>
         </div>
         <button style="width: 100%">
             <span class="shadow"></span>
@@ -35,7 +37,7 @@
         <hr>
         <p class="signup-link" style="margin: 0;">
             Hesabım Yok
-            <a href="register" class="login__link">Hesap Aç</a>
+            <a routerLink="/register" class="login__link">Hesap Aç</a>
         </p>
     </form>
 </div>

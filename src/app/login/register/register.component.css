@@ -140,6 +140,10 @@ button {
   transform: translateY(-4px);
   transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
 }
+button{
+  width: 100%;
+  margin: 8px 0;
+}
 
 button:hover {
   filter: brightness(110%);

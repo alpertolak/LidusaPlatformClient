@@ -17,6 +17,8 @@ import { LoginComponent } from './login/login/login.component';
 import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpErrorHandlerInterceptorService } from './services/common/http-error-handler-interceptor.service';
+import { PasswordResetModule } from './login/password-reset/password-reset.module';
+import { PasswordUpdateModule } from './login/password-update/password-update.module';
 
 @NgModule({
     declarations: [
@@ -27,10 +29,11 @@ import { HttpErrorHandlerInterceptorService } from './services/common/http-error
         AdminModule,
         UiModule,
         RegisterModule,
-        //LoginModule,
         BrowserModule,
         AppRoutingModule,
         ReactiveFormsModule,
+        PasswordResetModule,
+        PasswordUpdateModule,
         ToastrModule.forRoot({
             timeOut: 5000,
             positionClass: 'toast-top-right',

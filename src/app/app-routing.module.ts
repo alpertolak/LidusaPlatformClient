@@ -4,6 +4,8 @@ import { LayoutComponent } from './admin/layout/layout.component';
 import { RegisterComponent } from './login/register/register.component';
 import { LoginComponent } from './login/login/login.component';
 import { AuthGuard } from './guards/common/auth.guard';
+import { PasswordResetComponent } from './login/password-reset/password-reset.component';
+import { PasswordUpdateComponent } from './login/password-update/password-update.component';
 
 const routes: Routes = [
   {
@@ -19,6 +21,10 @@ const routes: Routes = [
     path:"register",component: RegisterComponent
   },{
     path:"login",component: LoginComponent
+  },{
+    path:"password-reset",component: PasswordResetComponent
+  },{
+    path:"password-update/:userId/:resetToken",component: PasswordUpdateComponent
   },
   // Yanlış rotalar için varsayılan yönlendirme
   { path: '**', redirectTo: '', pathMatch: 'full' }

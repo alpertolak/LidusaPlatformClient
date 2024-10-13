@@ -77,13 +77,12 @@
                 [ngClass]="{'is-invalid':submitted && component.passwordConfirm.errors}">
 
             <!--passwordConfirm hata mesajları-->
-            <small class="errorMessage" style="float:left;"
-                *ngIf="submitted && component.passwordConfirm.errors?.required">Bu alan zorunludur</small>
-            <small class="errorMessage" style="float:left;" *ngIf="submitted && frm.hasError('notSame')">girilen
+            <small class="errorMessage" *ngIf="submitted && component.passwordConfirm.errors?.required">Bu alan zorunludur</small><br>
+            <small class="errorMessage" *ngIf="submitted && frm.hasError('notSame')">girilen
                 şifreler aynı değildir</small>
 
         </div>
-        <button type="submit" style="width: 100%; margin: 8px 0;">
+        <button type="submit">
             <span class="shadow"></span>
             <span class="edge"></span>
             <span class="front text">Oluştur</span>
@@ -91,7 +90,7 @@
         <hr>
         <p class="signup-link" style="margin: 0;">
             Hesabım Var
-            <a href="login" class="register__link">Giriş Yap</a>
+            <a routerLink="/login" class="register__link">Giriş Yap</a>
         </p>
     </form>
 </div>

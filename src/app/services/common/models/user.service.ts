@@ -24,4 +24,25 @@ export class UserService {
     }, user)
     return await firstValueFrom(observable) as Create_User
   }
+
+  //GENÇAY DERS.60
+  async passwordUpdate(userId: string, resetToken: string, password: string, passwordConfirm: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
+    const observable: Observable<any> = this.httpService.Post({
+      controller: "users",
+      action: "password-update"
+    }, {
+      UserId: userId,
+      resetToken: resetToken,
+      Password: password,
+      PasswordConfirm: passwordConfirm
+    });
+    //TODO api hata ayıklama sistemi
+    try {
+      const promiseData: any = await firstValueFrom(observable);
+      if (successCallback) successCallback();
+
+    } catch (error) {
+      if (errorCallback) errorCallback(error);
+    }
+  }
 }

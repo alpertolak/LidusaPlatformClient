@@ -3,16 +3,17 @@ import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { catchError, Observable, of } from 'rxjs';
 import { UserAuthService } from './models/user-auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SpinnerType } from 'src/app/Enums/enums';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
 
-  constructor(private toastrService: ToastrService, private userAuthService: UserAuthService) { }
+  constructor(private toastrService: ToastrService, private userAuthService: UserAuthService,private spinnerService:NgxSpinnerService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    debugger
     return next.handle(req).pipe(catchError(error => {
       console.log(error)
       switch (error.status) {
@@ -20,13 +21,18 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
           this.userAuthService.refreshTokenLogin(localStorage.getItem("refreshToken") as string).then(data => { })
           break
         case HttpStatusCode.InternalServerError:
-          this.toastrService.error("Sunucu Kaynaklı bir hata oluştu", "Sunucu Hatası")
+          this.spinnerService.hide(SpinnerType.load)
+
+          // this.toastrService.error("Sunucu Kaynaklı bir hata oluştu", "Sunucu Hatası")
           break
         case HttpStatusCode.BadRequest:
-          this.toastrService.warning("Geçersiz İstek")
+          this.spinnerService.hide(SpinnerType.load)
+          this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
           break
         default:
-          this.toastrService.error("Bir Hata Oluştu")
+          this.spinnerService.hide(SpinnerType.load)
+          this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
+
           break
       }
       return of(error)

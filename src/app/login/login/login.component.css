@@ -176,6 +176,8 @@ a {
 }
 
 /* <main-style> ============================ */
+
+/*Hesap aç Css*/
 .login__link {
   color: hsl(221, 100%, 35%);
   line-height: 2;

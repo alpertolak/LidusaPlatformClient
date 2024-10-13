@@ -4,6 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { Token_Response } from 'src/app/contracts/token/token-response';
 import { HttpClientService } from '../http-client.service';
 import { ToastrService } from 'ngx-toastr';
+import { state } from '@angular/animations';
 
 @Injectable({
   providedIn: 'root'
@@ -16,30 +17,30 @@ export class UserAuthService {
   ) { }
   async login(usernameOrEmail: string, password: string, successCallBackFunction?: () => void, errorCallBackFunction?: () => void): Promise<void> {
     // HTTP isteği oluştur ve bir Observable döndür
-const observable: Observable<any | Token_Response> = this.httpService.Post<any | Token_Response>({
-  controller: "auth",
-  action: "login"
-}, { usernameOrEmail, password })
+    const observable: Observable<any | Token_Response> = this.httpService.Post<any | Token_Response>({
+      controller: "auth",
+      action: "login"
+    }, { usernameOrEmail, password })
 
-try {
-  // Observable'dan ilk değeri al ve token'a dönüştür
-  const token: Token_Response = await firstValueFrom(observable)
-  
-  if (token) {
-    // Token'ı localStorage'a kaydet
-    localStorage.setItem("accessToken", token.token.accessToken)
-    localStorage.setItem("refreshToken", token.token.refreshToken)
-    
-    // Başarılı giriş mesajı göster
-    this.toastrService.success("Kullanıcı girişi başarılı", "Başarılı")
-    
-    // Başarı durumunda callback fonksiyonunu çağır (eğer tanımlanmışsa)
-    if (successCallBackFunction) successCallBackFunction()
-  }
-} catch {
-  // Hata durumunda callback fonksiyonunu çağır (eğer tanımlanmışsa)
-  if (errorCallBackFunction) errorCallBackFunction()
-}
+    try {
+      // Observable'dan ilk değeri al ve token'a dönüştür
+      const token: Token_Response = await firstValueFrom(observable)
+
+      if (token) {
+        // Token'ı localStorage'a kaydet
+        localStorage.setItem("accessToken", token.token.accessToken)
+        localStorage.setItem("refreshToken", token.token.refreshToken)
+
+        // Başarılı giriş mesajı göster
+        this.toastrService.success("Kullanıcı girişi başarılı", "Başarılı")
+
+        // Başarı durumunda callback fonksiyonunu çağır (eğer tanımlanmışsa)
+        if (successCallBackFunction) successCallBackFunction()
+      }
+    } catch {
+      // Hata durumunda callback fonksiyonunu çağır (eğer tanımlanmışsa)
+      if (errorCallBackFunction) errorCallBackFunction()
+    }
 
   }
 
@@ -84,5 +85,35 @@ try {
     else {
       if (errorCallBackFunction) errorCallBackFunction() //errorcallback fonksiyonu çağırılıyor
     }
+  }
+
+  async passwordReset(email: string, successCallBack?: () => void, errorCallBack?: (error: any) => void) {
+    const observable: Observable<any> = await this.httpService.Post({
+      controller: "auth",
+      action: "password-reset"
+    }, { Email: email })
+
+    try {
+      const promiseData: any = await firstValueFrom(observable);
+      if (successCallBack) successCallBack();
+
+    } catch (error) {
+      if (errorCallBack) errorCallBack(error);
+    }
+  }
+
+  async verifyResetToken(resetToken: string, userId: String, successCallBack?: () => void): Promise<Boolean> {
+
+    const observable: Observable<any> = await this.httpService.Post({
+      controller: "auth",
+      action: "verify-reset-token"
+    }, {
+      ResetToken: resetToken,
+      UserId: userId
+    })
+
+    const State: boolean = await firstValueFrom(observable) as boolean
+    if (successCallBack) successCallBack()
+    return State
   }
 }
