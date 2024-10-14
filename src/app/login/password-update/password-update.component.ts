@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, output } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/entities/User';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
 import { UserService } from 'src/app/services/common/models/user.service';
@@ -27,6 +26,7 @@ export class PasswordUpdateComponent implements OnInit {
 
   frm: FormGroup
   state: any = false
+  submittedClass: boolean = false
   submitted: boolean = false
 
   //GENÇAY DERS.60
@@ -52,10 +52,17 @@ export class PasswordUpdateComponent implements OnInit {
       ]]
     }, {
       //şifre karşılaştırma işlemi GENÇAY 37.DERS
+      //şiir yazıldı :D
       validators: (group: AbstractControl): ValidationErrors | null => {
         let password = group.get("password")?.value
         let rePassword = group.get("passwordConfirm")?.value
-        return password == rePassword ? null : { notSame: true }
+        if (password == rePassword) {
+          if(password != ""){
+            return null
+          }
+          return { notSame: true }
+        }
+        else return { notSame: true }
       }
     })
   }
@@ -66,12 +73,14 @@ export class PasswordUpdateComponent implements OnInit {
 
   onSubmit(password: string, passwordConfirm: string) {
     this.submitted = true
-    if (this.frm.invalid) return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
+    if (this.frm.invalid) {
+      this.submittedClass = true //eğer kullanıcı formu submit ettiyse ve hata varsa hata sınıfları inputlar veriliyor
+      return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
+    }
     this.passwordUpdate(password, passwordConfirm)
   }
 
   passwordUpdate(password: string, passwordConfirm: string) {
-    //TODO reactive form olarak şifre aynımı kontrolü yap
     this.spinnerService.show(SpinnerType.load)
     this.activatedRoute.params.subscribe({
       next: async params => {

@@ -99,6 +99,8 @@ button {
   transition: filter 250ms;
   user-select: none;
   touch-action: manipulation;
+  width: 100%;
+  margin: 8px 0;
 }
 
 .shadow {
@@ -141,8 +143,7 @@ button {
   transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
 }
 button{
-  width: 100%;
-  margin: 8px 0;
+  
 }
 
 button:hover {

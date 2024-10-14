@@ -4,13 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { firstValueFrom, Observable } from 'rxjs';
-import { Token_Response } from 'src/app/contracts/token/token-response';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { AuthService } from 'src/app/services/common/auth.service';
-import { HttpClientService } from 'src/app/services/common/http-client.service';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
-import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +17,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private userAuthService: UserAuthService,
-    private userService: UserService,
     private toastrService: ToastrService,
     private spinnerService: NgxSpinnerService,
     private formBuilder: FormBuilder,
@@ -29,10 +24,9 @@ export class LoginComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private router: Router,
     private socialAuthService: SocialAuthService,
-    private httpClientService: HttpClientService
   ) {
     //google login için api post işlemi
-    socialAuthService.authState.subscribe(async (user: SocialUser) => {
+    this.socialAuthService.authState.subscribe(async (user: SocialUser) => {
       this.spinnerService.show(SpinnerType.load)
       await userAuthService.googleLogin(user, () => {
 
@@ -59,19 +53,25 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  //HTML bölümünde form nesnesine ulaşabilmek için get fonsksiyonu
   get component() {
     return this.frm.controls
   }
+
+  //submitted işlemler için değişkenler
+  submittedClass: boolean = false
   submitted: boolean = false
 
   async onSubmit(userLogin: any) {
-
     this.submitted = true
-
-    if (this.frm.invalid) return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
+    
+    if (this.frm.invalid){
+      this.submittedClass = true //eğer kullanıcı formu submit ettiyse ve hata varsa hata sınıfları inputlar veriliyor
+      return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
+    } 
 
     this.spinnerService.show(SpinnerType.load)
-    
+
     this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, () => {
       this.authService.identityCheck();
 
@@ -82,9 +82,9 @@ export class LoginComponent implements OnInit {
           this.router.navigate([returnUrl])
       })
       this.spinnerService.hide(SpinnerType.load)
-    },()=>{
+    }, () => {
       this.spinnerService.hide(SpinnerType.load)
-      this.toastrService.error("Kullanıcı adı veya şifre hatalıdır","Giriş başarısız!")
+      this.toastrService.error("Kullanıcı adı veya şifre hatalıdır", "Giriş başarısız!")
     })
   }
 }

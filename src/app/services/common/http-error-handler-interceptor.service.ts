@@ -27,11 +27,11 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
           break
         case HttpStatusCode.BadRequest:
           this.spinnerService.hide(SpinnerType.load)
-          this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
+          // this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
           break
         default:
           this.spinnerService.hide(SpinnerType.load)
-          this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
+          // this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
 
           break
       }
