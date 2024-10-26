@@ -5,7 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { List_Job } from 'src/app/contracts/jobs/list-jobs';
 import { ListJobsPagination } from 'src/app/contracts/jobs/list-pagination';
-import { DeleteDirective } from 'src/app/directives/admin/delete.directive';
+import { DeleteDirective } from 'src/app/directives/admin/delete-directive/delete.directive';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { JobService } from 'src/app/services/common/jobs/job.service';
 

@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { JobsModule } from './jobs/jobs.module';
+import { AuthorizeMenuModule } from './authorize-menu/authorize-menu.module';
+import { RolesModule } from './roles/roles.module';
+import { DeleteDirective } from 'src/app/directives/admin/delete-directive/delete.directive';
 
 
 
@@ -10,10 +13,12 @@ import { JobsModule } from './jobs/jobs.module';
   imports: [
     CommonModule,
     DashboardModule,
-    JobsModule
+    JobsModule,
+    AuthorizeMenuModule,
+    RolesModule,
   ], 
   exports: [
-    JobsModule
+    JobsModule,
   ]
 })
 export class ComponentsModule { }

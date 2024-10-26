@@ -6,13 +6,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { JobsCreateComponent } from './jobs-create/jobs-create.component';
 import { RouterModule } from '@angular/router';
-import { DeleteDirective } from 'src/app/directives/admin/delete.directive';
+import { DeleteDirective } from 'src/app/directives/admin/delete-directive/delete.directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { FileUploadModule } from 'src/app/services/common/file-upload/file-upload.module';
 import { DialogsModule } from 'src/app/dialogs/dialogs.module';
+import { DeleteDirectiveModule } from 'src/app/directives/admin/delete-directive/delete-directive.module';
 
 
 
@@ -21,8 +22,6 @@ import { DialogsModule } from 'src/app/dialogs/dialogs.module';
     JobsComponent,
     JobsListComponent,
     JobsCreateComponent,
-    DeleteDirective,
-
   ],
   imports: [
     DialogsModule,
@@ -34,6 +33,7 @@ import { DialogsModule } from 'src/app/dialogs/dialogs.module';
     CommonModule,
     MatTableModule,
     MatPaginatorModule,
+    DeleteDirectiveModule,
     RouterModule.forChild([
       { path: "", component: JobsComponent }
     ])

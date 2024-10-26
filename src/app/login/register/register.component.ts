@@ -68,8 +68,8 @@ export class RegisterComponent implements OnInit {
   }
 
   submitted: boolean = false
-
   async onSubmit(user: User) {
+    debugger
     this.submitted = true
     if (this.frm.invalid) return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
     
