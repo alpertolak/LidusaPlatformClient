@@ -18,7 +18,6 @@ export class RolesListComponent {
   constructor(
     private roleService: RoleService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
   ) { }
 
   displayedColumns: string[] = ['Role', "Edit", "Delete"];
@@ -27,7 +26,6 @@ export class RolesListComponent {
 
   async getRoles() {
     this.spinner.show(SpinnerType.load)
-    debugger
     const allRoles: ListRolePagination = await this.roleService.GetRoles(
       this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize : 5,
       () => { //successCallBack

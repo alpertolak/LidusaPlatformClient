@@ -25,6 +25,7 @@ export class JobsCreateComponent {
     private toastrService: ToastrService) { }
 
   @Output() createdJobs: EventEmitter<Create_Job> = new EventEmitter()
+  
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
     action: "upload",
     controller: "jobs",
@@ -33,7 +34,6 @@ export class JobsCreateComponent {
   }
 
   CreateJob(jobName: string, jobDescription: string) {
-    debugger
     //yeni job bilgileri form üzerinden alınıyor
     const newJob: Create_Job = new Create_Job()
     newJob.JobName = jobName

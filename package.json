@@ -25,6 +25,7 @@
     "@lordicon/element": "^1.10.0",
     "bootstrap": "^5.3.3",
     "jquery": "^3.7.1",
+    "jwt-decode": "^4.0.0",
     "lottie-web": "^5.12.2",
     "ngx-file-drop": "^16.0.0",
     "ngx-spinner": "^17.0.0",

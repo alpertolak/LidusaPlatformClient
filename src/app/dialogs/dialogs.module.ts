@@ -5,20 +5,24 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { FileUploadsDialogComponent } from './file-uploads-dialog/file-uploads-dialog.component';
-
+import { MatListModule } from '@angular/material/list';
+import { AuthorizeUserDialogComponent } from './authorize-user-dialog/authorize-user-dialog.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 
 @NgModule({
   declarations: [
     DeleteDialogComponent,
     FileUploadsDialogComponent,
-
+    AuthorizeUserDialogComponent
   ],
   imports: [
     CommonModule,
     MatButtonModule,
     MatDialogModule,
-    NgxFileDropModule
+    NgxFileDropModule,
+    MatListModule,
+    MatBadgeModule
   ],
   exports:[
     DeleteDialogComponent,

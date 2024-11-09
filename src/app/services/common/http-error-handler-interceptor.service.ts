@@ -18,7 +18,9 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
       console.log(error)
       switch (error.status) {
         case HttpStatusCode.Unauthorized:
-          this.userAuthService.refreshTokenLogin(localStorage.getItem("refreshToken") as string).then(data => { })
+          this.userAuthService.refreshTokenLogin(localStorage.getItem("refreshToken") as string).then(data => {
+            this.toastrService.warning("Bu işlemi yapmak için yetkiniz yoktur","Yetkisiz işlem")
+           })
           break
         case HttpStatusCode.InternalServerError:
           this.spinnerService.hide(SpinnerType.load)

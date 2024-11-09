@@ -15,6 +15,7 @@ const routes: Routes = [
       { path: "jobs", loadChildren: () => import("././admin/components/jobs/jobs.module").then(module => module.JobsModule), canActivate: [AuthGuard] },
       { path: "authorize-menu", loadChildren: () => import("././admin/components/authorize-menu/authorize-menu.module").then(module => module.AuthorizeMenuModule), canActivate: [AuthGuard] },
       { path: "roles", loadChildren: () => import("././admin/components/roles/roles.module").then(module => module.RolesModule), canActivate: [AuthGuard] },
+      { path: "users", loadChildren: () => import("././admin/components/users/users.module").then(module => module.UsersModule), canActivate: [AuthGuard] },
 
 
     ], canActivate: [AuthGuard]

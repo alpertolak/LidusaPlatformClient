@@ -31,12 +31,13 @@ export class JobService {
   }
 
   async read(page: number = 0, size: number = 5, successCallBack: () => void, errorCallBack: (errorMessage: String) => void): Promise<ListJobsPagination> {
-    const promiseData: Promise<ListJobsPagination> = this.httpService.Get<ListJobsPagination>({
+    var observable: Observable<ListJobsPagination> = this.httpService.Get<ListJobsPagination>({
       controller: "jobs",
       queryString: `page=${page}&size=${size}`
-    }).toPromise()
-
-    promiseData.then(d => successCallBack()).catch((errorResponse: HttpErrorResponse) => errorCallBack(errorResponse.message))
+    })
+    
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallBack).catch(errorCallBack)
 
     return await promiseData
   }

@@ -21,7 +21,6 @@ export class JobsListComponent implements OnInit {
   constructor(
     private jobService: JobService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
   ) { }
 
   displayedColumns: string[] = ['Hizmet', "Edit", "Delete"];

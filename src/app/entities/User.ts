@@ -6,4 +6,5 @@ export class User {
     phoneNumber:string
     password:string
     passwordConfirm:string
+    isAdmin:boolean
 }
