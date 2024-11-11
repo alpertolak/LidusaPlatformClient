@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClientService } from '../http-client.service';
 import { Create_User } from 'src/app/contracts/users/create-user';
-import { firstValueFrom, observable, Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { User } from 'src/app/entities/User';
-import { ToastrService } from 'ngx-toastr';
-import { Token } from 'src/app/contracts/token/Token';
-import { Token_Response } from 'src/app/contracts/token/token-response';
-import { SocialUser } from '@abacritt/angularx-social-login';
-import { List_Users } from 'src/app/contracts/users/list-users';
 import { ListPaginationUsers } from 'src/app/contracts/users/list-pagination-users';
 import { User_Is_Admin } from 'src/app/contracts/users/User-Is-Admin';
 

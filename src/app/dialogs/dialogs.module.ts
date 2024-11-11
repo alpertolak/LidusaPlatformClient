@@ -8,13 +8,15 @@ import { FileUploadsDialogComponent } from './file-uploads-dialog/file-uploads-d
 import { MatListModule } from '@angular/material/list';
 import { AuthorizeUserDialogComponent } from './authorize-user-dialog/authorize-user-dialog.component';
 import { MatBadgeModule } from '@angular/material/badge';
+import { AuthorizeMenuDialogComponent } from './authorize-menu-dialog/authorize-menu-dialog.component';
 
 
 @NgModule({
   declarations: [
     DeleteDialogComponent,
     FileUploadsDialogComponent,
-    AuthorizeUserDialogComponent
+    AuthorizeUserDialogComponent,
+    AuthorizeMenuDialogComponent
   ],
   imports: [
     CommonModule,
