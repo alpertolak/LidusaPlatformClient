@@ -22,6 +22,31 @@
     left: 0;
 }
 
-a {
+a{
     text-decoration: none;
-  }
+}
+
+.FilterInput{
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.FilterLabel{
+    margin-bottom: 0px;
+}
+
+.UserFilterForm{
+    display: flex;
+}
+.FilterInputDiv{    
+    margin-right: 20px;
+}
+.FilterButton{
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end
+}
+.FilterDiv{
+    display: flex;
+}

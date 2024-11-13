@@ -1,67 +1,102 @@
-<div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource">
-  
-      <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef> Kullanıcı Adı </th>
-        <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
-      </ng-container>
-  
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> İsim </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-      </ng-container>
+<div class="FilterDiv row">
+  <form class="UserFilterForm">
+    <div class="col-2">
+      <label for="Username" class="form-label ">Kullanıcı Adı</label>
+      <input type="text" class="form-control FilterInput" id="Username">
+    </div>
+    <div class="col-2">
+      <label for="Name" class="form-label">İsim</label>
+      <input type="text" class="form-control FilterInput" id="Name">
+    </div>
+    <div class="col-2">
+      <label for="Email" class="form-label">Email</label>
+      <input type="email" class="form-control FilterInput" id="Email">
+    </div>
+    <div class="col-2">
+      <label for="PhoneNumber" class="form-label">Telefon Numarası</label>
+      <input type="text" class="form-control FilterInput" id="PhoneNumber">
+    </div>
+    <div class="col-2">
+      <label for="Role" class="form-label">Rol</label>
+      <select class="form-select FilterInput" id="Role" >
+        <option selected>Role Seçin</option>
+        <option value="1">Admin</option>
+        <option value="2">Müşteri</option>
+        <option value="3">Client</option>
+      </select>
       
-      <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef> Rol </th>
-        <td mat-cell *matCellDef="let element"> 
-          <a class="UserList__link" (click)="assingRole(element.id)">Rol Ata</a> 
-        </td>
-      </ng-container>
+    </div>
+    <div class="FilterButton col-2">
+      <button type="button" class="btn btn-success">Filtrele</button>
+    </div>
 
-      <ng-container matColumnDef="2FA">
-        <th mat-header-cell *matHeaderCellDef> 2FA </th>
-        <td mat-cell *matCellDef="let element"> {{element.twoFactorEnabled}} </td>
-      </ng-container>
+  </form>
+</div>
 
-      <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef style="width: 5%"> </th>
-        <td mat-cell *matCellDef="let element"><img src="../../../../../assets/icons/Edit.png"
-            style="width: 30px; height: 30px;"> </td>
-      </ng-container>
+<div class="mat-elevation-z3">
+  <table mat-table [dataSource]="dataSource">
 
-      <!-- <ng-container matColumnDef="Delete">
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Kullanıcı Adı </th>
+      <td mat-cell *matCellDef="let element"> {{element.userName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> İsim </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> Rol </th>
+      <td mat-cell *matCellDef="let element">
+        <a class="UserList__link" (click)="assingRole(element.id)">Rol Ata</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="2FA">
+      <th mat-header-cell *matHeaderCellDef> 2FA </th>
+      <td mat-cell *matCellDef="let element"> {{element.twoFactorEnabled}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef style="width: 5%"> </th>
+      <td mat-cell *matCellDef="let element"><img src="../../../../../assets/icons/Edit.png"
+          style="width: 30px; height: 30px;"> </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="Delete">
         <th mat-header-cell *matHeaderCellDef style="width: 60px;"> </th>
         <td mat-cell *matCellDef="let element" appDelete [id]="element.id" controller="jobs" (callback)="getJobs()"></td>
       </ng-container> -->
-  
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  
-    <mat-paginator class="list-paginator" (page)="pageChanged()" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-      aria-label="Select page of periodic elements">
-    </mat-paginator>
-  </div>
-  
-  <div #DeleteModel class="modal" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Modal body text goes here.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator class="list-paginator" (page)="pageChanged()" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+    aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+<div #DeleteModel class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
+</div>

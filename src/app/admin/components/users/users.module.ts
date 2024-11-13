@@ -10,13 +10,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-
+import { UsersFilterComponent } from "./users-filter/users-filter.component";
 
 
 @NgModule({
   declarations: [
     UsersComponent,
-    UsersListComponent
+    UsersListComponent,
+    UsersFilterComponent,
   ],
   imports: [
     DialogsModule,
@@ -28,9 +29,10 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     MatPaginatorModule,
     CommonModule,
+    MatFormFieldModule,
     RouterModule.forChild([
-      { path: "", component: UsersComponent }
-    ])
-  ]
+        { path: "", component: UsersComponent }
+    ]),
+]
 })
 export class UsersModule { }

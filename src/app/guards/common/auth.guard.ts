@@ -25,17 +25,18 @@ export class AuthGuard implements CanActivate {
     this.spinner.show(SpinnerType.load)
 
     const token: string = localStorage.getItem('accessToken') as string
-
-    var decodedToken: any = this.jwtHelper.decodeToken(token);
-    var userName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
-
-    const userIsAdmin = await this.userService.getUserIsAdminAsync(userName); //kullanıcının admin bilgisi alınıyor.
-    
-    if (!userIsAdmin.isAdmin) {
-      this.router.navigate([''])
-      this.spinner.hide(SpinnerType.load)
+    if(token){
+      var decodedToken: any = this.jwtHelper.decodeToken(token);
+      var userName = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"]
+      
+      const userIsAdmin = await this.userService.getUserIsAdminAsync(userName); //kullanıcının admin bilgisi alınıyor.
+      
+      if (!userIsAdmin.isAdmin) {
+        this.router.navigate([''])
+        this.spinner.hide(SpinnerType.load)
+      }
     }
-
+    
     //kullanıcın accessToken bilgisi kontrol ediliyor
     let expired: boolean
     try {

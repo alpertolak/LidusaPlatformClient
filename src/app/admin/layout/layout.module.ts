@@ -5,6 +5,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import {MatMenuModule} from '@angular/material/menu';
+import { MatList, MatListItem } from '@angular/material/list';
 
 
 
@@ -18,6 +21,10 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
+    MatButtonModule, 
+    MatMenuModule,
+    MatList,
+    MatListItem
   ],
   exports:[
     LayoutComponent
