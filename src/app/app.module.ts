@@ -40,6 +40,9 @@ import { PasswordUpdateModule } from './login/password-update/password-update.mo
             preventDuplicates: true,
             closeButton: true,
             progressBar: true,
+            enableHtml:true,
+            countDuplicates:true,
+            
         }),
         BrowserAnimationsModule,
         NgxSpinnerModule,

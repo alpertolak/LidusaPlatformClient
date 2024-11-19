@@ -1,33 +1,38 @@
 <div class="FilterDiv row">
-  <form class="UserFilterForm">
+  <form id="FilterForm" class="UserFilterForm">
     <div class="col-2">
-      <label for="Username" class="form-label ">Kullanıcı Adı</label>
-      <input type="text" class="form-control FilterInput" id="Username">
+      <label for="Username" class="form-label">Kullanıcı Adı</label>
+      <input type="text" #username class="form-control FilterInput" id="Username" 
+      (keydown.enter)="getFilteredUsers(username.value,name.value,email.value,phoneNumber.value,role.selectedIndex)">
     </div>
     <div class="col-2">
       <label for="Name" class="form-label">İsim</label>
-      <input type="text" class="form-control FilterInput" id="Name">
+      <input type="text" #name class="form-control FilterInput" id="Name" 
+      (keydown.enter)="getFilteredUsers(username.value,name.value,email.value,phoneNumber.value,role.selectedIndex)">
     </div>
     <div class="col-2">
       <label for="Email" class="form-label">Email</label>
-      <input type="email" class="form-control FilterInput" id="Email">
+      <input type="email" #email class="form-control FilterInput" id="Email" 
+      (keydown.enter)="getFilteredUsers(username.value,name.value,email.value,phoneNumber.value,role.selectedIndex)">
     </div>
     <div class="col-2">
       <label for="PhoneNumber" class="form-label">Telefon Numarası</label>
-      <input type="text" class="form-control FilterInput" id="PhoneNumber">
+      <input type="text" #phoneNumber class="form-control FilterInput" id="PhoneNumber" 
+      (keydown.enter)="getFilteredUsers(username.value,name.value,email.value,phoneNumber.value,role.selectedIndex)">
     </div>
     <div class="col-2">
       <label for="Role" class="form-label">Rol</label>
-      <select class="form-select FilterInput" id="Role" >
-        <option selected>Role Seçin</option>
-        <option value="1">Admin</option>
-        <option value="2">Müşteri</option>
-        <option value="3">Client</option>
+      <select class="form-select FilterInput" id="Role" #role>
+        <option selected>Rol Seçin</option>
+        <option *ngFor="let role of roles">{{role.name}}</option>
       </select>
       
     </div>
-    <div class="FilterButton col-2">
-      <button type="button" class="btn btn-success">Filtrele</button>
+    <div class="FilterButton col-1">
+      <button type="button" class="btn btn-danger" (click)="clearFilter()">Temizle</button>
+    </div>
+    <div class="FilterButton col-1">
+      <button type="button" class="btn btn-success" (click)="getFilteredUsers(username.value,name.value,email.value,phoneNumber.value,role.selectedIndex)">Filtrele</button>
     </div>
 
   </form>
@@ -60,13 +65,16 @@
 
     <ng-container matColumnDef="2FA">
       <th mat-header-cell *matHeaderCellDef> 2FA </th>
-      <td mat-cell *matCellDef="let element"> {{element.twoFactorEnabled}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.twoFactorEnabled}} 
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef style="width: 5%"> </th>
-      <td mat-cell *matCellDef="let element"><img src="../../../../../assets/icons/Edit.png"
-          style="width: 30px; height: 30px;"> </td>
+      <td mat-cell *matCellDef="let element"><a href="" data-bs-toggle="modal" data-bs-target="#UserDetailModal" (click)="userDetailId = element.id">
+        <img src="../../../../../assets/icons/Edit.png" style="width: 30px; height: 30px;"></a>
+        
+        </td>
     </ng-container>
 
     <!-- <ng-container matColumnDef="Delete">
@@ -78,7 +86,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator class="list-paginator" (page)="pageChanged()" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+  <mat-paginator class="list-paginator" (page)="pageChanged(username.value,name.value,email.value,phoneNumber.value,role.selectedIndex)" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
     aria-label="Select page of periodic elements">
   </mat-paginator>
 </div>
@@ -100,3 +108,5 @@
     </div>
   </div>
 </div>
+
+<app-users-detail [UserId]="userDetailId"></app-users-detail>

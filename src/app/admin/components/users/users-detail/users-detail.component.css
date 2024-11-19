@@ -1,0 +1,8 @@
+.inputControl{
+    display: flex;
+    margin-bottom: 10px;
+}
+.DetailsInput{
+    display: flex;
+    width: 300px;
+}

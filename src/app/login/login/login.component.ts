@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     if (this.frm.invalid){
       this.submittedClass = true //eğer kullanıcı formu submit ettiyse ve hata varsa hata sınıfları inputlar veriliyor
       return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
-    } 
+    }
 
     this.spinnerService.show(SpinnerType.load)
 

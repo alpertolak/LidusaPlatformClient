@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
     this.submitted = true
     if (this.frm.invalid) return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
     
-    const result: any = await this.userService.create(user)
+    const result: any = await this.userService.createUserAsync(user)
 
     if (result.succeeded) {
       this.toastrService.success(result.message, "Başarılı")

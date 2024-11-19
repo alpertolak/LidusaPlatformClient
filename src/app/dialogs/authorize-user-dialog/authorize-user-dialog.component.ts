@@ -30,7 +30,7 @@ export class AuthorizeUserDialogComponent extends BaseDialog<AuthorizeUserDialog
   async ngOnInit() {
 
     this.spinner.show(SpinnerType.load)
-    this.assignedRoles = await this.userService.getRolesToUser(this.data, () => {
+    this.assignedRoles = await this.userService.getRolesToUserAsync(this.data, () => {
       this.spinner.hide(SpinnerType.load)
     },()=>{//errorcallback
 
@@ -51,7 +51,7 @@ export class AuthorizeUserDialogComponent extends BaseDialog<AuthorizeUserDialog
     const roles: string[] = rolesComponent.selectedOptions.selected.map(o => o.getLabel().trim());
 
     this.spinner.show(SpinnerType.save);
-    this.userService.assingRoleToUser(this.data, roles,
+    this.userService.assingRoleToUserAsync(this.data, roles,
       () => {
         this.spinner.hide(SpinnerType.save);
         this.toastrService.success("Rol atama işlemi tamamlanmıştır", "Başarılı")

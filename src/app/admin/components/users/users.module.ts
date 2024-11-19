@@ -11,6 +11,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { UsersFilterComponent } from "./users-filter/users-filter.component";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UsersDetailComponent } from './users-detail/users-detail.component';
 
 
 @NgModule({
@@ -18,6 +20,7 @@ import { UsersFilterComponent } from "./users-filter/users-filter.component";
     UsersComponent,
     UsersListComponent,
     UsersFilterComponent,
+    UsersDetailComponent
   ],
   imports: [
     DialogsModule,
@@ -30,6 +33,8 @@ import { UsersFilterComponent } from "./users-filter/users-filter.component";
     MatPaginatorModule,
     CommonModule,
     MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
         { path: "", component: UsersComponent }
     ]),

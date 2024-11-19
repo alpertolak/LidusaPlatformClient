@@ -47,7 +47,6 @@ export class JobsCreateComponent {
       this.createdJobs.emit(newJob)
     }, errorMessage => {
       this.spinner.hide(SpinnerType.save)
-      console.log(errorMessage.toString())
       this.toastrService.error(errorMessage.toString(), "Hata")
     })
   }

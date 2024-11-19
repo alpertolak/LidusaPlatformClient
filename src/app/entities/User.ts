@@ -1,10 +1,15 @@
 export class User {
-    name:string
-    lastName:string
-    userName:string
-    email:string
-    phoneNumber:string
-    password:string
-    passwordConfirm:string
-    isAdmin:boolean
+    id?: string
+    name?: string
+    lastName?: string
+    userName?: string
+    email?: string
+    phoneNumber?: string
+    password?: string
+    passwordConfirm?: string
+    isAdmin?: boolean
+    twoFactorEnabled?: boolean
+    refreshToken?:string
+    refreshTokenEndDate?:Date
 }
+

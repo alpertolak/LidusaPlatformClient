@@ -86,7 +86,7 @@ export class PasswordUpdateComponent implements OnInit {
       next: async params => {
         const userId: string = params["userId"];
         const resetToken: string = params["resetToken"];
-        await this.userService.passwordUpdate(userId, resetToken, password, passwordConfirm, () => {
+        await this.userService.passwordUpdateAsync(userId, resetToken, password, passwordConfirm, () => {
           this.spinnerService.hide(SpinnerType.load);
           this.router.navigate(["/login"]);
           this.toastrService.success("Şifreniz başarıyla değiştirilmiştir", "Başarılı");

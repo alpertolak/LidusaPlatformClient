@@ -3,9 +3,8 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { User_Is_Admin } from 'src/app/contracts/users/User-Is-Admin';
 import { SpinnerType } from 'src/app/Enums/enums';
-import { _isAuthenticated } from 'src/app/services/common/auth.service';
+import { _isAuthenticated, AuthService } from 'src/app/services/common/auth.service';
 import { UserService } from 'src/app/services/common/models/user.service';
 
 @Injectable({
@@ -18,12 +17,12 @@ export class AuthGuard implements CanActivate {
     private toastrService: ToastrService,
     private spinner: NgxSpinnerService,
     private userService: UserService,
+    private authService: AuthService
 
   ) { }
-
+  
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     this.spinner.show(SpinnerType.load)
-
     const token: string = localStorage.getItem('accessToken') as string
     if(token){
       var decodedToken: any = this.jwtHelper.decodeToken(token);
@@ -45,6 +44,8 @@ export class AuthGuard implements CanActivate {
     } catch {
       expired = true;
     }
+
+    this.authService.identityCheck() //kullanıcının son durumunu alınıyor
 
     // _isAuthenticated GENÇAY 42.ders
     // Token yoksa ya da süresi dolmuşsa, login sayfasına yönlendir

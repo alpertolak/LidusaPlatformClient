@@ -5,6 +5,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { User } from 'src/app/entities/User';
 import { ListPaginationUsers } from 'src/app/contracts/users/list-pagination-users';
 import { User_Is_Admin } from 'src/app/contracts/users/User-Is-Admin';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,48 @@ export class UserService {
     private httpService: HttpClientService,
   ) { }
 
-  async assingRoleToUser(userId: string, roles: string[], successCallback?: () => void, errorCallback?: (error: any) => void) {
+
+  async UpdateUserAsync(user:User, successCallback?: () => void, errorCallback?: (errorMessage: string | undefined) => void){
+    const observable:Observable<any> = this.httpService.Put({
+      controller:"users",
+      action:"update-user"
+    },user)
+
+    await firstValueFrom(observable).then(successCallback).catch((errorResponse: HttpErrorResponse) => {
+      const _error: Array<{ key: string, value: Array<string> }> = errorResponse.error
+      let message = ""
+      _error.forEach((v, index) => {
+        v.value.forEach((_v, _index) => {
+          message += `${_v}\n`
+        });
+      });
+      if(errorCallback) errorCallback(message)
+    })
+  }
+
+  async getUserByIdOrUsernameAsync(UserIdOrUsername: string, successCallback?: () => void, errorCallback?: (error: any) => void):Promise<User> {
+    const observable:Observable<User> = this.httpService.Get({
+      controller:"users",
+      action:"get-user-by-id-or-username",
+      queryString: `UserIdOrUsername=${UserIdOrUsername}`
+    })
+
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
+    return await promiseData
+  }
+
+  async getFilteredUsersAsync(username: string, name: string, email: string, phoneNumber: string, roleId: string, page: number, size: number, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<ListPaginationUsers> {
+    const observable: Observable<ListPaginationUsers> = this.httpService.Get({
+      controller: "users",
+      action: "get-filtered-users",
+      queryString: `username=${username}&name=${name}&email=${email}&phoneNumber=${phoneNumber}&RoleId=${roleId}&page=${page}&size=${size}`
+    })
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
+    return await promiseData
+  }
+  async assingRoleToUserAsync(userId: string, roles: string[], successCallback?: () => void, errorCallback?: (error: any) => void) {
     const observable: Observable<any> = this.httpService.Post({
       controller: "users",
       action: "assing-role-to-user"
@@ -26,7 +68,7 @@ export class UserService {
     promisedata.then(successCallback).catch(errorCallback)
   }
 
-  async getRolesToUser(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<string[]> {
+  async getRolesToUserAsync(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<string[]> {
 
     const observable: Observable<{ userRoles: string[] }> = await this.httpService.Get({
       controller: "users",
@@ -40,21 +82,10 @@ export class UserService {
     return (await promiseData).userRoles
   }
 
-  // async getUserByIdOrName(userIdOrName: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User> {
-  //   const observable: Observable<User> = await this.httpService.Get({
-  //     controller: "users",
-  //     action: "get-user-by-id-or-name"
-  //   },userIdOrName)
-
-  //   const promiseData = firstValueFrom(observable)
-  //   promiseData.then(successCallback).catch(errorCallback)
-  //   return await promiseData
-  // }
-
   async getUserIsAdminAsync(userIdOrName: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Is_Admin> {
     const observable: Observable<User_Is_Admin> = await this.httpService.Get({
       controller: "users",
-      action: "get-user-is-admin"
+      action: "get-user-is-admin",
     }, userIdOrName)
 
     const promiseData = firstValueFrom(observable)
@@ -62,7 +93,7 @@ export class UserService {
     return await promiseData
   }
 
-  async getAllUsers(page: number, size: number, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<ListPaginationUsers> {
+  async getAllUsersAsync(page: number, size: number, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<ListPaginationUsers> {
     const observable: Observable<ListPaginationUsers> = this.httpService.Get({
       controller: "users",
       action: "get-all-users",
@@ -75,15 +106,16 @@ export class UserService {
     return await promiseData
   }
 
-  async create(user: User): Promise<Create_User> {
+  async createUserAsync(user: User): Promise<Create_User> {
     const observable: Observable<Create_User | User> = this.httpService.Post<Create_User | User>({
       controller: "users",
+      action:"create-user"
     }, user)
     return await firstValueFrom(observable) as Create_User
   }
 
   //GENÇAY DERS.60
-  async passwordUpdate(userId: string, resetToken: string, password: string, passwordConfirm: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
+  async passwordUpdateAsync(userId: string, resetToken: string, password: string, passwordConfirm: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
     const observable: Observable<any> = this.httpService.Post({
       controller: "users",
       action: "password-update"
