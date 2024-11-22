@@ -1,8 +1,46 @@
-.inputControl{
+.DetailsInput {
     display: flex;
-    margin-bottom: 10px;
+    width: 350px;
+    height: 30px;
 }
-.DetailsInput{
+
+.inputLayout {
     display: flex;
-    width: 300px;
+    justify-content: flex-end; /* Dikeyde aşağıya hizalar */
+    align-items: center; /* Yatayda ortalar */
+    padding: 16px 8px 0px 8px;
+}
+.checkboxLayout{
+    display: flex;
+    justify-content: flex-end; /* Dikeyde aşağıya hizalar */
+    align-items: center; /* Yatayda ortalar */
+}
+
+/*link css*/
+.UserList__link {
+    color: hsl(221, 100%, 35%);
+    line-height: 2;
+    position: relative;
+    cursor: pointer;
+}
+
+a{
+    text-decoration: none;
+}
+
+.UserList__link::before {
+    content: '';
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: hsl(221, 100%, 35%);
+    position: absolute;
+    bottom: -.25rem;
+    right: 0;
+    transition: right .4s, width .4s, left .4s;
+}
+
+.UserList__link:hover::before {
+    width: 100%;
+    left: 0;
 }

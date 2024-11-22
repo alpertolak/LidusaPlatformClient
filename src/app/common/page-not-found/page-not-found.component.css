@@ -1,0 +1,32 @@
+.notfound{
+    display: flex;
+    justify-content: center; /* Yatayda ortalama */
+}
+
+.notFound__link {
+    color: hsl(221, 100%, 35%);
+    line-height: 2;
+    position: relative;
+    cursor: pointer;
+}
+
+a{
+    text-decoration: none;
+}
+
+.notFound__link::before {
+    content: '';
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: hsl(221, 100%, 35%);
+    position: absolute;
+    bottom: -.25rem;
+    right: 0;
+    transition: right .4s, width .4s, left .4s;
+}
+
+.notFound__link:hover::before {
+    width: 100%;
+    left: 0;
+}

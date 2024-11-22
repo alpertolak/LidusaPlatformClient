@@ -2,10 +2,13 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { AuthorizeUserDialogComponent } from 'src/app/dialogs/authorize-user-dialog/authorize-user-dialog.component';
 import { User } from 'src/app/entities/User';
 import { SpinnerType } from 'src/app/Enums/enums';
+import { DialogService } from 'src/app/services/common/dialog.service';
 import { UserService } from 'src/app/services/common/models/user.service';
 
+declare var $:any
 @Component({
   selector: 'app-users-detail',
   templateUrl: './users-detail.component.html',
@@ -18,14 +21,19 @@ export class UsersDetailComponent implements AfterViewInit {
 
   user: User = new User // kullanıcının bilgilerini tutan değişken
 
+  //boolean değişkenler tanımlanıyor
+  isAdminChecked: boolean
+  isTwoFactorChecked: boolean
+
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
     private spinner: NgxSpinnerService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private dialogService: DialogService
   ) { }
-
-  onSubmit(username: string, name: string, lastName: string, email: string, phoneNumber: string, isAdmin: boolean, twoFactorEnabled: boolean) {
+  
+  onSubmit(username: string, name: string, lastName: string, email: string, phoneNumber: string) {
 
     this.spinner.show(SpinnerType.save)
 
@@ -37,17 +45,22 @@ export class UsersDetailComponent implements AfterViewInit {
     user.lastName = lastName
     user.email = email
     user.phoneNumber = phoneNumber
-    user.isAdmin = isAdmin
-    user.twoFactorEnabled = twoFactorEnabled
+    user.isAdmin = this.isAdminChecked
+    user.twoFactorEnabled = this.isTwoFactorChecked
+    
     this.userService.UpdateUserAsync(user, () => {
       this.spinner.hide(SpinnerType.save)
       this.toastrService.success("kullanıcı bilgileri güncellenmiştir")
+      this.closeModal()
     }, errorMessage => {
       this.spinner.hide(SpinnerType.save)
       this.toastrService.error(errorMessage?.toString(), "Hata")
     })
   }
 
+  closeModal(): void {
+    $('#UserDetailModal').modal('hide'); // Modal'ı kapatır
+  }
 
   ngAfterViewInit() {
     // Modal açıldığında çalışacak olay
@@ -66,7 +79,8 @@ export class UsersDetailComponent implements AfterViewInit {
     //gelen kullanıcı verisi iç içe olduğu için ayılanarak user değişkenine atanıyor
     var data: any = await this.userService.getUserByIdOrUsernameAsync(this.UserId)
     this.user = data.user as User
-
+    this.isAdminChecked = data.user.isAdmin as boolean
+    this.isTwoFactorChecked = data.user.twoFactorEnabled as boolean
   }
 
   async onModalClose() {

@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login/login.component';
 import { AuthGuard } from './guards/common/auth.guard';
 import { PasswordResetComponent } from './login/password-reset/password-reset.component';
 import { PasswordUpdateComponent } from './login/password-update/password-update.component';
+import { PageNotFoundComponent } from './common/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -32,7 +33,8 @@ const routes: Routes = [
     path: "password-update/:userId/:resetToken", component: PasswordUpdateComponent
   },
   // Yanlış rotalar için varsayılan yönlendirme
-  { path: '**', redirectTo: '', pathMatch: 'full' }
+  //{ path: '**', redirectTo: '', pathMatch: 'full' }
+  { path: '**', component: PageNotFoundComponent }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

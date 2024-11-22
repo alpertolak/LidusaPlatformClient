@@ -4,12 +4,6 @@
   <p>İlgili sayfaya aşağıdan rolleri atayabilirsiniz</p>
 </div>
 
-<!-- 
-<h1 mat-dialog-title matBadge="{{rolesComponent.selectedOptions.selected.length}}/{{roles.totalCount}}" matBadgeOverlap="false">{{data.name}} Endpoint'ine Rol Atama</h1>
-<div mat-dialog-content>
-  <p>İlgili sayfaya aşağıdan rolleri atayabilirsiniz.</p>
-</div> -->
-
 
 <mat-selection-list #rolesComponent>
   <mat-list-option *ngFor="let role of listRoles" selected="{{role.selected}}">

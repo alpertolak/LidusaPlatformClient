@@ -110,10 +110,10 @@ export class UsersListComponent {
     this.paginator.length = users.totalUsersCount
   }
 
-  async assingRole(Id: string) {
+  async assingRole(userId: string) {
     this.dialogService.openDialog({
       componentType: AuthorizeUserDialogComponent,
-      data: Id,
+      data: userId,
       options: {
         width: "750px"
       },

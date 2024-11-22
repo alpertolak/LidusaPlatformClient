@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Create_User } from 'src/app/contracts/users/create-user';
 import { User } from 'src/app/entities/User';
+import { SpinnerType } from 'src/app/Enums/enums';
 import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
@@ -16,6 +19,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private toastrService: ToastrService,
+    private spinnerService : NgxSpinnerService,
+    private router: Router,
   ) { }
 
   frm: FormGroup
@@ -69,15 +74,23 @@ export class RegisterComponent implements OnInit {
 
   submitted: boolean = false
   async onSubmit(user: User) {
+
+    this.spinnerService.show(SpinnerType.load)
     this.submitted = true
-    if (this.frm.invalid) return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
-    
+    if (this.frm.invalid){
+      this.spinnerService.hide(SpinnerType.load)
+      return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
+    } 
+
     const result: any = await this.userService.createUserAsync(user)
 
     if (result.succeeded) {
       this.toastrService.success(result.message, "Başarılı")
+      this.spinnerService.hide(SpinnerType.load)
+      this.router.navigate(["/login"])
     }else{
       this.toastrService.error(result.message,"Hata")
+      this.spinnerService.hide(SpinnerType.load)
     }
   }
 }
