@@ -23,6 +23,7 @@ export class UserService {
       action:"update-user"
     },user)
 
+    //TODO validation hata mesajlarını işle
     await firstValueFrom(observable).then(successCallback).catch((errorResponse: HttpErrorResponse) => {
       const _error: Array<{ key: string, value: Array<string> }> = errorResponse.error
       let message = ""
