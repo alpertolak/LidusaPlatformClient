@@ -4,9 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { User_Is_Admin } from 'src/app/contracts/users/User-Is-Admin';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { AuthService } from 'src/app/services/common/auth.service';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
+import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +26,7 @@ export class LoginComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private router: Router,
     private socialAuthService: SocialAuthService,
+    private userService: UserService
   ) {
     //google login için api post işlemi
     this.socialAuthService.authState.subscribe(async (user: SocialUser) => {
@@ -62,10 +65,10 @@ export class LoginComponent implements OnInit {
   submittedClass: boolean = false
   submitted: boolean = false
 
-  async onSubmit(userLogin: any) {
+  async onSubmit(userLogin: { UserNameOrEmail: string, password: string }) {
     this.submitted = true
-    
-    if (this.frm.invalid){
+
+    if (this.frm.invalid) {
       this.submittedClass = true //eğer kullanıcı formu submit ettiyse ve hata varsa hata sınıfları inputlar veriliyor
       return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
     }
@@ -75,11 +78,17 @@ export class LoginComponent implements OnInit {
     this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, () => {
       this.authService.identityCheck();
 
-      this.ActivatedRoute.queryParams.subscribe(params => {
+      this.ActivatedRoute.queryParams.subscribe(async params => {
 
         const returnUrl: string = params["returnUrl"]; // returnUrl bilgisi varsa yönledirme yapılıyor
-        if (returnUrl)
+        if (returnUrl) {
           this.router.navigate([returnUrl])
+        }
+        const UserIsAdmin: User_Is_Admin = await this.userService.getUserIsAdminAsync(userLogin.UserNameOrEmail)
+        if (UserIsAdmin.isAdmin)
+          this.router.navigate(["admin"])
+        else
+          this.router.navigate([""])
       })
       this.spinnerService.hide(SpinnerType.load)
     }, () => {

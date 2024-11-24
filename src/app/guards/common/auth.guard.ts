@@ -46,7 +46,7 @@ export class AuthGuard implements CanActivate {
     }
 
     this.authService.identityCheck() //kullanıcının son durumunu alınıyor
-
+    
     // _isAuthenticated GENÇAY 42.ders
     // Token yoksa ya da süresi dolmuşsa, login sayfasına yönlendir
     if (!_isAuthenticated) {

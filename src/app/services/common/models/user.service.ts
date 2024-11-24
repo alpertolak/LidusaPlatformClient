@@ -83,11 +83,11 @@ export class UserService {
     return (await promiseData).userRoles
   }
 
-  async getUserIsAdminAsync(userIdOrName: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Is_Admin> {
+  async getUserIsAdminAsync(UserIdOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Is_Admin> {
     const observable: Observable<User_Is_Admin> = await this.httpService.Get({
       controller: "users",
       action: "get-user-is-admin",
-    }, userIdOrName)
+    }, UserIdOrUsernameOrEmail)
 
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)
