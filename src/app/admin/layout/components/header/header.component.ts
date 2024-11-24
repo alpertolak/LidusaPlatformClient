@@ -13,6 +13,6 @@ export class HeaderComponent {
   logOut() {
     localStorage.removeItem("accessToken")
     localStorage.removeItem("refreshToken")
-    this.router.navigate(['login'])
+    this.router.navigate(['auth/login'])
   }
 }

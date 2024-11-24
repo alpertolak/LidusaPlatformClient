@@ -13,9 +13,6 @@ import { CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild([
-      { path: "", component: LoginComponent }
-    ])
   ]
 })
 export class LoginModule { }

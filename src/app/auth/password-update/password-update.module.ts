@@ -13,9 +13,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     ReactiveFormsModule,
     CommonModule,
-    RouterModule.forChild([
-      { path: "", component: PasswordUpdateComponent }
-    ])
   ]
 })
 export class PasswordUpdateModule { }

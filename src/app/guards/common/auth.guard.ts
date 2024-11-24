@@ -50,7 +50,7 @@ export class AuthGuard implements CanActivate {
     // _isAuthenticated GENÇAY 42.ders
     // Token yoksa ya da süresi dolmuşsa, login sayfasına yönlendir
     if (!_isAuthenticated) {
-      this.router.navigate(['login'], { queryParams: { returnUrl: state.url } });
+      this.router.navigate(['auth/login'], { queryParams: { returnUrl: state.url } });
       this.toastrService.warning("Tekrar giriş yapınız", "Oturum süresi doldu!")
       this.spinner.hide(SpinnerType.load)
 

@@ -11,7 +11,9 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule.forChild([
+      { path: "", component: ULayoutComponent }
+    ])
   ]
 })
 export class ULayoutModule { }

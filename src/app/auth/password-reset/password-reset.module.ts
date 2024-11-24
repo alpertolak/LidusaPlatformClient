@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RegisterComponent } from './register.component';
+import { PasswordResetComponent } from './password-reset.component';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -8,14 +8,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    RegisterComponent
+    PasswordResetComponent
   ],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild([
-      { path: "", component: RegisterComponent }
-    ])
+    CommonModule,
   ]
 })
-export class RegisterModule { }
+export class PasswordResetModule { }

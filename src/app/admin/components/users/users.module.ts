@@ -36,7 +36,7 @@ import { UsersDetailComponent } from './users-detail/users-detail.component';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
-        { path: "", component: UsersComponent }
+        { path: "users", component: UsersComponent }
     ]),
 ]
 })

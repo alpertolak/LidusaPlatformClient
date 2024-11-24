@@ -5,17 +5,19 @@ import { JobsModule } from './jobs/jobs.module';
 import { AuthorizeMenuModule } from './authorize-menu/authorize-menu.module';
 import { RolesModule } from './roles/roles.module';
 import { DeleteDirective } from 'src/app/directives/admin/delete-directive/delete.directive';
+import { UsersModule } from './users/users.module';
 
 
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    DashboardModule,
-    JobsModule,
-    AuthorizeMenuModule,
+    UsersModule,
     RolesModule,
+    JobsModule,
+    DashboardModule,
+    AuthorizeMenuModule,
+    CommonModule,
   ], 
   exports: [
     JobsModule,

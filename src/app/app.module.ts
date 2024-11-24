@@ -1,31 +1,31 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app.module.routing';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AdminModule } from './admin/admin.module';
-import { LayoutModule } from "./admin/layout/layout.module";
 import { UiModule } from './ui/ui.module';
-import { RegisterModule } from './login/register/register.module';
+import { RegisterModule } from './auth/register/register.module';
 import { RouterModule } from '@angular/router';
-import { LoginModule } from './login/login/login.module';
 import { JwtModule } from '@auth0/angular-jwt';
-import { LoginComponent } from './login/login/login.component';
+import { LoginComponent } from './auth/login/login.component';
 import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthServiceConfig, SocialLoginModule } from '@abacritt/angularx-social-login';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpErrorHandlerInterceptorService } from './services/common/http-error-handler-interceptor.service';
-import { PasswordResetModule } from './login/password-reset/password-reset.module';
-import { PasswordUpdateModule } from './login/password-update/password-update.module';
+import { PasswordResetModule } from './auth/password-reset/password-reset.module';
+import { PasswordUpdateModule } from './auth/password-update/password-update.module';
+
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
     ],
-    bootstrap: [AppComponent], imports: [RouterModule,
+    bootstrap: [AppComponent], imports: [
+        RouterModule,
         AdminModule,
         UiModule,
         RegisterModule,
@@ -42,11 +42,9 @@ import { PasswordUpdateModule } from './login/password-update/password-update.mo
             progressBar: true,
             enableHtml:true,
             countDuplicates:true,
-            
         }),
         BrowserAnimationsModule,
         NgxSpinnerModule,
-        LayoutModule,
         SocialLoginModule,
         GoogleSigninButtonModule,
         JwtModule.forRoot({
