@@ -77,7 +77,8 @@ export class UsersDetailComponent implements AfterViewInit {
 
   async onModalOpen() {
     //gelen kullanıcı verisi iç içe olduğu için ayılanarak user değişkenine atanıyor
-    var data: any = await this.userService.getUserByIdOrUsernameAsync(this.UserId)
+    
+    var data: any = await this.userService.getUserByIdOrUsernameOrEmailAsync(this.UserId)
     this.user = data.user as User
     this.isAdminChecked = data.user.isAdmin as boolean
     this.isTwoFactorChecked = data.user.twoFactorEnabled as boolean

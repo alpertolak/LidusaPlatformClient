@@ -36,11 +36,11 @@ export class UserService {
     })
   }
 
-  async getUserByIdOrUsernameAsync(UserIdOrUsername: string, successCallback?: () => void, errorCallback?: (error: any) => void):Promise<User> {
+  async getUserByIdOrUsernameOrEmailAsync(UserIdOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void):Promise<User> {
     const observable:Observable<User> = this.httpService.Get({
       controller:"users",
-      action:"get-user-by-id-or-username",
-      queryString: `UserIdOrUsername=${UserIdOrUsername}`
+      action:"get-user-by-id-or-username-or-email",
+      queryString: `UserIdOrUsernameOrEmail=${UserIdOrUsernameOrEmail}`
     })
 
     const promiseData = firstValueFrom(observable)
