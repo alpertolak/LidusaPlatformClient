@@ -12,7 +12,11 @@ import { UiRoutingModule } from './ui.module.routing';
     CommonModule,
     ComponentsModule,
     ULayoutModule,
-    UiRoutingModule
+    UiRoutingModule,
+  ],
+  exports:[
+    ULayoutModule
   ]
+  
 })
 export class UiModule { }

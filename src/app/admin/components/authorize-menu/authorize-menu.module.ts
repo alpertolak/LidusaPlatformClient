@@ -19,9 +19,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule, 
     MatIconModule,
     MatTreeModule,
-    // RouterModule.forChild([
-    //   { path: "", component: AuthorizeMenuComponent }
-    // ])
   ]
 })
 export class AuthorizeMenuModule { }

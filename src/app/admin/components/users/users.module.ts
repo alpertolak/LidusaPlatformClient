@@ -35,9 +35,6 @@ import { UsersDetailComponent } from './users-detail/users-detail.component';
     MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forChild([
-        { path: "users", component: UsersComponent }
-    ]),
 ]
 })
 export class UsersModule { }

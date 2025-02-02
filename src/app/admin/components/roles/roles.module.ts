@@ -34,9 +34,6 @@ import { DeleteDirectiveModule } from 'src/app/directives/admin/delete-directive
     MatPaginator,
     MatTableModule,
     DeleteDirectiveModule,
-    // RouterModule.forChild([
-    //     { path: "", component: RolesComponent }
-    // ]),
 ]
 })
 export class RolesModule { }

@@ -1,42 +1,54 @@
 <div class="container">
-    <form class="form" [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
-        <p class="form-title">Kullanıcı Girişi</p>
-        <div class="input-container">
+    <div class="box">
+        <h1 class="sitename">Lidüsa Platform</h1>
+    </div>
+    <div class="box">
+        <form class="form" [formGroup]="frm" (ngSubmit)="onSubmit(frm.value)">
+            <p class="form-title">Kullanıcı Girişi</p>
+            <div class="input-container">
 
-            <input class="form-input" id="UserNameOrEmail" type="text" formControlName="UserNameOrEmail" placeholder="Kullanıcı Adı & Email"
-            [ngClass]="{'is-invalid':submitted && component.UserNameOrEmail?.errors}"
-            [class.submitted] = "submittedClass">
+                <input class="form-input" id="UserNameOrEmail" type="text" formControlName="UserNameOrEmail"
+                    placeholder="Kullanıcı Adı & Email"
+                    [ngClass]="{'is-invalid':submitted && component.UserNameOrEmail?.errors}"
+                    [class.submitted]="submittedClass">
 
-            <!--Email Hata mesajı-->
-            <small class="errorMessage" style="float:left;" *ngIf="submitted && component.UserNameOrEmail.errors?.required">Bu alan zorunludur</small>
+                <!--Email Hata mesajı-->
+                <small class="errorMessage" style="float:left;"
+                    *ngIf="submitted && component.UserNameOrEmail.errors?.required">Bu alan zorunludur</small>
 
-        </div>
-        <div class="input-container" style="margin-bottom: 50px;">
+            </div>
+            <div class="input-container" style="margin-bottom: 50px;">
 
-            <input class="form-input" id="password" formControlName="password" type="password" placeholder="Şifre"
-            [ngClass]="{'is-invalid':submitted && component.password?.errors}"
-            [class.submitted] = "submittedClass">
+                <input class="form-input" id="password" formControlName="password" type="password" placeholder="Şifre"
+                    [ngClass]="{'is-invalid':submitted && component.password?.errors}"
+                    [class.submitted]="submittedClass">
 
-            <!--Email Hata mesajı-->
-            <small class="errorMessage" style="float:left;" *ngIf="submitted && component.password.errors?.required">Bu alan zorunludur</small>
+                <!--Email Hata mesajı-->
+                <small class="errorMessage" style="float:left;"
+                    *ngIf="submitted && component.password.errors?.required">Bu alan zorunludur</small>
 
-            <div style="float: right; margin-top: 6px;"><a routerLink="/password-reset" class="login__link">Şifremi unuttum</a></div>
-        </div>
-        <button style="width: 100%">
-            <span class="shadow"></span>
-            <span class="edge"></span>
-            <span class="front text">Giriş Yap</span>
-        </button>
-        <p class="signup-link mt-3">
-            Ya da giriş yapabilirsiniz
-        </p>
-        <div style="display: flex; justify-content: center; margin: 8px 0;">
-            <asl-google-signin-button></asl-google-signin-button>
-        </div>
-        <hr>
-        <p class="signup-link" style="margin: 0;">
-            Hesabım Yok
-            <a routerLink="/register" class="login__link">Hesap Aç</a>
-        </p>
-    </form>
+                <div style="float: right; margin-top: 6px;"><a routerLink="/password-reset" class="login__link">Şifremi
+                        unuttum</a></div>
+            </div>
+            <button style="width: 100%">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front text">Giriş Yap</span>
+            </button>
+            <p class="signup-link mt-3">
+                Ya da giriş yapabilirsiniz
+            </p>
+            <div style="display: flex; justify-content: center; margin: 8px 0;">
+                <asl-google-signin-button></asl-google-signin-button>
+            </div>
+            <hr>
+            <p class="signup-link" style="margin: 0;">
+                Hesabım Yok
+                <a routerLink="/register" class="login__link">Hesap Aç</a>
+            </p>
+        </form>
+    </div>
+    <div class="box">
+        <p><strong>Lidusaplatform </strong> <span>Tüm Hakları Saklıdır</span></p>
+    </div>
 </div>

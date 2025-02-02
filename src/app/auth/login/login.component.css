@@ -1,3 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Dikeyde ortalar */
+  align-items: center; /* Yatayda ortalar */
+  height: 100vh; /* Konteynerin boyutunu tanımla */
+}
+
+.box {
+  padding: 10px;
+  margin: 5px;
+}
+
+.sitename{
+  font-size: 30px;
+  color: #1a447a;
+}
+
 .submitted.form-input.is-invalid {
   border-left: 5px solid crimson;
 }
