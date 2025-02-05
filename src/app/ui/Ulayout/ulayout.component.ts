@@ -11,15 +11,7 @@ export class ULayoutComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2) { }
   ngOnInit(): void {
-
-    // Sayfa yüklendikten sonra dış CSS kodunu çalıştırmak için
-    this.addCSSFile("assets/vendor/bootstrap/css/bootstrap.min.css")
-    this.addCSSFile("assets/vendor/bootstrap-icons/bootstrap-icons.css")
-    this.addCSSFile("assets/vendor/aos/aos.css")
-    this.addCSSFile("assets/vendor/glightbox/css/glightbox.min.css")
-    this.addCSSFile("assets/vendor/swiper/swiper-bundle.min.css")
-    this.addCSSFile("assets/css/main.css")
-
+    
     // Sayfa yüklendikten sonra dış JS kodunu çalıştırmak için
     this.AddScriptFile("assets/vendor/bootstrap/js/bootstrap.bundle.min.js")
     this.AddScriptFile("assets/vendor/aos/aos.js")
@@ -29,6 +21,15 @@ export class ULayoutComponent implements OnInit, OnDestroy {
     this.AddScriptFile("assets/vendor/imagesloaded/imagesloaded.pkgd.min.js")
     this.AddScriptFile("assets/vendor/isotope-layout/isotope.pkgd.min.js")
     this.AddScriptFile("assets/js/main.js")
+    
+    // Sayfa yüklendikten sonra dış CSS kodunu çalıştırmak için
+    this.addCSSFile("assets/vendor/bootstrap/css/bootstrap.min.css")
+    this.addCSSFile("assets/vendor/bootstrap-icons/bootstrap-icons.css")
+    this.addCSSFile("assets/vendor/aos/aos.css")
+    this.addCSSFile("assets/vendor/glightbox/css/glightbox.min.css")
+    this.addCSSFile("assets/vendor/swiper/swiper-bundle.min.css")
+    this.addCSSFile("assets/css/main.css")
+
 
   }
 

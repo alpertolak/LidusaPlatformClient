@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="left-side">
+        resim
+    </div>
+    <div class="right-side">
+        <table>
+            <tr>
+                <td>ID</td>
+                <td><label class="form-labsel"><strong>{{user.id}}</strong></label></td>
+            </tr>
+            <tr>
+                <td><label for="input_username" class="form-label">Kullanıcı Adı</label></td>
+                <td><input type="email" class="form-control" id="input_username" value="{{user.userName}}" [disabled]="!isEditTable"></td>
+            </tr>
+            <tr>
+                <td><label for="input_name" class="form-label">İsim</label></td>
+                <td><input type="email" class="form-control" id="input_name" value="{{user.name}}" [disabled]="!isEditTable"></td>
+            </tr>
+            <tr>
+                <td><label for="input_lastname" class="form-label">Soyisim</label></td>
+                <td><input type="email" class="form-control" id="input_lastname" value="{{user.lastName}}" [disabled]="!isEditTable"></td>
+            </tr>
+            <tr>
+                <td><label for="input_email" class="form-label">Email Adresi</label></td>
+                <td><input type="email" class="form-control" id="input_email" value="{{user.email}}" [disabled]="!isEditTable"></td>
+            </tr>
+            <tr>
+                <td><label for="input_phone" class="form-label">Telefon Numarası</label></td>
+                <td><input type="email" class="form-control" id="input_phone" value="{{user.phoneNumber}}" [disabled]="!isEditTable"></td>
+            </tr>
+            <tr>
+                <td><label for="input_2FA" class="form-label">İki Adımlı Doğrulama</label></td>
+                <td><input class="Custom_checkbox" type="checkbox" id="input_2FA" [disabled]="!isEditTable"></td>
+            </tr>
+            <tr>
+                <td><input class="btn btn-primary" type="button" value="Düzenle" (click)="toggleEditTable()" [disabled]="isEditTable"></td>
+                <td><input class="btn btn-success" type="button" value="Kaydet" (click)="SubmitForm()" *ngIf="isEditTable"></td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { User_Is_Admin } from 'src/app/contracts/users/User-Is-Admin';
+import { User } from 'src/app/entities/User';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { AuthService } from 'src/app/services/common/auth.service';
 import { UserAuthService } from 'src/app/services/common/models/user-auth.service';
@@ -75,11 +76,14 @@ export class LoginComponent implements OnInit {
 
     this.spinnerService.show(SpinnerType.load)
 
-    this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, () => {
+    this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, async () => {
       this.authService.identityCheck();
+       
+      //kullanıcının ıd bilgisini gelecekteki işlemleri için localstorage kaydediliyor
+      var user: any = await this.userService.getUserByIdOrUsernameOrEmailAsync(userLogin.UserNameOrEmail);
+      localStorage.setItem("UserId", user.user.id)
 
       this.ActivatedRoute.queryParams.subscribe(async params => {
-
         const returnUrl: string = params["returnUrl"]; // returnUrl bilgisi varsa yönledirme yapılıyor
         if (returnUrl) {
           this.router.navigate([returnUrl])

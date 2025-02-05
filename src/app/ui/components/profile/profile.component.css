@@ -1,0 +1,39 @@
+.container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    display: flex;
+  }
+
+  .left-side {
+    flex: 0 0 30%;
+  }
+
+  .right-side {
+    flex: 0 0 70%;
+  }
+
+  .form-label{
+    margin-bottom: -4px;
+  }
+
+ .form-control{
+    width: 400px;
+ }
+
+ /*input css*/
+.info_input{
+  display: flex;
+  align-items: center;
+
+}
+
+
+/*Checkbox css*/
+.Custom_checkbox{
+  width: 20px;
+  height: 20px;
+}
+
+td{
+  padding: 10px;
+}

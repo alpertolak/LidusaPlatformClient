@@ -25,6 +25,11 @@ export class AuthService {
   get isAuthenticated(): boolean {
     return _isAuthenticated //TODO ui sayfasında giriş yapıldıktan sonra, çıkış yap butonu vs. için GENÇAY 42.DERS izle
   }
+  SingOut() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    this.identityCheck();
+  }
 }
 
 export let _isAuthenticated: boolean
