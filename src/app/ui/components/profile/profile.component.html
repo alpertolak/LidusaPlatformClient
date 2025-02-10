@@ -1,41 +1,96 @@
 <div class="container">
-    <div class="left-side">
-        resim
-    </div>
-    <div class="right-side">
-        <table>
-            <tr>
-                <td>ID</td>
-                <td><label class="form-labsel"><strong>{{user.id}}</strong></label></td>
-            </tr>
-            <tr>
-                <td><label for="input_username" class="form-label">Kullanıcı Adı</label></td>
-                <td><input type="email" class="form-control" id="input_username" value="{{user.userName}}" [disabled]="!isEditTable"></td>
-            </tr>
-            <tr>
-                <td><label for="input_name" class="form-label">İsim</label></td>
-                <td><input type="email" class="form-control" id="input_name" value="{{user.name}}" [disabled]="!isEditTable"></td>
-            </tr>
-            <tr>
-                <td><label for="input_lastname" class="form-label">Soyisim</label></td>
-                <td><input type="email" class="form-control" id="input_lastname" value="{{user.lastName}}" [disabled]="!isEditTable"></td>
-            </tr>
-            <tr>
-                <td><label for="input_email" class="form-label">Email Adresi</label></td>
-                <td><input type="email" class="form-control" id="input_email" value="{{user.email}}" [disabled]="!isEditTable"></td>
-            </tr>
-            <tr>
-                <td><label for="input_phone" class="form-label">Telefon Numarası</label></td>
-                <td><input type="email" class="form-control" id="input_phone" value="{{user.phoneNumber}}" [disabled]="!isEditTable"></td>
-            </tr>
-            <tr>
-                <td><label for="input_2FA" class="form-label">İki Adımlı Doğrulama</label></td>
-                <td><input class="Custom_checkbox" type="checkbox" id="input_2FA" [disabled]="!isEditTable"></td>
-            </tr>
-            <tr>
-                <td><input class="btn btn-primary" type="button" value="Düzenle" (click)="toggleEditTable()" [disabled]="isEditTable"></td>
-                <td><input class="btn btn-success" type="button" value="Kaydet" (click)="SubmitForm()" *ngIf="isEditTable"></td>
-            </tr>
-        </table>
-    </div>
+  <div class="left-side">resim</div>
+  <div class="right-side">
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <table>
+        <tr>
+          <td>ID</td>
+          <td>
+            <label class="form-labsel"><strong>{{ profileForm.get("id")?.value }}</strong></label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="input_username" class="form-label">Kullanıcı Adı</label>
+          </td>
+          <td>
+            <input id="input_username" type="text" class="form-control" formControlName="userName" />
+            <div *ngIf="profileForm.get('userName')?.invalid &&profileForm.get('userName')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('userName')?.errors?.['required']">Kullanıcı adı gereklidir.</div>
+              <div *ngIf="profileForm.get('userName')?.errors?.['minlength']">Kullanıcı adı en az 3 karakter olmalıdır.</div>
+              <div *ngIf="profileForm.get('userName')?.errors?.['maxlength']">Kullanıcı adı en fazla 50 karakter olabilir.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="input_name" class="form-label">İsim</label></td>
+          <td>
+            <input id="input_name" type="text" class="form-control" formControlName="name" />
+            <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('name')?.errors?.['required']">İsim gereklidir.</div>
+              <div *ngIf="profileForm.get('name')?.errors?.['minlength']">İsim en az 3 karakter olmalıdır.</div>
+              <div *ngIf="profileForm.get('name')?.errors?.['maxlength']">İsim en fazla 50 karakter olabilir.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="input_lastname" class="form-label">Soyisim</label>
+          </td>
+          <td>
+            <input id="input_lastname" type="text" class="form-control" formControlName="lastName" />
+            <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('lastName')?.errors?.['required']">Soyisim gereklidir.</div>
+              <div *ngIf="profileForm.get('lastName')?.errors?.['minlength']">Soyisim en az 3 karakter olmalıdır.</div>
+              <div *ngIf="profileForm.get('lastName')?.errors?.['maxlength']">Soyisim en fazla 50 karakter olabilir.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="input_email" class="form-label">Email Adresi</label>
+          </td>
+          <td>
+            <input id="input_email" type="email" class="form-control" formControlName="email" />
+            <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('email')?.errors?.['required']">Email adresi gereklidir.</div>
+              <div *ngIf="profileForm.get('email')?.errors?.['email']">Geçerli bir email adresi giriniz.</div>
+              <div *ngIf="profileForm.get('email')?.errors?.['maxlength']">Email adresi en fazla 50 karakter olabilir.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="input_phone" class="form-label">Telefon Numarası</label>
+          </td>
+          <td>
+            <input id="input_phone" type="text" class="form-control" formControlName="phoneNumber" />
+            <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">Telefon numarası gereklidir.</div>
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['pattern']">Geçerli bir telefon numarası giriniz.</div>
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['minlength']">Telefon numarası en az 10 karakter olmalıdır.</div>
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['maxlength']">Telefon numarası en fazla 10 karakter olabilir.</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="input_2FA" class="form-label">İki Adımlı Doğrulama</label>
+          </td>
+          <td>
+            <input id="input_2FA" type="checkbox" class="Custom_checkbox" formControlName="twoFactorEnabled" />
+          </td>
+        </tr>
+        <tr>
+          <td (click)="openChangePasswordDialog()"><strong class="ChangePassword">Şifre değişikliği</strong></td>
+        </tr>
+        <tr>
+          <td> </td>
+          <td>
+            <input class="btn btn-primary" style="float: right;" type="submit" value="Kaydet"/>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
 </div>

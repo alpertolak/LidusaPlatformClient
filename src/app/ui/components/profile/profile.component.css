@@ -27,6 +27,12 @@
 
 }
 
+/*error message css*/
+.text-danger {
+  color: red;
+  font-size: 12px;
+  margin-top: 3px;
+}
 
 /*Checkbox css*/
 .Custom_checkbox{
@@ -36,4 +42,28 @@
 
 td{
   padding: 10px;
+}
+
+/*ChangePassword Css*/
+.ChangePassword {
+  line-height: 2;
+  position: relative;
+  cursor: pointer;
+}
+
+.ChangePassword::before {
+  content: '';
+  width: 0;
+  height: 2px;
+  border-radius: 2px;
+  background-color: hsl(0, 0%, 19%);
+  position: absolute;
+  bottom: -.25rem;
+  right: 0;
+  transition: right .4s, width .4s, left .4s;
+}
+
+.ChangePassword:hover::before {
+  width: 100%;
+  left: 0;
 }

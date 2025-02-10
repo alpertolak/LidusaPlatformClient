@@ -7,25 +7,18 @@
             <p class="form-title">Kullanıcı Girişi</p>
             <div class="input-container">
 
-                <input class="form-input" id="UserNameOrEmail" type="text" formControlName="UserNameOrEmail"
-                    placeholder="Kullanıcı Adı & Email"
-                    [ngClass]="{'is-invalid':submitted && component.UserNameOrEmail?.errors}"
-                    [class.submitted]="submittedClass">
+                <input class="form-input" id="UserNameOrEmail" type="text" formControlName="UserNameOrEmail" placeholder="Kullanıcı Adı & Email" [ngClass]="{'is-invalid':submitted && component.UserNameOrEmail?.errors}" [class.submitted]="submittedClass">
 
                 <!--Email Hata mesajı-->
-                <small class="errorMessage" style="float:left;"
-                    *ngIf="submitted && component.UserNameOrEmail.errors?.required">Bu alan zorunludur</small>
+                <small class="errorMessage" style="float:left;" *ngIf="submitted && component.UserNameOrEmail.errors?.required">Bu alan zorunludur</small>
 
             </div>
             <div class="input-container" style="margin-bottom: 50px;">
 
-                <input class="form-input" id="password" formControlName="password" type="password" placeholder="Şifre"
-                    [ngClass]="{'is-invalid':submitted && component.password?.errors}"
-                    [class.submitted]="submittedClass">
+                <input class="form-input" id="password" formControlName="password" type="password" placeholder="Şifre" [ngClass]="{'is-invalid':submitted && component.password?.errors}" [class.submitted]="submittedClass">
 
                 <!--Email Hata mesajı-->
-                <small class="errorMessage" style="float:left;"
-                    *ngIf="submitted && component.password.errors?.required">Bu alan zorunludur</small>
+                <small class="errorMessage" style="float:left;" *ngIf="submitted && component.password.errors?.required">Bu alan zorunludur</small>
 
                 <div style="float: right; margin-top: 6px;"><a routerLink="/password-reset" class="login__link">Şifremi
                         unuttum</a></div>

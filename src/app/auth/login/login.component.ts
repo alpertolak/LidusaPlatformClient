@@ -73,12 +73,11 @@ export class LoginComponent implements OnInit {
       this.submittedClass = true //eğer kullanıcı formu submit ettiyse ve hata varsa hata sınıfları inputlar veriliyor
       return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
     }
-
+    debugger
     this.spinnerService.show(SpinnerType.load)
-
     this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, async () => {
       this.authService.identityCheck();
-       
+
       //kullanıcının ıd bilgisini gelecekteki işlemleri için localstorage kaydediliyor
       var user: any = await this.userService.getUserByIdOrUsernameOrEmailAsync(userLogin.UserNameOrEmail);
       localStorage.setItem("UserId", user.user.id)
