@@ -87,11 +87,13 @@ export class LoginComponent implements OnInit {
         if (returnUrl) {
           this.router.navigate([returnUrl])
         }
-        const UserIsAdmin: User_Is_Admin = await this.userService.getUserIsAdminAsync(userLogin.UserNameOrEmail)
-        if (UserIsAdmin.isAdmin)
-          this.router.navigate(["admin"])
-        else
-          this.router.navigate([""])
+        else {
+          const UserIsAdmin: User_Is_Admin = await this.userService.getUserIsAdminAsync(userLogin.UserNameOrEmail)
+          if (UserIsAdmin.isAdmin)
+            this.router.navigate(["admin"])
+          else
+            this.router.navigate([""])
+        }
       })
       this.spinnerService.hide(SpinnerType.load)
     }, () => {

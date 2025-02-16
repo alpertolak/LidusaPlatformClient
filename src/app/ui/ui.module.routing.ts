@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ULayoutComponent } from './Ulayout/ulayout.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { uiProfileGuard } from '../guards/common/ui-profile.guard';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' }, // Boş rotayı home'a yönlendir
@@ -11,7 +12,7 @@ const routes: Routes = [
         component: ULayoutComponent,
         children: [
             { path: "home", component: HomeComponent },
-            { path: "profile", component: ProfileComponent }
+            { path: "profile", component: ProfileComponent, canActivate: [uiProfileGuard] },
         ],
     },
 ];
