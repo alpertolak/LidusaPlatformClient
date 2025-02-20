@@ -89,6 +89,7 @@ export class UserAuthService {
   }
 
   async passwordReset(email: string, successCallBack?: () => void, errorCallBack?: (error: any) => void) {
+    debugger
     const observable: Observable<any> = await this.httpService.Post({
       controller: "auth",
       action: "password-reset"

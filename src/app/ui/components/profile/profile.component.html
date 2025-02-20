@@ -1,7 +1,7 @@
 <div class="container">
   <div class="left-side">resim</div>
   <div class="right-side">
-    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="profileForm" (ngSubmit)="onUserFormSubmit()">
       <table>
         <tr>
           <td>ID</td>
@@ -82,7 +82,11 @@
           </td>
         </tr>
         <tr>
-          <td (click)="openChangePasswordDialog()"><strong class="ChangePassword">Şifre değişikliği</strong></td>
+          <td>
+            <strong class="ChangePassword">
+              <a href="changepassword">Şifre değişikliği</a>
+            </strong>
+          </td>
         </tr>
         <tr>
           <td> </td>

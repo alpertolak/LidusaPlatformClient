@@ -13,15 +13,23 @@
                 <small class="errorMessage" style="float:left;" *ngIf="submitted && component.UserNameOrEmail.errors?.required">Bu alan zorunludur</small>
 
             </div>
-            <div class="input-container" style="margin-bottom: 50px;">
+            <div class="input-container">
 
-                <input class="form-input" id="password" formControlName="password" type="password" placeholder="Şifre" [ngClass]="{'is-invalid':submitted && component.password?.errors}" [class.submitted]="submittedClass">
+                <input class="form-input" id="password" formControlName="password" id="password" [type]="showPassword ? 'text' : 'password'" placeholder="Şifre" [ngClass]="{'is-invalid':submitted && component.password?.errors}" [class.submitted]="submittedClass">
 
-                <!--Email Hata mesajı-->
+                <!--Şifre Hata mesajı-->
                 <small class="errorMessage" style="float:left;" *ngIf="submitted && component.password.errors?.required">Bu alan zorunludur</small>
+               
+                <div class="showpassword_element mt-3 mb-3">
+                    <div class="showpassword_element">
+                        <input type="checkbox" id="showPassword" (change)="toggleShowPassword()">
+                        <label for="showPassword">Şifremi göster</label>
+                    </div>
+    
+                    <div><a routerLink="/auth/password-reset" class="login__link">Şifremi unuttum</a></div>
+                </div>
+                
 
-                <div style="float: right; margin-top: 6px;"><a routerLink="/password-reset" class="login__link">Şifremi
-                        unuttum</a></div>
             </div>
             <button style="width: 100%">
                 <span class="shadow"></span>

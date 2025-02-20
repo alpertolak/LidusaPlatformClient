@@ -16,7 +16,7 @@ import { AuthorizeMenuDialogComponent } from './authorize-menu-dialog/authorize-
     DeleteDialogComponent,
     FileUploadsDialogComponent,
     AuthorizeUserDialogComponent,
-    AuthorizeMenuDialogComponent
+    AuthorizeMenuDialogComponent,
   ],
   imports: [
     CommonModule,

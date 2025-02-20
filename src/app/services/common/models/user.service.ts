@@ -17,11 +17,11 @@ export class UserService {
   ) { }
 
 
-  async UpdateUserAsync(user:User, successCallback?: () => void, errorCallback?: (errorMessage: string | undefined) => void){
-    const observable:Observable<any> = this.httpService.Put({
-      controller:"users",
-      action:"update-user"
-    },user)
+  async UpdateUserAsync(user: User, successCallback?: () => void, errorCallback?: (errorMessage: string | undefined) => void) {
+    const observable: Observable<any> = this.httpService.Put({
+      controller: "users",
+      action: "update-user"
+    }, user)
 
     //TODO validation hata mesajlarını işle
     await firstValueFrom(observable).then(successCallback).catch((errorResponse: HttpErrorResponse) => {
@@ -32,14 +32,14 @@ export class UserService {
           message += `${_v}\n`
         });
       });
-      if(errorCallback) errorCallback(message)
+      if (errorCallback) errorCallback(message)
     })
   }
 
-  async getUserByIdOrUsernameOrEmailAsync(UserIdOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void):Promise<User> {
-    const observable:Observable<User> = this.httpService.Get({
-      controller:"users",
-      action:"get-user-by-id-or-username-or-email",
+  async getUserByIdOrUsernameOrEmailAsync(UserIdOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User> {
+    const observable: Observable<User> = this.httpService.Get({
+      controller: "users",
+      action: "get-user-by-id-or-username-or-email",
       queryString: `UserIdOrUsernameOrEmail=${UserIdOrUsernameOrEmail}`
     })
 
@@ -110,9 +110,22 @@ export class UserService {
   async createUserAsync(user: User): Promise<Create_User> {
     const observable: Observable<Create_User | User> = this.httpService.Post<Create_User | User>({
       controller: "users",
-      action:"create-user"
+      action: "create-user"
     }, user)
     return await firstValueFrom(observable) as Create_User
+  }
+
+  async changePassword(userid: string, currentPassword: string, newPassword: string, successCallback?: (message: string) => void, errorCallback?: (error: any) => void): Promise<void> {
+    const observable: Observable<any> = this.httpService.Post({
+      controller: "users",
+      action: "password-change"
+    }, {
+      userid: userid,
+      CurrentPassword: currentPassword,
+      NewPassword: newPassword
+    });
+
+    return await firstValueFrom(observable).then(successCallback).catch(errorCallback)
   }
 
   //GENÇAY DERS.60
@@ -128,7 +141,7 @@ export class UserService {
     });
     //TODO api hata ayıklama sistemi
     try {
-      const promiseData: any = await firstValueFrom(observable);
+      await firstValueFrom(observable);
       if (successCallback) successCallback();
 
     } catch (error) {

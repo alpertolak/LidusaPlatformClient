@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/entities/User';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { UserService } from 'src/app/services/common/models/user.service';
+import { CustomValidators } from 'src/app/Validators/CustomPasswordValidators';
 
 @Component({
   selector: 'app-profile',
@@ -13,17 +15,24 @@ import { UserService } from 'src/app/services/common/models/user.service';
 })
 export class ProfileComponent implements OnInit {
 
+  userId: string = localStorage.getItem('UserId') as string
+
   //HTML bölümünde form nesnesine ulaşabilmek için get fonsksiyonu
-  profileForm: FormGroup
+  profileForm: FormGroup //profil formu
+  changePasswordForm: FormGroup //şifre değiştirme formu
+  isChangePassword: boolean = false
 
   constructor(
     private userService: UserService,
     private toastrService: ToastrService,
     private spinnerService: NgxSpinnerService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,
+    private router: Router) { }
 
 
   ngOnInit(): void {
+
+    //Form nesnesi oluşturulur ve form elemanlarına başlangıç değerleri atanır
     this.profileForm = this.formBuilder.group({
       id: ['', [Validators.required]],
       userName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -33,7 +42,6 @@ export class ProfileComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(10), Validators.maxLength(11)]],
       twoFactorEnabled: [false]
     });
-
     this.getUser();
   }
 
@@ -44,11 +52,7 @@ export class ProfileComponent implements OnInit {
     this.profileForm.patchValue(data.user)
   }
 
-  openChangePasswordDialog() {
-    alert('Şifre değiştirme ekranı açılacak')
-  }
-
-  onSubmit() {
+  onUserFormSubmit() {
     if (!this.profileForm.valid) {
       //yapay zeka bilgisiyle yazıldı.
       Object.keys(this.profileForm.controls).forEach(field => {
@@ -67,6 +71,5 @@ export class ProfileComponent implements OnInit {
       this.spinnerService.hide(SpinnerType.save);
       this.toastrService.error('Profiliniz güncellenirken bir hata oluştu', 'Hata');
     });
-
   }
 }

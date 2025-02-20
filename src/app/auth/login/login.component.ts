@@ -18,6 +18,9 @@ import { UserService } from 'src/app/services/common/models/user.service';
 })
 export class LoginComponent implements OnInit {
 
+  showPassword = false;
+  frm: FormGroup
+
   constructor(
     private userAuthService: UserAuthService,
     private toastrService: ToastrService,
@@ -29,23 +32,28 @@ export class LoginComponent implements OnInit {
     private socialAuthService: SocialAuthService,
     private userService: UserService
   ) {
+
     //google login için api post işlemi
     this.socialAuthService.authState.subscribe(async (user: SocialUser) => {
       this.spinnerService.show(SpinnerType.load)
       await userAuthService.googleLogin(user, () => {
-
+        debugger
         //returnUrl Çalışması
         this.ActivatedRoute.queryParams.subscribe(params => {
           const returnUrl: string = params["returnUrl"]; // returnUrl bilgisi varsa yönledirme yapılıyor
           if (returnUrl)
-            this.router.navigate([returnUrl])
+            this.router.navigate([returnUrl]).then(() => {
+              window.location.reload()
+            })
+        })
+        this.router.navigate([""]).then(() => {
+          window.location.reload()
         })
         this.spinnerService.hide(SpinnerType.load)
       })
     })
   }
 
-  frm: FormGroup
   async ngOnInit() {
     this.frm = this.formBuilder.group({
       UserNameOrEmail: ["", [
@@ -73,7 +81,6 @@ export class LoginComponent implements OnInit {
       this.submittedClass = true //eğer kullanıcı formu submit ettiyse ve hata varsa hata sınıfları inputlar veriliyor
       return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
     }
-    debugger
     this.spinnerService.show(SpinnerType.load)
     this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, async () => {
       this.authService.identityCheck();
@@ -85,14 +92,18 @@ export class LoginComponent implements OnInit {
       this.ActivatedRoute.queryParams.subscribe(async params => {
         const returnUrl: string = params["returnUrl"]; // returnUrl bilgisi varsa yönledirme yapılıyor
         if (returnUrl) {
-          this.router.navigate([returnUrl])
+          this.router.navigate([returnUrl]).then(() => {
+            window.location.reload()
+          }) // sayfa yönlendirmesi sonrasında sayfa yenileniyor, bu işlem yapılmazsa ui katmanı içeriği gelmiyor
         }
         else {
           const UserIsAdmin: User_Is_Admin = await this.userService.getUserIsAdminAsync(userLogin.UserNameOrEmail)
           if (UserIsAdmin.isAdmin)
             this.router.navigate(["admin"])
           else
-            this.router.navigate([""])
+            this.router.navigate([""]).then(() => {
+              window.location.reload()
+            })
         }
       })
       this.spinnerService.hide(SpinnerType.load)
@@ -100,5 +111,9 @@ export class LoginComponent implements OnInit {
       this.spinnerService.hide(SpinnerType.load)
       this.toastrService.error("Kullanıcı adı veya şifre hatalıdır", "Giriş başarısız!")
     })
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword
   }
 }

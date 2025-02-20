@@ -39,6 +39,7 @@ export class PasswordResetComponent implements OnInit {
  submitted: boolean = false
 
   async onSubmit(email: string) {
+    debugger
     this.submitted = true
 
     if (this.frm.invalid){

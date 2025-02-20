@@ -85,7 +85,7 @@ export class AuthorizeMenuComponent implements OnInit {
       options: {
         width: "750px"
       },afterClose:()=>{
-
+        
       }
     });
   }

@@ -26,17 +26,19 @@ export class HttpErrorHandlerInterceptorService implements HttpInterceptor {
           this.spinnerService.hide(SpinnerType.load)
           this.spinnerService.hide(SpinnerType.save)
 
-          this.toastrService.error("Sunucu Kaynaklı bir hata oluştu", "Sunucu Hatası")
+          //this.toastrService.error("Sunucu Kaynaklı bir hata oluştu", "Sunucu Hatası")
           break
         case HttpStatusCode.BadRequest:
           this.spinnerService.hide(SpinnerType.load)
           this.spinnerService.hide(SpinnerType.save)
-          this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
+          
+          //this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
           break
         default:
           this.spinnerService.hide(SpinnerType.load)
           this.spinnerService.hide(SpinnerType.save)
-          this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
+
+          //this.toastrService.error("Lüfen daha sonra tekrar deneyiniz","Bir Hata Oluştu")
           break
       }
       return of(error)

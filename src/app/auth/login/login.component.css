@@ -1,9 +1,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Dikeyde ortalar */
-  align-items: center; /* Yatayda ortalar */
-  height: 100vh; /* Konteynerin boyutunu tanımla */
+  justify-content: center;
+  /* Dikeyde ortalar */
+  align-items: center;
+  /* Yatayda ortalar */
+  height: 100vh;
+  /* Konteynerin boyutunu tanımla */
 }
 
 .box {
@@ -11,7 +14,7 @@
   margin: 5px;
 }
 
-.sitename{
+.sitename {
   font-size: 30px;
   color: #1a447a;
 }
@@ -19,7 +22,7 @@
 .submitted.form-input.is-invalid {
   border-left: 5px solid crimson;
 }
- 
+
 .submitted.form-input.is-valid {
   border-left: 5px solid limegreen;
 }
@@ -28,6 +31,16 @@
   font-size: 12px;
   color: crimson;
   margin-top: -7px;
+}
+
+#showPassword {
+  width: 16px;
+}
+
+.showpassword_element {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .form {
