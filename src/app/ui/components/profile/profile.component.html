@@ -1,5 +1,10 @@
 <div class="container">
-  <div class="left-side">resim</div>
+  <div class="left-side">
+    <div class="card">
+      <img src="..." class="card-img-top" alt="profil resmi">
+    </div>
+      <app-file-upload class="uploadButton" [options]="fileUploadOptions"></app-file-upload>
+  </div>
   <div class="right-side">
     <form [formGroup]="profileForm" (ngSubmit)="onUserFormSubmit()">
       <table>

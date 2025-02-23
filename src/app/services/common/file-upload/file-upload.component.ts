@@ -25,12 +25,17 @@ export class FileUploadComponent {
     private spinner: NgxSpinnerService) { }
 
   public files: NgxFileDropEntry[];
+  
   @Input() options: Partial<FileUploadOptions>
 
+
   public SelectedFiles(files: NgxFileDropEntry[]) {
+
     this.files = files;
     const fileData: FormData = new FormData()
+
     for (const file of files) {
+      debugger
       (file.fileEntry as FileSystemFileEntry).file((_file: File) => {
         fileData.append(_file.name, _file, file.relativePath)
       })
@@ -59,8 +64,7 @@ export class FileUploadComponent {
     })
   }
 
-
-
+  
   // openDialog(afterClosed: any): void {
   //   const dialogRef = this.dialog.open(FileUploadsDialogComponent, {
   //     width: "300px",
@@ -81,5 +85,6 @@ export class FileUploadOptions {
   action?: string
   queryString?: string
   explanation?: string //kullanılan sayfaya özel metin içeriği
-  accept?: string //kullanılan sayfaya özel kabul edilecek türleri
+  buttonName?: string = "Seç" //kullanılan sayfaya özel buton adı
+  accept?: string //kullanılan sayfaya özel kabul edilecek dosya türleri
 }

@@ -3,16 +3,18 @@ import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { FileUploadModule } from 'src/app/services/common/file-upload/file-upload.module';
 
 
 @NgModule({
   declarations: [
     ProfileComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileUploadModule
   ]
 })
 export class ProfileModule { }

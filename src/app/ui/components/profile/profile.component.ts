@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/entities/User';
 import { SpinnerType } from 'src/app/Enums/enums';
+import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 import { UserService } from 'src/app/services/common/models/user.service';
-import { CustomValidators } from 'src/app/Validators/CustomPasswordValidators';
 
 @Component({
   selector: 'app-profile',
@@ -21,6 +20,14 @@ export class ProfileComponent implements OnInit {
   profileForm: FormGroup //profil formu
   changePasswordForm: FormGroup //şifre değiştirme formu
   isChangePassword: boolean = false
+
+  //GENÇAY 25.DERS
+  @Output() fileUploadOptions: Partial<FileUploadOptions> = {
+    action: "profileImageUpload",
+    controller: "users",
+    accept: ".png, .jpg, .pdf",
+    buttonName:"Resim seç"
+  }
 
   constructor(
     private userService: UserService,
