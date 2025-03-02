@@ -1,7 +1,9 @@
 <div class="container">
   <div class="left-side">
     <div class="card">
-      <img src="..." class="card-img-top" alt="profil resmi">
+      <div class="image-container">
+        <img id="profile-image" [src]="userImagePath" class="card-img-top" alt="profil resmi">
+      </div>
     </div>
       <app-file-upload class="uploadButton" [options]="fileUploadOptions"></app-file-upload>
   </div>

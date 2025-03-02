@@ -3,7 +3,8 @@
 
 <div class="center">
     <ngx-file-drop 
-    [disabled]="false" 
+    [disabled]="false"
+    [multiple]="false"
     [dropZoneClassName]="'hidden-dropzone'" 
     dropZoneLabel="Drop files here" [accept]="options.accept" (onFileDrop)="SelectedFiles($event)">
         <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">

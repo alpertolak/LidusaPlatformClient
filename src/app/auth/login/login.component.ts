@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
     this.socialAuthService.authState.subscribe(async (user: SocialUser) => {
       this.spinnerService.show(SpinnerType.load)
       await userAuthService.googleLogin(user, () => {
-        debugger
         //returnUrl Çalışması
         this.ActivatedRoute.queryParams.subscribe(params => {
           const returnUrl: string = params["returnUrl"]; // returnUrl bilgisi varsa yönledirme yapılıyor

@@ -73,7 +73,7 @@ td{
 
 .card {
   width: 18rem; 
-  height: 84%;
+  height: 320px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -86,4 +86,17 @@ td{
   margin-top: -10px;
   margin-left: auto;
   margin-right: auto;
+}
+.image-container {
+  width: 250px;  /* Kendi tasarımına göre genişliği ayarla */
+  height: 320px; /* Kendi tasarımına göre yüksekliği ayarla */
+  overflow: hidden;
+  border-radius: 8px; /* Opsiyonel, köşeleri yuvarlayabilirsin */
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Resmi kırparak kutuya tam sığdırır */
+  object-position: center; /* Resmi ortalar */
 }

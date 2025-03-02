@@ -1,8 +1,10 @@
+import { NgComponentOutlet } from '@angular/common';
 import { Component, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { User_Profile_Image } from 'src/app/contracts/users/user-profile-image';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 import { UserService } from 'src/app/services/common/models/user.service';
@@ -20,13 +22,16 @@ export class ProfileComponent implements OnInit {
   profileForm: FormGroup //profil formu
   changePasswordForm: FormGroup //şifre değiştirme formu
   isChangePassword: boolean = false
+  userImage: User_Profile_Image = new User_Profile_Image()
+  userImagePath: string = "../../../../assets/common/profile.jpg"
 
   //GENÇAY 25.DERS
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
-    action: "profileImageUpload",
+    action: "Upload-User-Profile-Image",
     controller: "users",
     accept: ".png, .jpg, .pdf",
-    buttonName:"Resim seç"
+    buttonName: "Resim seç",
+    queryString: `userId=${this.userId}`,
   }
 
   constructor(
@@ -37,8 +42,7 @@ export class ProfileComponent implements OnInit {
     private router: Router) { }
 
 
-  ngOnInit(): void {
-
+  async ngOnInit() {
     //Form nesnesi oluşturulur ve form elemanlarına başlangıç değerleri atanır
     this.profileForm = this.formBuilder.group({
       id: ['', [Validators.required]],
@@ -49,7 +53,14 @@ export class ProfileComponent implements OnInit {
       phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(10), Validators.maxLength(11)]],
       twoFactorEnabled: [false]
     });
+
     this.getUser();
+
+    //kullanıcının profil resmi getirilir
+    this.userImage = await this.userService.getProfileImage(this.userId)
+    if (this.userImage != null) {
+      this.userImagePath = this.userImage.filePath
+    }
   }
 
   async getUser() {
@@ -60,6 +71,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onUserFormSubmit() {
+    debugger
     if (!this.profileForm.valid) {
       //yapay zeka bilgisiyle yazıldı.
       Object.keys(this.profileForm.controls).forEach(field => {
@@ -69,7 +81,8 @@ export class ProfileComponent implements OnInit {
       this.toastrService.error('Formda hata var, lütfen kontrol edin.', 'Hata');
       return;
     }
-    debugger
+    console.log(this.profileForm.value);
+    this.spinnerService.show(SpinnerType.save);
     //kullanıcı bilgilerini güncellemek için bilgiler api'ye gönderilir
     this.userService.UpdateUserAsync(this.profileForm.value, () => {
       this.spinnerService.hide(SpinnerType.save);

@@ -6,6 +6,7 @@ import { User } from 'src/app/entities/User';
 import { ListPaginationUsers } from 'src/app/contracts/users/list-pagination-users';
 import { User_Is_Admin } from 'src/app/contracts/users/User-Is-Admin';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User_Profile_Image } from 'src/app/contracts/users/user-profile-image';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class UserService {
 
 
   async UpdateUserAsync(user: User, successCallback?: () => void, errorCallback?: (errorMessage: string | undefined) => void) {
+    debugger
     const observable: Observable<any> = this.httpService.Put({
       controller: "users",
       action: "update-user"
@@ -147,5 +149,14 @@ export class UserService {
     } catch (error) {
       if (errorCallback) errorCallback(error);
     }
+  }
+
+  async getProfileImage(userId: string): Promise<User_Profile_Image> {
+    const observable: Observable<User_Profile_Image> = this.httpService.Get<User_Profile_Image>({
+      controller: "users",
+      action: "Get-User-Profile-Image",
+    },userId)
+
+    return await firstValueFrom(observable)
   }
 }
