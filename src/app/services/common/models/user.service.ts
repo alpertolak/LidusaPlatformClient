@@ -17,7 +17,6 @@ export class UserService {
     private httpService: HttpClientService,
   ) { }
 
-
   async UpdateUserAsync(user: User, successCallback?: () => void, errorCallback?: (errorMessage: string | undefined) => void) {
     debugger
     const observable: Observable<any> = this.httpService.Put({
@@ -37,6 +36,17 @@ export class UserService {
       if (errorCallback) errorCallback(message)
     })
   }
+
+  async getCurrentUserAsync(successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User> {
+    const observable: Observable<User> = this.httpService.Get({
+      controller: "users",
+      action: "get-current-user"
+    })
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
+    return await promiseData
+  }
+
 
   async getUserByIdOrUsernameOrEmailAsync(UserIdOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User> {
     const observable: Observable<User> = this.httpService.Get({
@@ -155,7 +165,7 @@ export class UserService {
     const observable: Observable<User_Profile_Image> = this.httpService.Get<User_Profile_Image>({
       controller: "users",
       action: "Get-User-Profile-Image",
-    },userId)
+    }, userId)
 
     return await firstValueFrom(observable)
   }

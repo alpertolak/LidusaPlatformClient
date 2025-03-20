@@ -5,6 +5,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { uiProfileGuard } from '../guards/common/ui-profile.guard';
 import { ChangePasswordComponent } from './components/profile/change-password/change-password.component';
+import { ServicesComponent } from './components/services/services.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' }, // Boş rotayı home'a yönlendir
@@ -15,6 +16,7 @@ const routes: Routes = [
             { path: "home", component: HomeComponent },
             { path: "profile", component: ProfileComponent, canActivate: [uiProfileGuard] },
             { path: "changepassword", component: ChangePasswordComponent , canActivate: [uiProfileGuard]},
+            {path: 'services', component: ServicesComponent},
         ],
     },
 ];

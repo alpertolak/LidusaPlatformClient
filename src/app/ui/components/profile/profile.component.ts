@@ -1,6 +1,5 @@
-import { NgComponentOutlet } from '@angular/common';
 import { Component, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +16,7 @@ import { UserService } from 'src/app/services/common/models/user.service';
 export class ProfileComponent implements OnInit {
 
   userId: string = localStorage.getItem('UserId') as string
-
+  
   //HTML bölümünde form nesnesine ulaşabilmek için get fonsksiyonu
   profileForm: FormGroup //profil formu
   changePasswordForm: FormGroup //şifre değiştirme formu
@@ -42,6 +41,7 @@ export class ProfileComponent implements OnInit {
     private router: Router) { }
 
 
+
   async ngOnInit() {
     //Form nesnesi oluşturulur ve form elemanlarına başlangıç değerleri atanır
     this.profileForm = this.formBuilder.group({
@@ -56,22 +56,23 @@ export class ProfileComponent implements OnInit {
 
     this.getUser();
 
-    //kullanıcının profil resmi getirilir
-    this.userImage = await this.userService.getProfileImage(this.userId)
+  }
+  async getUser() {
+    var data: any = await this.userService.getCurrentUserAsync()
+    this.profileForm.patchValue(data.user)
+
+    //kullanıcı resi çekiliyor
+    this.getUserprofileImage(data.user.id)
+  }
+
+  async getUserprofileImage(userId: string) {
+    this.userImage = await this.userService.getProfileImage(userId)
     if (this.userImage != null) {
       this.userImagePath = this.userImage.filePath
     }
   }
 
-  async getUser() {
-    const userId: string = localStorage.getItem('UserId') as string
-    var data: any = await this.userService.getUserByIdOrUsernameOrEmailAsync(userId)
-
-    this.profileForm.patchValue(data.user)
-  }
-
   onUserFormSubmit() {
-    debugger
     if (!this.profileForm.valid) {
       //yapay zeka bilgisiyle yazıldı.
       Object.keys(this.profileForm.controls).forEach(field => {

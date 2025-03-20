@@ -45,6 +45,7 @@ export class FileUploadComponent {
       data: DialogState.yes,
       options: { width: "500px" },
       afterClose: () => {
+        debugger
         this.spinner.show(SpinnerType.save)
         this.httClientService.Post({
           controller: this.options.controller,
