@@ -32,7 +32,6 @@ export class RolesCreateComponent {
       this.createdRoles.emit(newRole)
     }, errorMessage => {
       this.spinner.hide(SpinnerType.save)
-      console.log(errorMessage.toString())
       this.toastrService.error(errorMessage.toString(), "Hata")
     })
   }

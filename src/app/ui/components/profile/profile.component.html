@@ -1,13 +1,13 @@
 <div class="container">
-  <div class="left-side">
+  <div class="left-side" *ngIf="isGuest">
     <div class="card">
       <div class="image-container">
         <img id="profile-image" [src]="userImagePath" class="card-img-top" alt="profil resmi">
       </div>
     </div>
-      <app-file-upload class="uploadButton" [options]="fileUploadOptions"></app-file-upload>
+    <app-file-upload class="uploadButton" [options]="fileUploadOptions"></app-file-upload>
   </div>
-  <div class="right-side">
+  <div [ngClass]="isGuest ? 'right-side' : 'right-side-IfGuest'">
     <form [formGroup]="profileForm" (ngSubmit)="onUserFormSubmit()">
       <table>
         <tr>
@@ -95,10 +95,46 @@
             </strong>
           </td>
         </tr>
+        <tr *ngIf="isGuest">
+          <td>Şehir</td>
+          <td>
+            <input id="input_phone" type="text" class="form-control" formControlName="city" />
+          </td>
+        </tr>
+        <tr *ngIf="isGuest">
+          <td>İlçe</td>
+          <td>
+            <input id="input_phone" type="text" class="form-control" formControlName="district" />
+          </td>
+        </tr>
+        <tr *ngIf="isGuest">
+          <td>Mahalle</td>
+          <td>
+
+            <input id="input_phone" type="text" class="form-control" formControlName="neighborhood" />
+          </td>
+        </tr>
+        <tr *ngIf="isGuest">
+          <td>Kişisel Açıklama</td>
+          <td>
+            <textarea [maxlength]="DescriptionMaxLength" formControlName="personalDescription" class="form-control" style="max-height: 250px;"></textarea>
+          </td>
+          <td>
+            <p [style.color]="remainingChars < 50 ? 'red' : 'black'">
+              {{ remainingChars }}
+            </p>
+          </td>
+        </tr>
         <tr>
           <td> </td>
           <td>
-            <input class="btn btn-primary" style="float: right;" type="submit" value="Kaydet"/>
+            <input class="btn btn-primary" style="float: right;" type="submit" value="Kaydet" />
+          </td>
+        </tr>
+        <tr *ngIf="!isGuest">
+          <td> </td>
+          <td style="display: flex; justify-content: right;">
+            <h4>İlan veren olmak ister misiniz? <strong><a class="ChangePassword" href="">başvur</a></strong></h4>
           </td>
         </tr>
       </table>

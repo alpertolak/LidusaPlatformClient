@@ -9,7 +9,11 @@ export class User {
     passwordConfirm?: string
     isAdmin?: boolean
     twoFactorEnabled?: boolean
-    refreshToken?:string
-    refreshTokenEndDate?:Date
-}
+    refreshToken?: string
+    refreshTokenEndDate?: Date
+    personalDescription?: string
+    city?: string
+    district?: string
+    neighborhood?: string
 
+}

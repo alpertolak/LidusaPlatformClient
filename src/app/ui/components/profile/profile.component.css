@@ -1,28 +1,40 @@
 .container {
-    padding-top: 50px;
-    padding-bottom: 50px;
-    display: flex;
-  }
+  padding-top: 50px;
+  padding-bottom: 50px;
+  display: flex;
+}
 
-  .left-side {
-    flex: 0 0 30%;
-  }
+.tittleDiv {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: -15px;
+}
 
-  .right-side {
-    flex: 0 0 70%;
-  }
+.left-side {
+  flex: 0 0 30%;
+}
 
-  .form-label{
-    width: 135px;
-    margin-bottom: -4px;
-  }
+.right-side {
+  flex: 0 0 70%;
+}
 
- .form-control{
-    width: 400px;
- }
+.right-side-IfGuest {
+  justify-items: right;
+  flex: 0 0 70%;
+}
 
- /*input css*/
-.info_input{
+.form-label {
+  width: 135px;
+  margin-bottom: -4px;
+}
+
+.form-control {
+  width: 400px;
+}
+
+/*input css*/
+.info_input {
   display: flex;
   align-items: center;
 
@@ -36,12 +48,12 @@
 }
 
 /*Checkbox css*/
-.Custom_checkbox{
+.Custom_checkbox {
   width: 20px;
   height: 20px;
 }
 
-td{
+td {
   padding: 10px;
 }
 
@@ -72,7 +84,7 @@ td{
 /*profile image css */
 
 .card {
-  width: 18rem; 
+  width: 18rem;
   height: 320px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -82,21 +94,27 @@ td{
   padding: 20px;
 }
 
-.uploadButton{
+.uploadButton {
   margin-top: -10px;
   margin-left: auto;
   margin-right: auto;
 }
+
 .image-container {
-  width: 250px;  /* Kendi tasarımına göre genişliği ayarla */
-  height: 320px; /* Kendi tasarımına göre yüksekliği ayarla */
+  width: 250px;
+  /* Kendi tasarımına göre genişliği ayarla */
+  height: 320px;
+  /* Kendi tasarımına göre yüksekliği ayarla */
   overflow: hidden;
-  border-radius: 8px; /* Opsiyonel, köşeleri yuvarlayabilirsin */
+  border-radius: 8px;
+  /* Opsiyonel, köşeleri yuvarlayabilirsin */
 }
 
 .image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Resmi kırparak kutuya tam sığdırır */
-  object-position: center; /* Resmi ortalar */
+  object-fit: cover;
+  /* Resmi kırparak kutuya tam sığdırır */
+  object-position: center;
+  /* Resmi ortalar */
 }

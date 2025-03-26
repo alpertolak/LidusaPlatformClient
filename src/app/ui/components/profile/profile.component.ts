@@ -15,14 +15,17 @@ import { UserService } from 'src/app/services/common/models/user.service';
 })
 export class ProfileComponent implements OnInit {
 
-  userId: string = localStorage.getItem('UserId') as string
-  
+  DescriptionMaxLength: number = 300; // Karakter sınırı
+
   //HTML bölümünde form nesnesine ulaşabilmek için get fonsksiyonu
   profileForm: FormGroup //profil formu
   changePasswordForm: FormGroup //şifre değiştirme formu
   isChangePassword: boolean = false
   userImage: User_Profile_Image = new User_Profile_Image()
   userImagePath: string = "../../../../assets/common/profile.jpg"
+  userId: string = localStorage.getItem('UserId') as string
+  userRoles: string[] = []
+  isGuest: boolean = true // kullanıcı rolüne göre profil sayfası görüntülenir
 
   //GENÇAY 25.DERS
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
@@ -41,7 +44,6 @@ export class ProfileComponent implements OnInit {
     private router: Router) { }
 
 
-
   async ngOnInit() {
     //Form nesnesi oluşturulur ve form elemanlarına başlangıç değerleri atanır
     this.profileForm = this.formBuilder.group({
@@ -51,18 +53,53 @@ export class ProfileComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(10), Validators.maxLength(11)]],
-      twoFactorEnabled: [false]
+      city: ['', [Validators.maxLength(50)]],
+      district: ['', [Validators.maxLength(50)]],
+      neighborhood: ['', [Validators.maxLength(50)]],
+      twoFactorEnabled: [false],
+      personalDescription: ['', [Validators.maxLength(300)]],
     });
-
     this.getUser();
-
   }
+
   async getUser() {
     var data: any = await this.userService.getCurrentUserAsync()
-    this.profileForm.patchValue(data.user)
+    
+    //apiden gelen data ile form elemanlarına değerler atanır
+    this.profileForm.patchValue({
+      id: data.user.id,
+      name: data.user.name,
+      userName: data.user.userName,
+      lastName: data.user.lastName,
+      email: data.user.email,
+      phoneNumber: data.user.phoneNumber,
+      personalDescription: data.user.personalDescription,
+      twoFactorEnabled: data.user.twoFactorEnabled,
+      city: data.user.userAddress?.city || '',
+      district: data.user.userAddress?.district || '',
+      neighborhood: data.user.userAddress?.neighborhood || ''
+
+    });
+
+    //kullanıcının rolleri çekiliyor
+    this.getUserRoles(data.user.id)
 
     //kullanıcı resi çekiliyor
     this.getUserprofileImage(data.user.id)
+  }
+
+  async getUserRoles(userId: string) {
+
+    this.userRoles = await this.userService.getRolesToUserAsync(userId);
+    for (const item of this.userRoles) {
+      if (item == "Misafir") {
+        this.isGuest = false;
+        break;
+      }
+      else {
+        this.isGuest = true;
+      }
+    }
   }
 
   async getUserprofileImage(userId: string) {
@@ -82,7 +119,6 @@ export class ProfileComponent implements OnInit {
       this.toastrService.error('Formda hata var, lütfen kontrol edin.', 'Hata');
       return;
     }
-    console.log(this.profileForm.value);
     this.spinnerService.show(SpinnerType.save);
     //kullanıcı bilgilerini güncellemek için bilgiler api'ye gönderilir
     this.userService.UpdateUserAsync(this.profileForm.value, () => {
@@ -92,5 +128,10 @@ export class ProfileComponent implements OnInit {
       this.spinnerService.hide(SpinnerType.save);
       this.toastrService.error('Profiliniz güncellenirken bir hata oluştu', 'Hata');
     });
+  }
+
+  get remainingChars(): number {
+    const personalDescription = this.profileForm.get('personalDescription')?.value;
+    return this.DescriptionMaxLength - (personalDescription ? personalDescription.length : 0);
   }
 }

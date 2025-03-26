@@ -18,7 +18,6 @@ export class UserService {
   ) { }
 
   async UpdateUserAsync(user: User, successCallback?: () => void, errorCallback?: (errorMessage: string | undefined) => void) {
-    debugger
     const observable: Observable<any> = this.httpService.Put({
       controller: "users",
       action: "update-user"

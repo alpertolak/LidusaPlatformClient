@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './profile.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { FileUploadModule } from 'src/app/services/common/file-upload/file-upload.module';
 
@@ -14,7 +14,8 @@ import { FileUploadModule } from 'src/app/services/common/file-upload/file-uploa
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FileUploadModule
+    FileUploadModule,
+    FormsModule
   ]
 })
 export class ProfileModule { }

@@ -87,7 +87,7 @@ export class RegisterComponent implements OnInit {
     if (result.succeeded) {
       this.toastrService.success(result.message, "Başarılı")
       this.spinnerService.hide(SpinnerType.load)
-      this.router.navigate(["/login"])
+      this.router.navigate(["auth/login"])
     }else{
       this.toastrService.error(result.message,"Hata")
       this.spinnerService.hide(SpinnerType.load)
