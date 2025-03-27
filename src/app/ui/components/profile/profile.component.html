@@ -71,7 +71,7 @@
             <label for="input_phone" class="form-label">Telefon Numarası</label>
           </td>
           <td>
-            <input id="input_phone" type="text" class="form-control" formControlName="phoneNumber" />
+            <input id="input_phone" type="text" class="form-control" formControlName="phoneNumber" maxlength="10" />
             <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched" class="text-danger">
               <div *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">Telefon numarası gereklidir.</div>
               <div *ngIf="profileForm.get('phoneNumber')?.errors?.['pattern']">Geçerli bir telefon numarası giriniz.</div>
@@ -96,28 +96,53 @@
           </td>
         </tr>
         <tr *ngIf="isGuest">
-          <td>Şehir</td>
           <td>
-            <input id="input_phone" type="text" class="form-control" formControlName="city" />
+            <label for="input_city">Şehir</label>
+          </td>
+          <td>
+            <select id="input_city" class="form-select form-control" formControlName="city" aria-label="Default select example" (change)="onCityChange(city.selectedOptions)" #city>
+              <option selected value="">İl Seçiniz</option>
+              <option *ngFor="let geo of Turkey_geo" [value]="geo.City">{{geo.City}}</option>
+            </select>
+            <div *ngIf="profileForm.get('city')?.invalid && profileForm.get('city')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('city')?.errors?.['required']">Bu alan zorunludur</div>
+            </div>
           </td>
         </tr>
         <tr *ngIf="isGuest">
-          <td>İlçe</td>
           <td>
-            <input id="input_phone" type="text" class="form-control" formControlName="district" />
+            <label for="input_district">İlçe</label>
+          </td>
+          <td>
+            <select id="input_district" class="form-select form-control" formControlName="district" aria-label="Default select example" (change)="onDistrictChange(district.selectedOptions)" #district>
+              <option selected value="">İlçe Seçiniz</option>
+              <option *ngFor="let district of districts" [value]="district.District">{{district.District}}</option>
+            </select>
+            <div *ngIf="profileForm.get('district')?.invalid && profileForm.get('district')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('district')?.errors?.['required']">Bu alan zorunludur</div>
+            </div>
           </td>
         </tr>
         <tr *ngIf="isGuest">
-          <td>Mahalle</td>
           <td>
-
-            <input id="input_phone" type="text" class="form-control" formControlName="neighborhood" />
+            <label for="input_neighborhood">Mahalle</label>
+          </td>
+          <td>
+            <select id="input_neighborhood" class="form-select form-control" formControlName="neighborhood" aria-label="Default select example">
+              <option selected value="">Mahalle Seçiniz</option>
+              <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood">{{neighborhood}}</option>
+            </select>
+            <div *ngIf="profileForm.get('neighborhood')?.invalid && profileForm.get('neighborhood')?.touched" class="text-danger">
+              <div *ngIf="profileForm.get('neighborhood')?.errors?.['required']">Bu alan zorunludur</div>
+            </div>
           </td>
         </tr>
         <tr *ngIf="isGuest">
-          <td>Kişisel Açıklama</td>
           <td>
-            <textarea [maxlength]="DescriptionMaxLength" formControlName="personalDescription" class="form-control" style="max-height: 250px;"></textarea>
+            <label for="personal_Description">Kişisel Açıklama</label>
+          </td>
+          <td>
+            <textarea id="personal_Description" [maxlength]="DescriptionMaxLength" formControlName="personalDescription" class="form-control" style="max-height: 250px;"></textarea>
           </td>
           <td>
             <p [style.color]="remainingChars < 50 ? 'red' : 'black'">
