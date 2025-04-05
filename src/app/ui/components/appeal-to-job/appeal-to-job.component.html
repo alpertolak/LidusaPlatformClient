@@ -1,0 +1,87 @@
+<div class="container flex-container">
+    <div class="header-section">
+        <h2>İlan Başvuru Formu</h2>
+        <p class="header_p">İlan veren olmak için lütfen aşağıdaki bilgileri doldurun</p>
+    </div>
+    <form [formGroup]="AppealForm" (ngSubmit)="onFormSubmit()">
+        <table>
+            <tr>
+                <td>
+                    <label for="input_job" class="form-label">İlan verilmek istenen Hizmet</label>
+                </td>
+                <td>
+                    <select id="input_job" class="form-select form-control" formControlName="appealJob" aria-label="Default select example">
+                        <option selected value="">İş seçiniz</option>
+                        <option *ngFor="let job of jobs" [value]="job.jobName">{{job.jobName}}</option>
+                    </select>
+                    <div *ngIf="AppealForm.get('job')?.invalid &&AppealForm.get('job')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('job')?.errors?.['required']">bu alan zorunludur</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="input_city" class="form-label">İl</label>
+                </td>
+                <td>
+                    <select id="input_city" class="form-select form-control" formControlName="city" aria-label="Default select example" (change)="onCityChange(city.selectedOptions)" #city>
+                        <option selected value="">İl Seçiniz</option>
+                        <option *ngFor="let geo of Turkey_geo" [value]="geo.City">{{geo.City}}</option>
+                    </select>
+                    <div *ngIf="AppealForm.get('city')?.invalid &&AppealForm.get('city')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('city')?.errors?.['required']">bu alan zorunludur</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="input_district" class="form-label">İlçe</label>
+                </td>
+                <td>
+                    <select id="input_district" class="form-select form-control" formControlName="district" aria-label="Default select example" (change)="onDistrictChange(district.selectedOptions)" #district>
+                        <option selected value="">İlçe Seçiniz</option>
+                        <option *ngFor="let district of districts" [value]="district.District">{{district.District}}</option>
+                    </select>
+                    <div *ngIf="AppealForm.get('district')?.invalid &&AppealForm.get('district')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('district')?.errors?.['required']">bu alan zorunludur</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="input_neighborhood" class="form-label">Mahalle</label>
+                </td>
+                <td>
+                    <select id="input_neighborhood" class="form-select form-control" formControlName="neighborhood" aria-label="Default select example">
+                        <option selected value="">Mahalle Seçiniz</option>
+                        <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood">{{neighborhood}}</option>
+                    </select>
+                    <div *ngIf="AppealForm.get('neighborhood')?.invalid &&AppealForm.get('neighborhood')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('neighborhood')?.errors?.['required']">bu alan zorunludur</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  <label for="input_Description">Başvuru Açıklaması</label>
+                </td>
+                <td>
+                  <textarea id="input_Description" [maxlength]="DescriptionMaxLength" formControlName="appealDescription" class="form-control" style="max-height: 250px;"></textarea>
+                </td>
+                <td>
+                  <p [style.color]="remainingChars < 50 ? 'red' : 'black'">
+                    {{ remainingChars }}
+                  </p>
+                </td>
+              </tr>
+            <tr>
+                <td>
+
+                </td>
+                <td style="display: flex; justify-content: right;">
+                    <button type="submit" class="btn btn-primary" [disabled]="AppealForm.invalid">Başvur</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

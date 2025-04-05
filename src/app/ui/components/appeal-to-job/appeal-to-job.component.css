@@ -1,0 +1,36 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    /* elementler arası boşluk */
+}
+
+.header-section {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.form-label {
+    width: 190px;
+}
+
+.form-control {
+    width: 400px;
+}
+
+td {
+    padding: 10px;
+}
+
+.header_p{
+    margin-top: -15px;
+}
+
+/*error message css*/
+.text-danger {
+    color: red;
+    font-size: 12px;
+    margin-top: 3px;
+  }

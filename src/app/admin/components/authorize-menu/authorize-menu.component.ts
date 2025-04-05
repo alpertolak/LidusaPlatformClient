@@ -37,26 +37,26 @@ export class AuthorizeMenuComponent implements OnInit {
     private dialogService: DialogService) { }
 
   async ngOnInit() {
-    this.dataSource.data = await (await this.applicationService.getAuthorizeDefinitionEndpoints())
-      .map(m => {
-        const treeMenu: ITreeMenu = {
-          name: m.name,
-          actions: m.actions.map(a => {
-            const _treeMenu: ITreeMenu = {
-              name: a.definition,
-              code: a.code,
-              menuName: m.name
-            }
-            return _treeMenu;
-          })
-        };
-        return treeMenu;
-      });
+    this.dataSource.data = (await this.applicationService.getAuthorizeDefinitionEndpoints())
+    .map(m => {
+      const treeMenu: ITreeMenu = {
+        name: m.name,
+        actions: m.actions.map(a => {
+          const _treeMenu: ITreeMenu = {
+            name: a.definition,
+            code: a.code,
+            menuName: m.name
+          }
+          return _treeMenu;
+        })
+      };
+      return treeMenu;
+    });
   }
 
   treeControl = new FlatTreeControl<ExampleFlatNode>(
     node => node.level,
-    node=>node.expandable,
+    node => node.expandable,
   )
 
   treeFlattener = new MatTreeFlattener(
@@ -73,7 +73,7 @@ export class AuthorizeMenuComponent implements OnInit {
     menu => menu.expandable,
     menu => menu.actions || []
   );
-  
+
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
   hasChild = (_: number, node: ExampleFlatNode) => node.expandable;
@@ -84,8 +84,8 @@ export class AuthorizeMenuComponent implements OnInit {
       data: { code: code, name: name, menuName: menuName },
       options: {
         width: "750px"
-      },afterClose:()=>{
-        
+      }, afterClose: () => {
+
       }
     });
   }

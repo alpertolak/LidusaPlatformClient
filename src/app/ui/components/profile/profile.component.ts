@@ -79,7 +79,7 @@ export class ProfileComponent implements OnInit {
       district: ['', Validators.required],
       neighborhood: ['', Validators.required],
       twoFactorEnabled: [false],
-      personalDescription: ['', [Validators.maxLength(this.DescriptionMaxLength)]],
+      personalDescription: ['', [Validators.required, Validators.maxLength(this.DescriptionMaxLength)]],
     });
   }
   async getUser() {
@@ -191,7 +191,7 @@ export class ProfileComponent implements OnInit {
 
   onCityChange(event: any): void {
     var City = event[0].innerText
-    if(City == "İl Seçiniz") {
+    if (City == "İl Seçiniz") {
       this.profileForm.get('district')?.setValue('');
       this.profileForm.get('neighborhood')?.setValue('');
     }
