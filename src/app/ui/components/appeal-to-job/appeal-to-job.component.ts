@@ -59,7 +59,7 @@ export class AppealToJobComponent implements OnInit {
   onFormSubmit() {
     if (this.AppealForm.valid) {
       this.spinner.show(SpinnerType.save)
-      this.JobAppealService.createAppeal(this.AppealForm.value, () => {
+      this.JobAppealService.createJobAppeal(this.AppealForm.value, () => {
         this.spinner.hide(SpinnerType.save)
         this.toastrService.success("Başvurunuz alınmıştır.", "Başvuru Başarılı", {
         })

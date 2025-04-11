@@ -1,0 +1,46 @@
+<div class="mat-elevation-z3">
+  <table mat-table [dataSource]="dataSource">
+    'hizmet', 'Başvuru Tarihi', 'Başvuru Durumu',
+
+    <ng-container matColumnDef="Kullanıcı Adı">
+      <th mat-header-cell *matHeaderCellDef> Kullanıcı Adı</th>
+      <td mat-cell *matCellDef="let element"> {{element.appealUsername}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="hizmet">
+      <th mat-header-cell *matHeaderCellDef>Hizmet</th>
+      <td mat-cell *matCellDef="let element"> {{element.appealJob}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Başvuru Tarihi">
+      <th mat-header-cell *matHeaderCellDef> Başvuru Tarihi </th>
+      <td mat-cell *matCellDef="let element"> {{element.appealDate}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Başvuru Durumu">
+      <th mat-header-cell *matHeaderCellDef> Başvuru Durumu </th>
+      <td mat-cell *matCellDef="let element"> {{element.appealState == null ? "Beklemede" : element.appealState == true ? "onaylandı" : "Rededildi"}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef style="width: 5%"> </th>
+      <td mat-cell *matCellDef="let element"><a href="" data-bs-toggle="modal" data-bs-target="#jobAppealDetailModal" (click)="AppealDetailId = element.id">
+          <img src="../../../../../assets/icons/Edit.png" style="width: 30px; height: 30px;"></a>
+      </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="Delete">
+          <th mat-header-cell *matHeaderCellDef style="width: 60px;"> </th>
+          <td mat-cell *matCellDef="let element" appDelete [id]="element.id" controller="jobs" (callback)="getJobs()"></td>
+        </ng-container> -->
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator class="list-paginator" (page)="pageChanged()" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+
+
+<app-job-appeal-detail [JobAppealId]="AppealDetailId"></app-job-appeal-detail>

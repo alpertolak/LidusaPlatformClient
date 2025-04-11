@@ -7,6 +7,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { AuthorizeMenuComponent } from './components/authorize-menu/authorize-menu.component';
 import { AuthGuard } from '../guards/common/auth.guard';
+import { JobAppealComponent } from './components/job-appeal/job-appeal-list/job-appeal.component';
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'jobs', component: JobsComponent },
       { path: 'roles', component: RolesComponent },
-      { path: 'authorize-menu', component: AuthorizeMenuComponent }
+      { path: 'authorize-menu', component: AuthorizeMenuComponent },
+      { path: 'job-appeal', component: JobAppealComponent }
     ], canActivate: [AuthGuard]
   }
 ];

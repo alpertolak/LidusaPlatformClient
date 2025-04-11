@@ -1,0 +1,102 @@
+<div class="modal fade" id="jobAppealDetailModal" tabindex="-1" aria-labelledby="AppealDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog custom-modal-width">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="UserDetailModalLabel">başvuru Detayları</h1>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body">
+                <table class="table table-borderless">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="inputLayout">
+                                Başvuru Id - User Id
+                            </td>
+                            <td>
+                                <input type="text" #Id class="form-control DetailsInput" id="Id" [value]="jobAppeal.id" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Başvuru kullanıcı adı
+                            </td>
+                            <td>
+                                <input type="text" #username class="form-control DetailsInput" id="appealUsername" [value]="jobAppeal.appealUsername" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Başvuru açıklaması  
+                            </td>
+                            <td>
+                                <textarea class="form-control DetailsInput text-area" id="appealDescription" disabled>{{jobAppeal.appealDescription}}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Başvuru Tarihi
+                            </td>
+                            <td>
+                                <input type="text" #name class="form-control DetailsInput" id="Name" [value]="jobAppeal.appealDate" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Şehir
+                            </td>
+                            <td>
+                                <input type="text" #lastName class="form-control DetailsInput" id="lastName" [value]="jobAppeal.appealUserCity" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                İlçe
+                            </td>
+                            <td>
+                                <input type="text" #phoneNumber class="form-control DetailsInput" id="phoneNumber" [value]="jobAppeal.appealUserDistrict" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                mahalle
+                            </td>
+                            <td>
+                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.appealUserNeighborhood" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Yetkili
+                            </td>
+                            <td>
+                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.supervisor" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                karar Tarihi
+                            </td>
+                            <td>
+                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.decisionDate" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Başvuru Durumu
+                            </td>
+                            <td>
+                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.appealState" disabled>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onCancel()">reddet</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="onApproved()">Onayla</button>
+            </div>
+        </div> 
+    </div>
+</div>

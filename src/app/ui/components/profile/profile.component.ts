@@ -7,6 +7,7 @@ import { User_Profile_Image } from 'src/app/contracts/users/user-profile-image';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
+import { JobAppealService } from 'src/app/services/common/models/job-appeal.service';
 import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
@@ -34,7 +35,8 @@ export class ProfileComponent implements OnInit {
   userImagePath: string = "../../../../assets/common/profile.jpg"
   userId: string = localStorage.getItem('UserId') as string
   userRoles: string[] = []
-  isGuest: boolean = true // kullanıcı rolüne göre profil sayfası görüntülenir
+  public isGuest: boolean = true // kullanıcı rolüne göre profil sayfası görüntülenir
+  public isHasJob: boolean = false // kullanıcı iş başvurusu yapmış mı kontrolü için değişken
 
   //GENÇAY 25.DERS
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
@@ -46,6 +48,7 @@ export class ProfileComponent implements OnInit {
   }
 
   constructor(
+    private jobAppealService: JobAppealService,
     private userService: UserService,
     private toastrService: ToastrService,
     private spinnerService: NgxSpinnerService,
@@ -106,6 +109,16 @@ export class ProfileComponent implements OnInit {
 
     //kullanıcı resimi çekiliyor
     this.getUserprofileImage(data.user.id)
+
+    //kullanıcının iş başvurusu var mı kontrol ediliyor
+    this.getUserJobAppeal(data.user.id)
+  }
+
+  async getUserJobAppeal(UserId: string) {
+    var jobAppeal = await this.jobAppealService.getJobAppealById(UserId)
+    if (jobAppeal) {
+      this.isHasJob = true
+    }
   }
 
   async getUserRoles(userId: string) {

@@ -156,10 +156,16 @@
             <input class="btn btn-primary" style="float: right;" type="submit" value="Kaydet" />
           </td>
         </tr>
-        <tr *ngIf="!isGuest">
+        <tr *ngIf="!isGuest && !isHasJob">
           <td> </td>
           <td style="display: flex; justify-content: right;">
             <h4>İlan veren olmak ister misiniz? <strong><a class="ChangePassword" href="appeal-to-job">başvur</a></strong></h4>
+          </td>
+        </tr>
+        <tr *ngIf="isHasJob">
+          <td> </td>
+          <td style="display: flex; justify-content: right;">
+            <h4>Başvurunuz alınmıştır <strong><a class="ChangePassword" href="appeal-to-job">düzenle</a></strong></h4>
           </td>
         </tr>
       </table>

@@ -30,7 +30,8 @@ export class JobsListComponent implements OnInit {
   async getJobs() {
     this.spinner.show(SpinnerType.load)
     const allJobs: ListJobsPagination = await this.jobService.read(
-      this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize : 5,
+      this.paginator ? this.paginator.pageIndex : 0, 
+      this.paginator ? this.paginator.pageSize : 5,
       () => { //successCallBack
         this.spinner.hide(SpinnerType.load)
       }, () => { //errorCallBack
