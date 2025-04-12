@@ -14,8 +14,8 @@
                         <option selected value="">İş seçiniz</option>
                         <option *ngFor="let job of jobs" [value]="job.jobName">{{job.jobName}}</option>
                     </select>
-                    <div *ngIf="AppealForm.get('job')?.invalid &&AppealForm.get('job')?.touched" class="text-danger">
-                        <div *ngIf="AppealForm.get('job')?.errors?.['required']">bu alan zorunludur</div>
+                    <div *ngIf="AppealForm.get('appealJob')?.invalid &&AppealForm.get('appealJob')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('appealJob')?.errors?.['required']">bu alan zorunludur</div>
                     </div>
                 </td>
             </tr>

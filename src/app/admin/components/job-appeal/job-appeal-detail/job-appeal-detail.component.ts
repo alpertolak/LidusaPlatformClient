@@ -25,6 +25,10 @@ export class JobAppealDetailComponent implements AfterViewInit {
     private _toastrService: ToastrService,
   ) { }
 
+  async setSeenToDb() {
+    await this._jobAppealService.UpdateSeen(this.JobAppealId, true)
+  }
+  
   ngAfterViewInit(): void {
     var modal = document.getElementById("jobAppealDetailModal")
 
@@ -38,9 +42,9 @@ export class JobAppealDetailComponent implements AfterViewInit {
     }
   }
 
-
   onModalOpen() {
     this.getJobAppealDetails(this.JobAppealId);
+    this.setSeenToDb()
   }
 
   onModalClose() {
@@ -49,13 +53,14 @@ export class JobAppealDetailComponent implements AfterViewInit {
 
 
   async getJobAppealDetails(appealId: string) {
+    debugger
     var data: any = await this._jobAppealService.getJobAppealById(appealId)
     this.jobAppeal = data.jobAppeal
   }
 
   onApproved() {
     this._spinner.show(SpinnerType.save)
-    this._jobAppealService.approveJobAppeal("this.jobAppeal.id", () => {
+    this._jobAppealService.approveJobAppeal(this.jobAppeal.id, () => {
       this._spinner.hide(SpinnerType.save)
       this._toastrService.success("Başvuru onaylandı", "Başarılı")
     }, () => {
@@ -74,5 +79,12 @@ export class JobAppealDetailComponent implements AfterViewInit {
       this._spinner.hide(SpinnerType.save)
       this._toastrService.error("reddetme başarısız", "Başarısız")
     })
+  }
+
+  formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+    const pad = (n: number) => n.toString().padStart(2, '0');
+  
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
   }
 }

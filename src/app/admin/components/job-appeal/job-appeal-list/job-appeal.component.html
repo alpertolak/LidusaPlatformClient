@@ -14,12 +14,12 @@
 
     <ng-container matColumnDef="Başvuru Tarihi">
       <th mat-header-cell *matHeaderCellDef> Başvuru Tarihi </th>
-      <td mat-cell *matCellDef="let element"> {{element.appealDate}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.appealDate | date:'dd.MM.yyyy' }} </td>
     </ng-container>
 
     <ng-container matColumnDef="Başvuru Durumu">
       <th mat-header-cell *matHeaderCellDef> Başvuru Durumu </th>
-      <td mat-cell *matCellDef="let element"> {{element.appealState == null ? "Beklemede" : element.appealState == true ? "onaylandı" : "Rededildi"}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.appealState == null ? "Beklemede" : element.appealState == true ? "onaylandı" : "Rededildi"}} <span *ngIf="!element.isSeen" class="badge text-bg-primary">yeni</span> </td>
     </ng-container>
 
     <ng-container matColumnDef="edit">

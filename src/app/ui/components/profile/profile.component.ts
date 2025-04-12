@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { User_Profile_Image } from 'src/app/contracts/users/user-profile-image';
+import { JobAppeal } from 'src/app/entities/JobAppeal';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
@@ -57,18 +58,18 @@ export class ProfileComponent implements OnInit {
 
 
   async ngOnInit() {
-    this.loadTurkey_geo()
-    this.createForm()
-    this.getUser()
+    await this.createForm()
+    await this.getUser()
+    await this.loadTurkey_geo()
   }
 
   async equalizeAddress(City: string, District: string) {
     this.selectedCity = City;
     this.selectedDistrict = District;
-    this.loadDistricts(this.selectedCity);
-    this.loadNeighborhoods(this.selectedDistrict);
-
+    await this.loadDistricts(this.selectedCity);
+    await this.loadNeighborhoods(this.selectedDistrict);
   }
+
   async createForm() {
     //Form nesnesi oluşturulur ve form elemanlarına başlangıç değerleri atanır
     this.profileForm = this.formBuilder.group({
@@ -97,12 +98,12 @@ export class ProfileComponent implements OnInit {
       phoneNumber: data.user.phoneNumber,
       personalDescription: data.user.personalDescription,
       twoFactorEnabled: data.user.twoFactorEnabled,
-      city: data.user.userAddress?.city || '',
-      district: data.user.userAddress?.district || '',
-      neighborhood: data.user.userAddress?.neighborhood || ''
+      city: data.user.city,
+      district: data.user.district,
+      neighborhood: data.user.neighborhood
     });
 
-    //console.log(this.profileForm.value)
+    // console.log(this.profileForm)
 
     //kullanıcının rolleri çekiliyor
     this.getUserRoles(data.user.id)
@@ -115,18 +116,22 @@ export class ProfileComponent implements OnInit {
   }
 
   async getUserJobAppeal(UserId: string) {
-    var jobAppeal = await this.jobAppealService.getJobAppealById(UserId)
-    if (jobAppeal) {
+    var data: any = await this.jobAppealService.getJobAppealById(UserId)
+    if (data.jobAppeal.appealJob != null) {
       this.isHasJob = true
     }
   }
 
   async getUserRoles(userId: string) {
-
     this.userRoles = await this.userService.getRolesToUserAsync(userId);
     for (const item of this.userRoles) {
       if (item == "Misafir") {
         this.isGuest = false;
+        //eğer kullanıcı misafir değilse profil sayfasında adres bilgileri görünmeyecek ve default bilgiler atanacak
+        this.profileForm.get("city")?.setValue(" ")
+        this.profileForm.get("district")?.setValue(" ")
+        this.profileForm.get("neighborhood")?.setValue(" ")
+        this.profileForm.get("personalDescription")?.setValue(" ")
         break;
       }
       else {
@@ -143,7 +148,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onUserFormSubmit() {
-    console.log(this.profileForm.value)
+    //this.logValidationErrors(this.profileForm)
     if (!this.profileForm.valid) {
       //yapay zeka bilgisiyle yazıldı.
       Object.keys(this.profileForm.controls).forEach(field => {
@@ -169,28 +174,35 @@ export class ProfileComponent implements OnInit {
     return this.DescriptionMaxLength - (personalDescription ? personalDescription.length : 0);
   }
 
-  loadTurkey_geo(): void {
+  async loadTurkey_geo() {
     this.httpClient.Get<any>({
       //assetlerden json dosyası çekilir
       fullEndPoint: "assets/common/jsons/turkey-geo.json"
     }).subscribe(data => {
-      //gelen verilerden İl olanlar cities dizisine atanır
+      //gelen veriler Turkey_geo dizisine atanır
       data.forEach((dat: any) => {
         this.Turkey_geo.push(dat);
       });
-      //console.log(this.Turkey_geo)
-
-      //kullanıcının adress bilgisi eşitleniyor
-      this.equalizeAddress(this.profileForm.get('city')?.value, this.profileForm.get('district')?.value)
+      // console.log(this.Turkey_geo)
     });
+
+    //adres bilgilerinin yüklenmesi bekleniyor
+    setTimeout(() => {
+      if (this.profileForm.get("city")?.value != " ") {
+        //kullanıcının adress bilgisi olduğu yukarda kontorl edildiği için direkt eşitleniyor
+        this.equalizeAddress(this.profileForm.get('city')?.value, this.profileForm.get('district')?.value)
+      }
+    }, 100);
+    
+
   }
 
-  loadDistricts(City: string): void {
+  async loadDistricts(City: string) {
     this.districts = this.Turkey_geo.find(geo => geo.City === City)?.Districts || [];
     //console.log(this.districts)
   }
 
-  loadNeighborhoods(District: string): void {
+  async loadNeighborhoods(District: string) {
     const selectedDistrict = this.districts.find(district => district.District === District);
 
     this.neighborhoods = [];// her seferinde array temizlenir
@@ -221,4 +233,18 @@ export class ProfileComponent implements OnInit {
     this.loadNeighborhoods(District);
     this.selectedDistrict = this.districts.find(district => district.id === event.innerText);
   }
+
+  // logValidationErrors(formGroup: FormGroup) {
+  //   Object.keys(formGroup.controls).forEach(key => {
+  //     const control = formGroup.get(key);
+
+  //     if (control instanceof FormGroup) {
+  //       this.logValidationErrors(control); // nested gruplar varsa
+  //     } else {
+  //       if (control && control.invalid) {
+  //         console.log(`HATA - ${key}:`, control.errors);
+  //       }
+  //     }
+  //   });
+  // }
 }

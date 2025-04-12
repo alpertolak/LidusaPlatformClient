@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { getActiveConsumer } from '@angular/core/primitives/signals';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { JobAppeal } from 'src/app/entities/JobAppeal';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
 import { JobService } from 'src/app/services/common/jobs/job.service';
@@ -30,9 +32,10 @@ export class AppealToJobComponent implements OnInit {
   selectedDistrict: any;
 
   //kullanıcı bilgileri için değişkenler
-  AppealForm: FormGroup
+  public AppealForm: FormGroup
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private router: Router,
     private toastrService: ToastrService,
     private spinner: NgxSpinnerService,
@@ -40,19 +43,27 @@ export class AppealToJobComponent implements OnInit {
     private jobService: JobService,
     private JobAppealService: JobAppealService) { }
 
-  ngOnInit(): void {
-    this.getJobs()
-    this.createForm()
-    this.loadTurkey_geo()
+  async ngOnInit(): Promise<void> {
+    await this.createForm()
+    await this.loadTurkey_geo()
+    await this.getUserJobAppeal()
+    await this.getJobs()
   }
 
-  createForm() {
+  async equalizeAddress(City: string, District: string) {
+    this.selectedCity = City;
+    this.selectedDistrict = District;
+    this.loadDistricts(this.selectedCity);
+    this.loadNeighborhoods(this.selectedDistrict);
+  }
+
+  async createForm() {
     this.AppealForm = this.formBuilder.group({
       appealJob: ['', Validators.required],
       city: ['', Validators.required],
       district: ['', Validators.required],
       neighborhood: ['', Validators.required],
-      appealDescription: ['Merhaba, yukarıda belirtilen iş için ilan açma başvurunda bulunmak istiyorum.', [Validators.maxLength(this.DescriptionMaxLength)]],
+      appealDescription: ['Merhaba, belirtilen iş için ilan açma başvurunda bulunmak istiyorum.', [Validators.maxLength(this.DescriptionMaxLength)]],
     })
   }
 
@@ -63,6 +74,7 @@ export class AppealToJobComponent implements OnInit {
         this.spinner.hide(SpinnerType.save)
         this.toastrService.success("Başvurunuz alınmıştır.", "Başvuru Başarılı", {
         })
+        this.router.navigate(['/profile'])
       }, () => {
         this.spinner.hide(SpinnerType.save)
         this.toastrService.error("Başvuru alınamadı, daha sonra tekrar deneyiniz.", "Başvuru Başarısız", {
@@ -71,31 +83,53 @@ export class AppealToJobComponent implements OnInit {
     }
   }
 
+  async getUserJobAppeal() {
+    var data = await this.JobAppealService.GetCurrentUserJobAppeal()
+    debugger
+    if (data.currentUserJobAppeal.appealJob) {
+      this.AppealForm.patchValue({
+        appealJob: data.currentUserJobAppeal.appealJob,
+        city: data.currentUserJobAppeal.appealUserCity,
+        district: data.currentUserJobAppeal.appealUserDistrict,
+        neighborhood: data.currentUserJobAppeal.appealUserNeighborhood,
+        appealDescription: data.currentUserJobAppeal.appealDescription
+      })
+    }
+
+  }
   async getJobs() {
     var jobs = await this.jobService.read(0, 9999)
     this.jobs = jobs.jobs
-    console.log(this.jobs)
   }
 
-  loadTurkey_geo(): void {
+  async loadTurkey_geo() {
     this.httpClient.Get<any>({
       //assetlerden json dosyası çekilir
       fullEndPoint: "assets/common/jsons/turkey-geo.json"
     }).subscribe(data => {
       //gelen verilerden İl olanlar cities dizisine atanır
-      data.forEach((dat: any) => {
+      data.forEach(async (dat: any) => {
         this.Turkey_geo.push(dat);
       });
       //console.log(this.Turkey_geo)
-    });
+
+      //kullanıcının adress bilgisi varsa eşitleniyor
+      //adres bilgileri yüklenmesi için 50ms bekletilir
+      setTimeout(async () => {
+        if (this.AppealForm.get('city')?.value && this.AppealForm.get('district')?.value) {
+          this.equalizeAddress(this.AppealForm.get('city')?.value, this.AppealForm.get('district')?.value)
+        }
+      }, 50)
+    })
+
   }
 
-  loadDistricts(City: string): void {
+  async loadDistricts(City: string) {
     this.districts = this.Turkey_geo.find(geo => geo.City === City)?.Districts || [];
     //console.log(this.districts)
   }
 
-  loadNeighborhoods(District: string): void {
+  async loadNeighborhoods(District: string) {
     const selectedDistrict = this.districts.find(district => district.District === District);
 
     this.neighborhoods = [];// her seferinde array temizlenir

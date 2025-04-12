@@ -39,7 +39,7 @@
                                 Başvuru Tarihi
                             </td>
                             <td>
-                                <input type="text" #name class="form-control DetailsInput" id="Name" [value]="jobAppeal.appealDate" disabled>
+                                <input type="text" #name class="form-control DetailsInput" id="Name" [value]="jobAppeal.appealDate | date:'dd.MM.yyyy HH:mm'" disabled>
                             </td>
                         </tr>
                         <tr>
@@ -79,7 +79,7 @@
                                 karar Tarihi
                             </td>
                             <td>
-                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.decisionDate" disabled>
+                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.decisionDate | date:'dd.MM.yyyy HH:mm'" disabled>
                             </td>
                         </tr>
                         <tr>

@@ -12,6 +12,35 @@ export class JobAppealService {
 
   constructor(private httpClient: HttpClientService) { }
 
+  async UpdateSeen(jobAppealId: string, isSeen: boolean, successCallBack?: () => void, errorCallBack?: () => void): Promise<any> {
+    const observable: Observable<any> = this.httpClient.Put<any>({
+      action: "UpdateSeenJobAppeal",
+      controller: "JobAppeal",
+    }, { jobAppealId, isSeen });
+    const promiseData = firstValueFrom(observable)
+    return await promiseData
+  }
+
+  async UpdateJobAppeal(jobAppeal: JobAppeal, successCallBack?: () => void, errorCallBack?: () => void): Promise<any> {
+    const observable: Observable<any> = this.httpClient.Put<any>({
+      action: "UpdateJobAppeal",
+      controller: "JobAppeal",
+    }, { jobAppeal });
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallBack).catch(errorCallBack)
+
+    return await promiseData
+  }
+  async GetCurrentUserJobAppeal(successCallBack?: () => void, errorCallBack?: () => void): Promise<any> {
+    const observable: Observable<any> = this.httpClient.Get<any>({
+      action: "GetCurrentUserJobAppeal",
+      controller: "JobAppeal",
+    });
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallBack).catch(errorCallBack)
+
+    return await promiseData
+  }
   async getJobAppealById(appealId: string, successCallBack?: () => void, errorCallBack?: () => void): Promise<JobAppeal> {
 
     const observable: Observable<JobAppeal> = this.httpClient.Get<JobAppeal>({
@@ -37,7 +66,6 @@ export class JobAppealService {
     return await promiseData
   }
 
-
   async createJobAppeal(createJobAppeal: Create_JobAppeal, successCallBack?: () => void, errorCallBack?: () => void): Promise<any> {
     const observable: Observable<any> = this.httpClient.Post<any>({
       action: "CreateJobAppeal",
@@ -53,7 +81,7 @@ export class JobAppealService {
     const observable: Observable<any> = this.httpClient.Put<any>({
       action: "ApproveJobAppeal",
       controller: "JobAppeal",
-    },{ jobAppealId });
+    }, { jobAppealId });
     const promiseData = firstValueFrom(observable).then(successCallBack).catch(errorCallBack)
     return await promiseData
   }
