@@ -5,6 +5,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { JobAppealDetailComponent } from './job-appeal-detail/job-appeal-detail.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -18,6 +19,7 @@ import { JobAppealDetailComponent } from './job-appeal-detail/job-appeal-detail.
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
+    FormsModule
   ]
 })
 export class JobAppealModule { }

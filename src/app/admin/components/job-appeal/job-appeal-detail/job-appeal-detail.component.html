@@ -28,7 +28,7 @@
                         </tr>
                         <tr>
                             <td class="inputLayout">
-                                Başvuru açıklaması  
+                                Başvuru açıklaması
                             </td>
                             <td>
                                 <textarea class="form-control DetailsInput text-area" id="appealDescription" disabled>{{jobAppeal.appealDescription}}</textarea>
@@ -40,6 +40,14 @@
                             </td>
                             <td>
                                 <input type="text" #name class="form-control DetailsInput" id="Name" [value]="jobAppeal.appealDate | date:'dd.MM.yyyy HH:mm'" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Son Güncelleme Tarihi
+                            </td>
+                            <td>
+                                <input type="text" #name class="form-control DetailsInput" id="Name" [value]="jobAppeal.updatedDate | date:'dd.MM.yyyy HH:mm'" disabled>
                             </td>
                         </tr>
                         <tr>
@@ -66,7 +74,7 @@
                                 <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.appealUserNeighborhood" disabled>
                             </td>
                         </tr>
-                        <tr>
+                        <tr *ngIf="jobAppeal.supervisor == null ? false : true">
                             <td class="inputLayout">
                                 Yetkili
                             </td>
@@ -74,7 +82,7 @@
                                 <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.supervisor" disabled>
                             </td>
                         </tr>
-                        <tr>
+                        <tr *ngIf="jobAppeal.decisionDate == null ? false : true">
                             <td class="inputLayout">
                                 karar Tarihi
                             </td>
@@ -82,21 +90,32 @@
                                 <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.decisionDate | date:'dd.MM.yyyy HH:mm'" disabled>
                             </td>
                         </tr>
-                        <tr>
+                        <tr *ngIf="jobAppeal.appealState == null ? false : true">
                             <td class="inputLayout">
                                 Başvuru Durumu
                             </td>
                             <td>
-                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.appealState" disabled>
+                                <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.appealState == true ?'Onaylandı':'Reddedildi'" disabled>
                             </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
+                                Reddedilme Nedeni
+                            </td>
+                            <td>
+                                <textarea #rejectionReason class="form-control DetailsInput text-area" id="rejectionReason" maxlength="200" [value]="jobAppeal.rejectionReason" (input)="updateDeleteButtonState(rejectionReason.value)" placeholder="en az 15 karakter giriniz">
+                              </textarea>
+                            </td>
+                            <!-- //TODO buraya 150 karakterlik sayaç koy -->
+                            <!-- <td class="inputLayout">150</td> -->
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onCancel()">reddet</button>
+                <button [disabled]="deleteButtonState" type="button" class="btn btn-danger" data-bs-dismiss="modal" (click)="onCancel()">Reddet</button>
                 <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="onApproved()">Onayla</button>
             </div>
-        </div> 
+        </div>
     </div>
 </div>

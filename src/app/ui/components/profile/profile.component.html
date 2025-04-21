@@ -10,6 +10,37 @@
   <div [ngClass]="isGuest ? 'right-side' : 'right-side-IfGuest'">
     <form [formGroup]="profileForm" (ngSubmit)="onUserFormSubmit()">
       <table>
+        <!-- başvuru beklemede mesajı -->
+        <tr *ngIf="jobAppeal">
+          <td colspan="2">
+            <div class="Appeal_Info">
+              <div class="notifications-container">
+                <div class="alert" [ngClass]="messageClasess.alert">
+                  <div class="flex">
+                    <div class="flex-shrink-0">
+                      <svg aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" [ngClass]="messageClasess.svg" class="h-5 w-5">
+                        <path clip-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path>
+                      </svg>
+                    </div>
+                    <div class="alert-prompt-wrap" [ngClass]="messageClasess.prompt_wrap">
+                      <p class="text-sm text-yellow-700">
+                        <span *ngIf="jobAppealState == null"> Başvurunuz henüz onaylanmamıştır, Güncelleme yapmak için tıklayınız</span>
+                        <span *ngIf="jobAppealState == true"> Başvurunuz onaylanmıştır. eksik bilgilerini girerek devam edebilirsiniz</span>
+                        <span *ngIf="jobAppealState == false"> Başvurunuz reddedilmiştir. reddedilme nedenlerini görmek için tıklayınız</span><br>
+                        <a *ngIf="jobAppealState != true" [ngClass]="messageClasess.prompt_link" class="alert-prompt-link" href="appeal-to-job">Başvuruyu gör</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <!-- Reddedilme mesajı -->
+        <!-- <p class="text-sm text-yellow-700">
+          <br>
+          <a class="alert-prompt-link" href="appeal-to-job">Başvuruyu gör</a>
+        </p> -->
         <tr>
           <td>ID</td>
           <td>
@@ -95,7 +126,7 @@
             </strong>
           </td>
         </tr>
-        <tr *ngIf="isGuest">
+        <tr [className]="secretSectionsClass">
           <td>
             <label for="input_city">Şehir</label>
           </td>
@@ -109,7 +140,7 @@
             </div>
           </td>
         </tr>
-        <tr *ngIf="isGuest">
+        <tr [className]="secretSectionsClass">
           <td>
             <label for="input_district">İlçe</label>
           </td>
@@ -123,7 +154,7 @@
             </div>
           </td>
         </tr>
-        <tr *ngIf="isGuest">
+        <tr [className]="secretSectionsClass">
           <td>
             <label for="input_neighborhood">Mahalle</label>
           </td>
@@ -137,7 +168,7 @@
             </div>
           </td>
         </tr>
-        <tr *ngIf="isGuest">
+        <tr [className]="secretSectionsClass">
           <td>
             <label for="personal_Description">Kişisel Açıklama</label>
           </td>
@@ -156,16 +187,10 @@
             <input class="btn btn-primary" style="float: right;" type="submit" value="Kaydet" />
           </td>
         </tr>
-        <tr *ngIf="!isGuest && !isHasJob">
+        <tr *ngIf="!isGuest && !jobAppeal">
           <td> </td>
           <td style="display: flex; justify-content: right;">
             <h4>İlan veren olmak ister misiniz? <strong><a class="ChangePassword" href="appeal-to-job">başvur</a></strong></h4>
-          </td>
-        </tr>
-        <tr *ngIf="isHasJob">
-          <td> </td>
-          <td style="display: flex; justify-content: right;">
-            <h4>Başvurunuz alınmıştır <strong><a class="ChangePassword" href="appeal-to-job">düzenle</a></strong></h4>
           </td>
         </tr>
       </table>

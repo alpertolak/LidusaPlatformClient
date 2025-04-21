@@ -11,4 +11,7 @@ export class JobAppeal {
   decisionDate: Date | null;
   appealState: boolean | null = null;
   isSeen: boolean | null = null;
+  rejectionReason: string
+  updatedDate: string
+  isUpdated: Date
 }

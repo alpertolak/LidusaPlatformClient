@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
     /* elementler arası boşluk */
 }
 
@@ -13,7 +13,7 @@
 }
 
 .form-label {
-    width: 190px;
+    width: 195px;
 }
 
 .form-control {
@@ -24,7 +24,7 @@ td {
     padding: 10px;
 }
 
-.header_p{
+.header_p {
     margin-top: -15px;
 }
 
@@ -33,4 +33,97 @@ td {
     color: red;
     font-size: 12px;
     margin-top: 3px;
-  }
+}
+
+
+.uploadButton {
+    float: left;
+}
+
+
+.mini_img_container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.mini_img {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    float: left;
+    margin: 5px 0px 5px 0px;
+}
+
+/*PDF preview css*/
+.document-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.document-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.document-icon {
+    width: 32px;
+    height: 40px;
+    margin-right: 8px;
+    margin-bottom: 10px;
+}
+
+.document-button-label {
+    margin-left: 7px;
+    font-size: 12px;
+}
+
+.document-label {
+    display: flex;
+    align-items: start;
+}
+
+.upload-div {
+    display: flex;
+    align-items: center;
+}
+
+.document-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.delete-all-document {
+    float: right;
+    line-height: 2;
+    position: relative;
+    cursor: pointer;
+    color: red;
+}
+
+.delete-all-document:hover {
+    color: rgb(255, 68, 105);
+}
+
+/*load more*/
+/*ChangePassword Css*/
+.load-more {
+    line-height: 2;
+    position: relative;
+    cursor: pointer;
+}
+
+.load-more::before {
+    content: '';
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: hsl(204, 92%, 47%);
+    position: absolute;
+    bottom: -.25rem;
+    right: 0;
+    transition: right .4s, width .4s, left .4s;
+}

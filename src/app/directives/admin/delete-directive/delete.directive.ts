@@ -26,41 +26,57 @@ export class DeleteDirective implements OnInit {
 
   ngOnInit(): void {
     const img = this._renderer.createElement("img");
-    this._renderer.setAttribute(img, "src", "/assets/icons/delete.png");
+    this._renderer.setAttribute(img, "src", this.DeleteButtonType == "1" ? "/assets/icons/delete.png" : this.DeleteButtonType == "2" ? "/assets/icons/cross.png" : "");
     this._renderer.setStyle(img, "cursor", "pointer");
-    this._renderer.setAttribute(img, "width", "25");
-    this._renderer.setAttribute(img, "height", "25");
+    this._renderer.setAttribute(img, "width", this.IconWidth);
+    this._renderer.setAttribute(img, "height", this.IconHeight);
     this._renderer.appendChild(this.element.nativeElement, img);
   }
 
   //gençay 22.DERS - 23.DERS
   @Input() id: string; // silme işlemi için id parametresi, directive'in kullanıldığı component'ten input olarak alıyor
   @Input() controller: string //delete directive'i evrensel olark tanımlayabilmek için kullanıldığı yerde istek yappılacak controller bilgisni alıyoruz
+  @Input() action: string
+  @Input() IsOpenDialog: boolean = true
+  @Input() ShowInfo: boolean = true
+  @Input() DeleteButtonType: string = "1";
+  @Input() IconHeight: string = "25"
+  @Input() IconWidth: string = "25"
   @Output() callback: EventEmitter<any> = new EventEmitter(); // silme işlemi tamalandığında listeyi yenilemek için kullanılan output nesnesi
 
   @HostListener("click")
   onClick() {
-    this.dialogService.openDialog({
-      componentType: DeleteDialogComponent,
-      data: DialogState.yes,
-      options:{width:"350px"},
-      afterClose: () => {
-        this.spinnerService.show(SpinnerType.save)
-        const td: HTMLTableCellElement = this.element.nativeElement
-        this.httpClientService.Delete({
-          controller: this.controller
-        }, this.id).subscribe(data => {
-          $(td.parentElement).fadeOut(300, () => {
-            this.spinnerService.hide(SpinnerType.save)
-            this.callback.emit()
-            this.toastrService.success("Hizmet Silinmiştir", "Başarılı")
-          })
-        }, (errorResponse) => {
-          this.spinnerService.hide(SpinnerType.save)
-          this.callback.emit()
-          this.toastrService.error("Hizmet Silinemedi", "Hata")
-        })
-      }
+    if (this.IsOpenDialog) {
+      this.dialogService.openDialog({
+        componentType: DeleteDialogComponent,
+        data: DialogState.yes,
+        options: { width: "350px" },
+        afterClose: () => {
+          this.deleteItem()
+        }
+      })
+    }
+    else {
+      this.deleteItem()
+    }
+
+  }
+  deleteItem() {
+    this.spinnerService.show(SpinnerType.save)
+    const td: HTMLTableCellElement = this.element.nativeElement
+    this.httpClientService.Delete({
+      controller: this.controller,
+      action: this.action
+    }, this.id).subscribe(data => {
+      $(td.parentElement).fadeOut(300, () => {
+        this.spinnerService.hide(SpinnerType.save)
+        this.callback.emit()
+        if (this.ShowInfo) this.toastrService.success("Sile işlemi başarılı", "Başarılı")
+      })
+    }, (errorResponse) => {
+      this.spinnerService.hide(SpinnerType.save)
+      this.callback.emit()
+      if (this.ShowInfo) this.toastrService.error("Sile işlemi Başarısız", "Hata")
     })
   }
 }

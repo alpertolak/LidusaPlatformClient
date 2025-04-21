@@ -17,7 +17,8 @@ export class JobAppealDetailComponent implements AfterViewInit {
 
   @Input() JobAppealId: string;
   public jobAppeal: JobAppeal = new JobAppeal();
-
+  public deleteButtonState: boolean = true
+  public rejectionReason: string
 
   constructor(
     private _jobAppealService: JobAppealService,
@@ -28,7 +29,7 @@ export class JobAppealDetailComponent implements AfterViewInit {
   async setSeenToDb() {
     await this._jobAppealService.UpdateSeen(this.JobAppealId, true)
   }
-  
+
   ngAfterViewInit(): void {
     var modal = document.getElementById("jobAppealDetailModal")
 
@@ -43,6 +44,7 @@ export class JobAppealDetailComponent implements AfterViewInit {
   }
 
   onModalOpen() {
+    this.updateDeleteButtonState("") // modal açılında sayaç sıfırlanır
     this.getJobAppealDetails(this.JobAppealId);
     this.setSeenToDb()
   }
@@ -53,8 +55,11 @@ export class JobAppealDetailComponent implements AfterViewInit {
 
 
   async getJobAppealDetails(appealId: string) {
+    this._spinner.show(SpinnerType.load)
+    var data: any = await this._jobAppealService.getJobAppealById(appealId,()=>{
+      this._spinner.hide(SpinnerType.load)
+    })
     debugger
-    var data: any = await this._jobAppealService.getJobAppealById(appealId)
     this.jobAppeal = data.jobAppeal
   }
 
@@ -67,12 +72,11 @@ export class JobAppealDetailComponent implements AfterViewInit {
       this._spinner.hide(SpinnerType.save)
       this._toastrService.error("Onaylama başarısız", "Başarısız")
     })
-
-
   }
+
   onCancel() {
     this._spinner.show(SpinnerType.save)
-    this._jobAppealService.rejectJobAppeal(this.jobAppeal.id, () => {
+    this._jobAppealService.rejectJobAppeal(this.jobAppeal.id, this.rejectionReason, () => {
       this._spinner.hide(SpinnerType.save)
       this._toastrService.success("Başvuru reddedildi", "Başarılı")
     }, () => {
@@ -84,7 +88,13 @@ export class JobAppealDetailComponent implements AfterViewInit {
   formatDate(dateStr: string): string {
     const date = new Date(dateStr);
     const pad = (n: number) => n.toString().padStart(2, '0');
-  
+
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  }
+
+  updateDeleteButtonState(rejectionReason: string) {
+    this.rejectionReason = rejectionReason
+    if (rejectionReason.length >= 15) this.deleteButtonState = false
+    else this.deleteButtonState = true
   }
 }

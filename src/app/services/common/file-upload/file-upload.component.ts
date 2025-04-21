@@ -25,7 +25,7 @@ export class FileUploadComponent {
     private spinner: NgxSpinnerService) { }
 
   public files: NgxFileDropEntry[];
-  
+
   @Input() options: Partial<FileUploadOptions>
 
 
@@ -54,16 +54,18 @@ export class FileUploadComponent {
         }, fileData).subscribe(result => {
           this.spinner.hide(SpinnerType.save)
           this.toastrService.success("Dosyalar  yüklenmiştir", "Başarılı")
+
+          if(this.options.afterClose) this.options.afterClose() // eğer afterClose dolu ise çağırılıyor
+
         }, (ErrorReponse: HttpErrorResponse) => {
           this.spinner.hide(SpinnerType.save)
           this.toastrService.error(ErrorReponse.error, "Dosya yükleme başarısız")
-
         })
       }
     })
   }
 
-  
+
   // openDialog(afterClosed: any): void {
   //   const dialogRef = this.dialog.open(FileUploadsDialogComponent, {
   //     width: "300px",
@@ -86,4 +88,8 @@ export class FileUploadOptions {
   explanation?: string //kullanılan sayfaya özel metin içeriği
   buttonName?: string = "Seç" //kullanılan sayfaya özel buton adı
   accept?: string //kullanılan sayfaya özel kabul edilecek dosya türleri
+  multiple?: boolean = false //kullanılan sayfaya özel birden fazla dosya yüklenebilir mi?
+  DocumentList?: boolean = false //kullanılan sayfaya özel dosya listesi oluşturulacak mı?
+  HiddenZone?: boolean = false //kullanılan sayfaya özel dosya yükleme alanı gizlensin mi?
+  afterClose?: () => void
 }

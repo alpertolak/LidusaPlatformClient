@@ -38,12 +38,21 @@ export class ProfileComponent implements OnInit {
   userRoles: string[] = []
   public isGuest: boolean = true // kullanıcı rolüne göre profil sayfası görüntülenir
   public isHasJob: boolean = false // kullanıcı iş başvurusu yapmış mı kontrolü için değişken
+  public jobAppealState: boolean
+  public jobAppeal: JobAppeal
+  public jobAppealInfoClass: string
+  public messageClasess: stateCssClasses
+
+  //kullanıcıya göre bazı bölgeler açılıp kapatılması için değişkenler
+  public secretSectionsClass: string = "hide"
+  public leftSideClasses:string = "left-side hide"
+  public rightSideClasses:string = "hide"
 
   //GENÇAY 25.DERS
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
     action: "Upload-User-Profile-Image",
     controller: "users",
-    accept: ".png, .jpg, .pdf",
+    accept: ".png, .jpg",
     buttonName: "Resim seç",
     queryString: `userId=${this.userId}`,
   }
@@ -56,20 +65,21 @@ export class ProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private httpClient: HttpClientService) { }
 
-
   async ngOnInit() {
     await this.createForm()
     await this.getUser()
     await this.loadTurkey_geo()
   }
 
-  async equalizeAddress(City: string, District: string) {
-    this.selectedCity = City;
-    this.selectedDistrict = District;
-    await this.loadDistricts(this.selectedCity);
-    await this.loadNeighborhoods(this.selectedDistrict);
+  async getUserJobAppeal(UserId: string) {
+    var data: any = await this.jobAppealService.getJobAppealById(UserId)
+    if (data.jobAppeal.appealJob != null) {
+      this.jobAppeal = data.jobAppeal
+      this.jobAppealState = data.jobAppeal.appealState
+      this.updateMessageClasess()
+      console.log(this.messageClasess)
+    }
   }
-
   async createForm() {
     //Form nesnesi oluşturulur ve form elemanlarına başlangıç değerleri atanır
     this.profileForm = this.formBuilder.group({
@@ -87,7 +97,10 @@ export class ProfileComponent implements OnInit {
     });
   }
   async getUser() {
-    var data: any = await this.userService.getCurrentUserAsync()
+    this.spinnerService.show(SpinnerType.load)
+    var data: any = await this.userService.getCurrentUserAsync(() => {
+      this.spinnerService.hide(SpinnerType.load)
+    })
     //apiden gelen data ile form elemanlarına değerler atanır
     this.profileForm.patchValue({
       id: data.user.id,
@@ -115,13 +128,6 @@ export class ProfileComponent implements OnInit {
     this.getUserJobAppeal(data.user.id)
   }
 
-  async getUserJobAppeal(UserId: string) {
-    var data: any = await this.jobAppealService.getJobAppealById(UserId)
-    if (data.jobAppeal.appealJob != null) {
-      this.isHasJob = true
-    }
-  }
-
   async getUserRoles(userId: string) {
     this.userRoles = await this.userService.getRolesToUserAsync(userId);
     for (const item of this.userRoles) {
@@ -144,6 +150,7 @@ export class ProfileComponent implements OnInit {
     this.userImage = await this.userService.getProfileImage(userId)
     if (this.userImage != null) {
       this.userImagePath = this.userImage.filePath
+      console.log(this.userImagePath)
     }
   }
 
@@ -192,9 +199,14 @@ export class ProfileComponent implements OnInit {
         //kullanıcının adress bilgisi olduğu yukarda kontorl edildiği için direkt eşitleniyor
         this.equalizeAddress(this.profileForm.get('city')?.value, this.profileForm.get('district')?.value)
       }
-    }, 100);
-    
+    }, 200);
+  }
 
+  async equalizeAddress(City: string, District: string) {
+    this.selectedCity = City;
+    this.selectedDistrict = District;
+    await this.loadDistricts(this.selectedCity);
+    await this.loadNeighborhoods(this.selectedDistrict);
   }
 
   async loadDistricts(City: string) {
@@ -234,17 +246,34 @@ export class ProfileComponent implements OnInit {
     this.selectedDistrict = this.districts.find(district => district.id === event.innerText);
   }
 
-  // logValidationErrors(formGroup: FormGroup) {
-  //   Object.keys(formGroup.controls).forEach(key => {
-  //     const control = formGroup.get(key);
+  updateMessageClasess() {
+    const stateClasses: stateCssClasses = new stateCssClasses()
 
-  //     if (control instanceof FormGroup) {
-  //       this.logValidationErrors(control); // nested gruplar varsa
-  //     } else {
-  //       if (control && control.invalid) {
-  //         console.log(`HATA - ${key}:`, control.errors);
-  //       }
-  //     }
-  //   });
-  // }
+    //sadece true veya false gelme duruma göre sınıflar atanıyor, default değerleri boş gelme durumda kullanıyor
+    if (this.jobAppealState == true) {
+      stateClasses.alert = "success"
+      stateClasses.svg = "success-svg"
+      stateClasses.prompt_wrap = "success-prompt-wrap"
+      stateClasses.prompt_link = "success-prompt-link"
+    }
+    else if (this.jobAppealState == false) {
+      stateClasses.alert = "danger"
+      stateClasses.svg = "danger-svg"
+      stateClasses.prompt_wrap = "danger-prompt-wrap"
+      stateClasses.prompt_link = "danger-prompt-link"
+    }
+
+    this.messageClasess = stateClasses
+  }
+
+  updateHideSectionsClass(state: boolean) {
+    this.secretSectionsClass = state == true ? "hide" : ""
+  }
+}
+
+export class stateCssClasses {
+  alert: string = "alert"
+  svg: string = "alert-svg"
+  prompt_wrap: string = "alert-prompt-wrap"
+  prompt_link: string = "alert-prompt-link"
 }

@@ -24,12 +24,12 @@
                     <label for="input_city" class="form-label">İl</label>
                 </td>
                 <td>
-                    <select id="input_city" class="form-select form-control" formControlName="city" aria-label="Default select example" (change)="onCityChange(city.selectedOptions)" #city>
+                    <select id="input_city" class="form-select form-control" formControlName="appealUserCity" aria-label="Default select example" (change)="onCityChange(city.selectedOptions)" #city>
                         <option selected value="">İl Seçiniz</option>
                         <option *ngFor="let geo of Turkey_geo" [value]="geo.City">{{geo.City}}</option>
                     </select>
-                    <div *ngIf="AppealForm.get('city')?.invalid &&AppealForm.get('city')?.touched" class="text-danger">
-                        <div *ngIf="AppealForm.get('city')?.errors?.['required']">bu alan zorunludur</div>
+                    <div *ngIf="AppealForm.get('appealUserCity')?.invalid &&AppealForm.get('appealUserCity')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('appealUserCity')?.errors?.['required']">bu alan zorunludur</div>
                     </div>
                 </td>
             </tr>
@@ -38,12 +38,12 @@
                     <label for="input_district" class="form-label">İlçe</label>
                 </td>
                 <td>
-                    <select id="input_district" class="form-select form-control" formControlName="district" aria-label="Default select example" (change)="onDistrictChange(district.selectedOptions)" #district>
+                    <select id="input_district" class="form-select form-control" formControlName="appealUserDistrict" aria-label="Default select example" (change)="onDistrictChange(district.selectedOptions)" #district>
                         <option selected value="">İlçe Seçiniz</option>
                         <option *ngFor="let district of districts" [value]="district.District">{{district.District}}</option>
                     </select>
-                    <div *ngIf="AppealForm.get('district')?.invalid &&AppealForm.get('district')?.touched" class="text-danger">
-                        <div *ngIf="AppealForm.get('district')?.errors?.['required']">bu alan zorunludur</div>
+                    <div *ngIf="AppealForm.get('appealUserDistrict')?.invalid &&AppealForm.get('appealUserDistrict')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('appealUserDistrict')?.errors?.['required']">bu alan zorunludur</div>
                     </div>
                 </td>
             </tr>
@@ -52,36 +52,85 @@
                     <label for="input_neighborhood" class="form-label">Mahalle</label>
                 </td>
                 <td>
-                    <select id="input_neighborhood" class="form-select form-control" formControlName="neighborhood" aria-label="Default select example">
+                    <select id="input_neighborhood" class="form-select form-control" formControlName="appealUserNeighborhood" aria-label="Default select example">
                         <option selected value="">Mahalle Seçiniz</option>
                         <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood">{{neighborhood}}</option>
                     </select>
-                    <div *ngIf="AppealForm.get('neighborhood')?.invalid &&AppealForm.get('neighborhood')?.touched" class="text-danger">
-                        <div *ngIf="AppealForm.get('neighborhood')?.errors?.['required']">bu alan zorunludur</div>
+                    <div *ngIf="AppealForm.get('appealUserNeighborhood')?.invalid &&AppealForm.get('appealUserNeighborhood')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('appealUserNeighborhood')?.errors?.['required']">bu alan zorunludur</div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td>
-                  <label for="input_Description">Başvuru Açıklaması</label>
+                    <label for="input_Description">Başvuru Açıklaması</label>
                 </td>
                 <td>
-                  <textarea id="input_Description" [maxlength]="DescriptionMaxLength" formControlName="appealDescription" class="form-control" style="max-height: 250px;"></textarea>
+                    <textarea id="input_Description" [maxlength]="DescriptionMaxLength" formControlName="appealDescription" class="form-control" style="max-height: 250px;"></textarea>
                 </td>
                 <td>
-                  <p [style.color]="remainingChars < 50 ? 'red' : 'black'">
-                    {{ remainingChars }}
-                  </p>
-                </td>
-              </tr>
-            <tr>
-                <td>
-
-                </td>
-                <td style="display: flex; justify-content: right;">
-                    <button type="submit" class="btn btn-primary" [disabled]="AppealForm.invalid">Başvur</button>
+                    <p [style.color]="remainingChars < 50 ? 'red' : 'black'">
+                        {{ remainingChars }}
+                    </p>
                 </td>
             </tr>
+            <!-- <tr>
+                <td>
+                    <label for="input_School" class="form-label">Son Bitirdiğiniz Eğitim Kurumu</label>
+                </td>
+                <td>
+                    <input id="input_School" type="text" class="form-control">
+                    <div *ngIf="AppealForm.get('district')?.invalid &&AppealForm.get('district')?.touched" class="text-danger">
+                        <div *ngIf="AppealForm.get('district')?.errors?.['required']">bu alan zorunludur</div>
+                    </div>
+                </td>
+            </tr> -->
+            <tr>
+                <td></td>
+                <td>
+                    <div class="upload-div">
+                        <app-file-upload class="uploadButton" [options]="fileUploadOptions"></app-file-upload>
+                        <div class="document-button-label">
+                            eğitim durumunuzu belgelemek için aldığınız diploma <br>
+                            ve veya sertifika belgelerini yükleyebilirsiniz
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="UserDocumentsCount != 0">
+                <td> </td>
+                <td (click)="deleteAllDocument()"><a class="delete-all-document">bütün evrakları sil</a></td>
+            </tr>
+            <tr *ngIf="UserDocumentsCount != 0">
+                <td class="document-label">Yüklenen evraklar</td>
+                <td>
+                    <ul class="document-list">
+                        <li class="document-body" *ngFor="let item of visibleFiles" [@fadeList]>
+                            <a [href]="item.filePath" target="_blank" rel="noopener noreferrer">
+                                <img src="../../../../assets/icons/pdf logo.png" alt="DocumentPreview" class="document-icon" />
+                                <span class="document-name">{{ item.fileName }}</span>
+                            </a>
+                            <!-- TODO kullanının id bilgisini gönderip api tarafında userChech() kontrolü sağla -->
+                            <div [id]="item.fileNameEncoded" controller="users" action="DeleteDocumentByFileName" [IsOpenDialog]="false" appDelete [ShowInfo]="false" DeleteButtonType="2" IconHeight="15" IconWidth="15" (click)="getUserDocument()">
+                            </div>
+                        </li>
+                        <!-- Daha fazla / Daha az -->
+                        <li *ngIf="UserDocuments.length > 3" class="load-more-container">
+                            <a (click)="toggleShowAll()" class="load-more">
+                                {{ showAll ? 'Daha az' : 'Daha fazla' }} <span *ngIf="!showAll">({{UserDocumentsCount -3 }})</span>
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td style="display: flex; justify-content: right;">
+                    <button type="submit" class="btn btn-primary" [disabled]="AppealForm.invalid">{{IsAppealOld != true ? "Başvur":"Güncelle"}}</button>
+                </td>
+            </tr>
+
         </table>
     </form>
 </div>

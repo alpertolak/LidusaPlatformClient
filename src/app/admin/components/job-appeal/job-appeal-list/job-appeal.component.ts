@@ -23,7 +23,7 @@ export class JobAppealComponent implements OnInit, AfterViewInit {
 
   public AppealDetailId: string;
 
-  displayedColumns: string[] = ['Kullanıcı Adı', 'hizmet', 'Başvuru Tarihi', 'Başvuru Durumu', 'edit']
+  displayedColumns: string[] = ['Kullanıcı Adı', 'hizmet', 'Güncelleme Tarihi', 'Başvuru Durumu', 'edit']
   dataSource: MatTableDataSource<List_JobAppeals>
   @ViewChild(MatPaginator) paginator: MatPaginator
 
@@ -41,7 +41,6 @@ export class JobAppealComponent implements OnInit, AfterViewInit {
   }
   
   async getAllJobAppeals() {
-    debugger
     this._spinner.show(SpinnerType.load)
     const ListPaginationJobAppeals: ListPaginationJobAppeals = await this._jobAppealService.getAllJobAppeals(
       this.paginator ? this.paginator.pageIndex : 0,

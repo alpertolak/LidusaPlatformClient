@@ -4,6 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { Create_JobAppeal } from 'src/app/contracts/JobAppeal/create-jobAppeal';
 import { ListPaginationJobAppeals } from 'src/app/contracts/JobAppeal/list-pagination-JobAppeals';
 import { JobAppeal } from 'src/app/entities/JobAppeal';
+import { Update_Job_Appeal } from 'src/app/contracts/JobAppeal/update-jobAppeal';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +22,11 @@ export class JobAppealService {
     return await promiseData
   }
 
-  async UpdateJobAppeal(jobAppeal: JobAppeal, successCallBack?: () => void, errorCallBack?: () => void): Promise<any> {
+  async UpdateJobAppeal(Update_Job_Appeal: Update_Job_Appeal, successCallBack?: () => void, errorCallBack?: () => void): Promise<any> {
     const observable: Observable<any> = this.httpClient.Put<any>({
       action: "UpdateJobAppeal",
       controller: "JobAppeal",
-    }, { jobAppeal });
+    }, Update_Job_Appeal);
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallBack).catch(errorCallBack)
 
@@ -86,13 +87,23 @@ export class JobAppealService {
     return await promiseData
   }
 
-  async rejectJobAppeal(jobAppealId: string, successCallBack?: () => void, errorCallBack?: () => void) {
+  async rejectJobAppeal(jobAppealId: string, rejectionReason: string, successCallBack?: () => void, errorCallBack?: () => void) {
+    debugger
     const observable: Observable<any> = this.httpClient.Put<any>({
       action: "RejectJobAppeal",
       controller: "JobAppeal",
-    }, { jobAppealId });
+    }, { jobAppealId, rejectionReason });
     const promiseData = firstValueFrom(observable).then(successCallBack).catch(errorCallBack)
     return await promiseData
   }
 
+  async deleteJobAppeal(jobAppealId: string, successCallBack?: () => void, errorCallBack?: () => void) {
+    const observable: Observable<any> = this.httpClient.Delete<any>({
+      action: "DeleteJobAppeal",
+      controller: "JobAppeal",
+
+    }, jobAppealId);
+    const promiseData = firstValueFrom(observable).then(successCallBack).catch(errorCallBack)
+    return await promiseData
+  }
 }

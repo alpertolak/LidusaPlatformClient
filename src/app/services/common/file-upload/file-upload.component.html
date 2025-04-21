@@ -2,17 +2,17 @@
 <!-- sürükle bırak özelliğini açmak istiyorsan [dropZoneClassName]="'hidden-dropzone'" bunu kaldır -->
 
 <div class="center">
-    <ngx-file-drop 
+    <ngx-file-drop
     [disabled]="false"
-    [multiple]="false"
-    [dropZoneClassName]="'hidden-dropzone'" 
+    [multiple]="options.multiple"
+    [dropZoneClassName]="'hidden-dropzone'"
     dropZoneLabel="Drop files here" [accept]="options.accept" (onFileDrop)="SelectedFiles($event)">
         <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
             {{options.explanation}}
             <button class="btn btn-primary" type="button" (click)="openFileSelector()">{{options.buttonName}}</button>
         </ng-template>
     </ngx-file-drop>
-    <!-- <div class="upload-table" *ngIf="files">
+    <div class="upload-table" *ngIf="options.DocumentList">
         <table class="table">
             <thead>
                 <tr>
@@ -25,5 +25,5 @@
                 </tr>
             </tbody>
         </table>
-    </div> -->
+    </div>
 </div>

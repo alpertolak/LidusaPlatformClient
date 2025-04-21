@@ -7,6 +7,7 @@ import { ListPaginationUsers } from 'src/app/contracts/users/list-pagination-use
 import { User_Is_Admin } from 'src/app/contracts/users/User-Is-Admin';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User_Profile_Image } from 'src/app/contracts/users/user-profile-image';
+import { User_Document } from 'src/app/contracts/users/user-document';
 
 @Injectable({
   providedIn: 'root'
@@ -150,22 +151,39 @@ export class UserService {
       Password: password,
       PasswordConfirm: passwordConfirm
     });
-    //TODO api hata ayıklama sistemi
-    try {
-      await firstValueFrom(observable);
-      if (successCallback) successCallback();
-
-    } catch (error) {
-      if (errorCallback) errorCallback(error);
-    }
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
   }
 
-  async getProfileImage(userId: string): Promise<User_Profile_Image> {
+  async getProfileImage(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Profile_Image> {
     const observable: Observable<User_Profile_Image> = this.httpService.Get<User_Profile_Image>({
       controller: "users",
       action: "Get-User-Profile-Image",
     }, userId)
 
-    return await firstValueFrom(observable)
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
+
+    return await promiseData
+  }
+  async getUserDocuments(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Document[]> {
+    const observable: Observable<User_Document[]> = this.httpService.Get<User_Document[]>({
+      controller: "users",
+      action: "GetUserDocuments"
+    }, userId)
+
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
+
+    return await promiseData
+  }
+
+  async DeleteAllUserDocumentsById(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
+    const observable: Observable<any> = this.httpService.Delete<any>({
+      action: "DeleteAllUserDocumentsById",
+      controller: "users"
+    }, userId)
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
   }
 }
