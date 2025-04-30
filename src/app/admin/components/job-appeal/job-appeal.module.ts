@@ -6,13 +6,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { JobAppealDetailComponent } from './job-appeal-detail/job-appeal-detail.component';
 import { FormsModule } from '@angular/forms';
+import { DeleteDirective } from 'src/app/directives/admin/delete-directive/delete.directive';
 
 
 
 @NgModule({
   declarations: [
     JobAppealComponent,
-    JobAppealDetailComponent
+    JobAppealDetailComponent,
   ],
   imports: [
     CommonModule,

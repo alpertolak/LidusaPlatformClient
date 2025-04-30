@@ -36,17 +36,18 @@ export class ProfileComponent implements OnInit {
   userImagePath: string = "../../../../assets/common/profile.jpg"
   userId: string = localStorage.getItem('UserId') as string
   userRoles: string[] = []
-  public isGuest: boolean = true // kullanıcı rolüne göre profil sayfası görüntülenir
   public isHasJob: boolean = false // kullanıcı iş başvurusu yapmış mı kontrolü için değişken
-  public jobAppealState: boolean
+  public jobAppealState: boolean | null = null
   public jobAppeal: JobAppeal
   public jobAppealInfoClass: string
   public messageClasess: stateCssClasses
+  public ShowSuccessSpan: boolean = false
 
   //kullanıcıya göre bazı bölgeler açılıp kapatılması için değişkenler
   public secretSectionsClass: string = "hide"
-  public leftSideClasses:string = "left-side hide"
-  public rightSideClasses:string = "hide"
+  public leftSideClasses: string = "left-side hide"
+  public rightSideClasses: string = "right-side-IfGuest"
+  public appealButton: string = "hide"
 
   //GENÇAY 25.DERS
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
@@ -72,10 +73,12 @@ export class ProfileComponent implements OnInit {
   }
 
   async getUserJobAppeal(UserId: string) {
+    debugger
     var data: any = await this.jobAppealService.getJobAppealById(UserId)
     if (data.jobAppeal.appealJob != null) {
       this.jobAppeal = data.jobAppeal
       this.jobAppealState = data.jobAppeal.appealState
+      await this.setAppealDate(data.jobAppeal.decisionDate, data.jobAppeal.appealState)
       this.updateMessageClasess()
       console.log(this.messageClasess)
     }
@@ -99,7 +102,6 @@ export class ProfileComponent implements OnInit {
   async getUser() {
     this.spinnerService.show(SpinnerType.load)
     var data: any = await this.userService.getCurrentUserAsync(() => {
-      this.spinnerService.hide(SpinnerType.load)
     })
     //apiden gelen data ile form elemanlarına değerler atanır
     this.profileForm.patchValue({
@@ -115,6 +117,7 @@ export class ProfileComponent implements OnInit {
       district: data.user.district,
       neighborhood: data.user.neighborhood
     });
+    this.spinnerService.hide(SpinnerType.load)
 
     // console.log(this.profileForm)
 
@@ -132,16 +135,16 @@ export class ProfileComponent implements OnInit {
     this.userRoles = await this.userService.getRolesToUserAsync(userId);
     for (const item of this.userRoles) {
       if (item == "Misafir") {
-        this.isGuest = false;
-        //eğer kullanıcı misafir değilse profil sayfasında adres bilgileri görünmeyecek ve default bilgiler atanacak
+        //eğer kullanıcı misafir ise profil sayfasında adres bilgileri görünmeyecek ve default bilgiler atanacak
         this.profileForm.get("city")?.setValue(" ")
         this.profileForm.get("district")?.setValue(" ")
         this.profileForm.get("neighborhood")?.setValue(" ")
         this.profileForm.get("personalDescription")?.setValue(" ")
+        this.updateHideSectionsClass(true) // misafirse bazı bölgeler gizlenir
         break;
       }
       else {
-        this.isGuest = true;
+        this.updateHideSectionsClass(false) // misafir değilse gizli bölgeler açılır
       }
     }
   }
@@ -267,10 +270,32 @@ export class ProfileComponent implements OnInit {
   }
 
   updateHideSectionsClass(state: boolean) {
+    //gelen state bilgisine göre classlar belirleniyor
     this.secretSectionsClass = state == true ? "hide" : ""
+    this.leftSideClasses = state == true ? "left-side hide" : "left-side"
+    this.rightSideClasses = state == true ? "right-side-IfGuest" : "right-side"
+    if (state && !this.jobAppeal) {
+      this.appealButton = ""
+    }
+  }
+
+  async setAppealDate(apiDateStr: string, state: boolean) {
+    debugger
+    const apiDate = new Date(apiDateStr);
+
+    // Şu anki tarih
+    const now = new Date();
+
+    // 3 gün önceki tarih
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(now.getDate() - 3);
+
+    if (state == true &&  threeDaysAgo > apiDate)
+      this.ShowSuccessSpan = false
+    else
+      this.ShowSuccessSpan = true
   }
 }
-
 export class stateCssClasses {
   alert: string = "alert"
   svg: string = "alert-svg"

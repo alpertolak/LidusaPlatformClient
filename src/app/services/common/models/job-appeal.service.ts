@@ -32,8 +32,8 @@ export class JobAppealService {
 
     return await promiseData
   }
-  async GetCurrentUserJobAppeal(successCallBack?: () => void, errorCallBack?: () => void): Promise<any> {
-    const observable: Observable<any> = this.httpClient.Get<any>({
+  async GetCurrentUserJobAppeal(successCallBack?: () => void, errorCallBack?: () => void): Promise<JobAppeal> {
+    const observable: Observable<JobAppeal> = this.httpClient.Get<JobAppeal>({
       action: "GetCurrentUserJobAppeal",
       controller: "JobAppeal",
     });

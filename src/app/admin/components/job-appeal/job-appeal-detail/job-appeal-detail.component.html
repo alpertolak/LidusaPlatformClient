@@ -2,7 +2,9 @@
     <div class="modal-dialog custom-modal-width">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="UserDetailModalLabel">başvuru Detayları</h1>
+                <h1 class="modal-title fs-5" id="UserDetailModalLabel">Başvuru Detayları
+                    <span *ngIf="jobAppeal.isUpdated" class="badge text-bg-primary">güncellendi</span>
+                </h1>
                 <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
@@ -108,6 +110,25 @@
                             </td>
                             <!-- //TODO buraya 150 karakterlik sayaç koy -->
                             <!-- <td class="inputLayout">150</td> -->
+                        </tr>
+                        <tr *ngIf="UserDocumentsCount != 0">
+                            <td class="document-label">Yüklenen evraklar</td>
+                            <td>
+                                <ul class="document-list">
+                                    <li class="document-body" *ngFor="let item of visibleFiles">
+                                        <a [href]="item.filePath" target="_blank" rel="noopener noreferrer">
+                                            <img src="../../../../../assets/icons/pdf logo.png" alt="DocumentPreview" class="document-icon" />
+                                            <span class="document-name">{{ item.fileName }}</span>
+                                        </a>
+                                    </li>
+                                    <!-- Daha fazla / Daha az -->
+                                    <li *ngIf="UserDocuments.length > 3" class="load-more-container">
+                                        <a (click)="toggleShowAll()" class="load-more">
+                                            {{ showAll ? 'Daha az' : 'Daha fazla' }} <span *ngIf="!showAll">({{UserDocumentsCount -3 }})</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

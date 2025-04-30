@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="left-side" *ngIf="isGuest">
+  <div [className]="leftSideClasses">
     <div class="card">
       <div class="image-container">
         <img id="profile-image" [src]="userImagePath" class="card-img-top" alt="profil resmi">
@@ -7,11 +7,11 @@
     </div>
     <app-file-upload class="uploadButton" [options]="fileUploadOptions"></app-file-upload>
   </div>
-  <div [ngClass]="isGuest ? 'right-side' : 'right-side-IfGuest'">
+  <div [className]="rightSideClasses">
     <form [formGroup]="profileForm" (ngSubmit)="onUserFormSubmit()">
       <table>
         <!-- başvuru beklemede mesajı -->
-        <tr *ngIf="jobAppeal">
+        <tr *ngIf="jobAppeal && ShowSuccessSpan">
           <td colspan="2">
             <div class="Appeal_Info">
               <div class="notifications-container">
@@ -187,7 +187,7 @@
             <input class="btn btn-primary" style="float: right;" type="submit" value="Kaydet" />
           </td>
         </tr>
-        <tr *ngIf="!isGuest && !jobAppeal">
+        <tr [className]="appealButton">
           <td> </td>
           <td style="display: flex; justify-content: right;">
             <h4>İlan veren olmak ister misiniz? <strong><a class="ChangePassword" href="appeal-to-job">başvur</a></strong></h4>

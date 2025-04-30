@@ -34,9 +34,12 @@ import { UserService } from 'src/app/services/common/models/user.service';
 })
 export class AppealToJobComponent implements OnInit {
 
+  UserId: string = localStorage.getItem('UserId') as string // kullanıcının id'si
+
   //document için değişkenler
   showAll: boolean = false
-  UserId: string = localStorage.getItem('UserId') as string // kullanıcının id'si
+  public UserDocuments: User_Document[] = [];// kullanıcının yüklediği belgeler
+  public UserDocumentsCount: number;
 
   //açıklama için Karakter sınırı
   DescriptionMaxLength: number = 150;
@@ -50,9 +53,9 @@ export class AppealToJobComponent implements OnInit {
 
   //kullanıcı bilgileri için değişkenler
   public AppealForm: FormGroup
+  public AppealState: boolean
+  public appealRejectMessage: string
   jobs: any[] = [];// iş ilanları
-  public UserDocuments: User_Document[] = [];// kullanıcının yüklediği belgeler
-  public UserDocumentsCount: number;
   public IsAppealOld: boolean = false
 
   @Output() fileUploadOptions: Partial<FileUploadOptions> = {
@@ -129,7 +132,6 @@ export class AppealToJobComponent implements OnInit {
   }
 
   onFormSubmit() {
-    debugger
     if (this.AppealForm.valid) {
       this.spinner.show(SpinnerType.save)
       if (this.IsAppealOld) {
@@ -166,9 +168,13 @@ export class AppealToJobComponent implements OnInit {
   }
 
   async getUserJobAppeal() {
-    var data = await this.JobAppealService.GetCurrentUserJobAppeal()
+    var data: any = await this.JobAppealService.GetCurrentUserJobAppeal()
+
     if (data.currentUserJobAppeal.appealJob) {
+      debugger
       this.IsAppealOld = true
+      this.AppealState = data.currentUserJobAppeal.appealState
+      this.appealRejectMessage = data.currentUserJobAppeal.rejectionReason
       this.AppealForm.patchValue({
         appealJob: data.currentUserJobAppeal.appealJob,
         appealUserCity: data.currentUserJobAppeal.appealUserCity,
