@@ -155,15 +155,14 @@ export class UserService {
     promiseData.then(successCallback).catch(errorCallback)
   }
 
-  async getProfileImage(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Profile_Image> {
-    const observable: Observable<User_Profile_Image> = this.httpService.Get<User_Profile_Image>({
+  async getProfileImages(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Profile_Image[]> {
+    const observable: Observable<User_Profile_Image[]> = this.httpService.Get<User_Profile_Image[]>({
       controller: "users",
-      action: "Get-User-Profile-Image",
+      action: "Get-User-Profile-Images",
     }, userId)
 
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)
-
     return await promiseData
   }
   async getUserDocuments(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Document[]> {

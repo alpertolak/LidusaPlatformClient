@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { User_Document } from 'src/app/contracts/users/user-document';
 import { User_Profile_Image } from 'src/app/contracts/users/user-profile-image';
 import { JobAppeal } from 'src/app/entities/JobAppeal';
 import { SpinnerType } from 'src/app/Enums/enums';
@@ -28,11 +29,16 @@ export class ProfileComponent implements OnInit {
 
   DescriptionMaxLength: number = 300; //açıklama için Karakter sınırı
 
+  //document için değişkenler
+  showAll: boolean = false
+  public UserDocuments: User_Document[] = [];// kullanıcının yüklediği belgeler
+  public UserDocumentsCount: number;
+
   //HTML bölümünde form nesnesine ulaşabilmek için get fonsksiyonu
   profileForm: FormGroup //profil formu
   changePasswordForm: FormGroup //şifre değiştirme formu
   isChangePassword: boolean = false
-  userImage: User_Profile_Image = new User_Profile_Image()
+  userImage: User_Profile_Image[];
   userImagePath: string = "../../../../assets/common/profile.jpg"
   userId: string = localStorage.getItem('UserId') as string
   userRoles: string[] = []
@@ -56,6 +62,7 @@ export class ProfileComponent implements OnInit {
     accept: ".png, .jpg",
     buttonName: "Resim seç",
     queryString: `userId=${this.userId}`,
+    multiple: true
   }
 
   constructor(
@@ -70,10 +77,10 @@ export class ProfileComponent implements OnInit {
     await this.createForm()
     await this.getUser()
     await this.loadTurkey_geo()
+    await this.getUserDocument()
   }
 
   async getUserJobAppeal(UserId: string) {
-    debugger
     var data: any = await this.jobAppealService.getJobAppealById(UserId)
     if (data.jobAppeal.appealJob != null) {
       this.jobAppeal = data.jobAppeal
@@ -97,6 +104,7 @@ export class ProfileComponent implements OnInit {
       neighborhood: ['', Validators.required],
       twoFactorEnabled: [false],
       personalDescription: ['', [Validators.required, Validators.maxLength(this.DescriptionMaxLength)]],
+      userJob: ['', [Validators.required]]
     });
   }
   async getUser() {
@@ -115,7 +123,8 @@ export class ProfileComponent implements OnInit {
       twoFactorEnabled: data.user.twoFactorEnabled,
       city: data.user.city,
       district: data.user.district,
-      neighborhood: data.user.neighborhood
+      neighborhood: data.user.neighborhood,
+      userJob: data.user.userJob
     });
     this.spinnerService.hide(SpinnerType.load)
 
@@ -150,10 +159,9 @@ export class ProfileComponent implements OnInit {
   }
 
   async getUserprofileImage(userId: string) {
-    this.userImage = await this.userService.getProfileImage(userId)
-    if (this.userImage != null) {
-      this.userImagePath = this.userImage.filePath
-      console.log(this.userImagePath)
+    const data: any = await this.userService.getProfileImages(userId)
+    if (data != null) {
+      this.userImagePath = data.userProfileImages[1].filePath;
     }
   }
 
@@ -280,7 +288,6 @@ export class ProfileComponent implements OnInit {
   }
 
   async setAppealDate(apiDateStr: string, state: boolean) {
-    debugger
     const apiDate = new Date(apiDateStr);
 
     // Şu anki tarih
@@ -290,12 +297,29 @@ export class ProfileComponent implements OnInit {
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(now.getDate() - 3);
 
-    if (state == true &&  threeDaysAgo > apiDate)
+    if (state == true && threeDaysAgo > apiDate)
       this.ShowSuccessSpan = false
     else
       this.ShowSuccessSpan = true
   }
+
+  async getUserDocument() {
+    debugger
+    setTimeout(async () => {
+      var data: any = await this.userService.getUserDocuments(this.userId)
+      this.UserDocuments = data.userDocuments
+      this.UserDocumentsCount = this.UserDocuments.length
+    }, 150);
+  }
+  get visibleFiles() {
+    return this.showAll ? this.UserDocuments : this.UserDocuments.slice(0, 3);
+  }
+
+  toggleShowAll() {
+    this.showAll = !this.showAll;
+  }
 }
+
 export class stateCssClasses {
   alert: string = "alert"
   svg: string = "alert-svg"

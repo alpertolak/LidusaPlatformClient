@@ -128,6 +128,14 @@
         </tr>
         <tr [className]="secretSectionsClass">
           <td>
+            <label>Hizmet Kaydı</label>
+          </td>
+          <td>
+            <label><strong>{{profileForm.get("userJob")?.value}}</strong></label>
+          </td>
+        </tr>
+        <tr [className]="secretSectionsClass">
+          <td>
             <label for="input_city">Şehir</label>
           </td>
           <td>
@@ -179,6 +187,25 @@
             <p [style.color]="remainingChars < 50 ? 'red' : 'black'">
               {{ remainingChars }}
             </p>
+          </td>
+        </tr>
+        <tr *ngIf="UserDocumentsCount != 0">
+          <td class="document-label">Yüklenen evraklar</td>
+          <td>
+            <ul class="document-list">
+              <li class="document-body" *ngFor="let item of visibleFiles">
+                <a [href]="item.filePath" target="_blank" rel="noopener noreferrer">
+                  <img src="../../../../../assets/icons/pdf logo.png" alt="DocumentPreview" class="document-icon" />
+                  <span class="document-name">{{ item.fileName }}</span>
+                </a>
+              </li>
+              <!-- Daha fazla / Daha az -->
+              <li *ngIf="UserDocuments.length > 3" class="load-more-container">
+                <a (click)="toggleShowAll()" class="load-more">
+                  {{ showAll ? 'Daha az' : 'Daha fazla' }} <span *ngIf="!showAll">({{UserDocumentsCount -3 }})</span>
+                </a>
+              </li>
+            </ul>
           </td>
         </tr>
         <tr>

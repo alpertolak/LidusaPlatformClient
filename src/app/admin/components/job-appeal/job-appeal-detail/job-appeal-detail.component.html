@@ -54,6 +54,14 @@
                         </tr>
                         <tr>
                             <td class="inputLayout">
+                                Başvurulan Hizmet
+                            </td>
+                            <td>
+                                <input type="text" #lastName class="form-control DetailsInput" id="lastName" [value]="jobAppeal.appealJob" disabled>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="inputLayout">
                                 Şehir
                             </td>
                             <td>
@@ -78,7 +86,7 @@
                         </tr>
                         <tr *ngIf="jobAppeal.supervisor == null ? false : true">
                             <td class="inputLayout">
-                                Yetkili
+                                Karar Veren Yetkili
                             </td>
                             <td>
                                 <input type="text" #email class="form-control DetailsInput" id="email" [value]="jobAppeal.supervisor" disabled>
