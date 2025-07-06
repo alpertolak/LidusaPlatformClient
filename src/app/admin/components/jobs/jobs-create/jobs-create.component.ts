@@ -4,7 +4,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Create_Job } from 'src/app/contracts/jobs/create-Job';
-import { JobService } from 'src/app/services/common/jobs/job.service';
+import { JobService } from 'src/app/services/common/models/job.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { ToastrService } from 'ngx-toastr';

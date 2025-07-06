@@ -44,7 +44,7 @@
         <tr>
           <td>ID</td>
           <td>
-            <label class="form-labsel"><strong>{{ profileForm.get("id")?.value }}</strong></label>
+            <label style="text-decoration: underline;" class="form-labsel"><strong>{{ profileForm.get("id")?.value }}</strong></label>
           </td>
         </tr>
         <tr>
@@ -113,6 +113,14 @@
         </tr>
         <tr>
           <td>
+            <label>Cinsiyet</label>
+          </td>
+          <td>
+            <label style="text-decoration: underline;"><strong>{{profileForm.get("gender")?.value}}</strong></label>
+          </td>
+        </tr>
+        <tr>
+          <td>
             <label for="input_2FA" class="form-label">İki Adımlı Doğrulama</label>
           </td>
           <td>
@@ -131,7 +139,7 @@
             <label>Hizmet Kaydı</label>
           </td>
           <td>
-            <label><strong>{{profileForm.get("userJob")?.value}}</strong></label>
+            <label style="text-decoration: underline;"><strong>{{profileForm.get("userJob")?.value}}</strong></label>
           </td>
         </tr>
         <tr [className]="secretSectionsClass">
@@ -189,7 +197,7 @@
             </p>
           </td>
         </tr>
-        <tr *ngIf="UserDocumentsCount != 0">
+        <tr *ngIf="UserDocumentsCount != 0" [className]="secretSectionsClass">
           <td class="document-label">Yüklenen evraklar</td>
           <td>
             <ul class="document-list">

@@ -36,6 +36,9 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(3),
         Validators.maxLength(15)
       ]],
+      gender: ["", [
+        Validators.required
+      ]],
       userName: ["", [
         Validators.required,
         Validators.minLength(3),
@@ -46,11 +49,11 @@ export class RegisterComponent implements OnInit {
         Validators.email,
         Validators.maxLength(50)
       ]],
-      phoneNumber: ["", [
-        Validators.required,
-        Validators.minLength(11),
-        Validators.maxLength(11),
-      ]],
+      phoneNumber: ['', [
+        Validators.required, 
+        Validators.pattern("^[0-9]*$"), 
+        Validators.minLength(10), 
+        Validators.maxLength(10)]],
       password: ["", [
         Validators.required,
         Validators.minLength(3)
@@ -74,6 +77,7 @@ export class RegisterComponent implements OnInit {
 
   submitted: boolean = false
   async onSubmit(user: User) {
+    debugger
 
     this.spinnerService.show(SpinnerType.load)
     this.submitted = true

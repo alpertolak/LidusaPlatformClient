@@ -12,7 +12,7 @@ import { JobAppeal } from 'src/app/entities/JobAppeal';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
-import { JobService } from 'src/app/services/common/jobs/job.service';
+import { JobService } from 'src/app/services/common/models/job.service';
 import { JobAppealService } from 'src/app/services/common/models/job-appeal.service';
 import { UserService } from 'src/app/services/common/models/user.service';
 

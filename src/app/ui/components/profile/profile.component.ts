@@ -99,6 +99,7 @@ export class ProfileComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       phoneNumber: ['', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(10), Validators.maxLength(10)]],
+      gender: ['', Validators.required],
       city: ['', Validators.required],
       district: ['', Validators.required],
       neighborhood: ['', Validators.required],
@@ -124,7 +125,9 @@ export class ProfileComponent implements OnInit {
       city: data.user.city,
       district: data.user.district,
       neighborhood: data.user.neighborhood,
-      userJob: data.user.userJob
+      userJob: data.user.userJob,
+      gender: data.user.gender
+
     });
     this.spinnerService.hide(SpinnerType.load)
 
@@ -161,7 +164,7 @@ export class ProfileComponent implements OnInit {
   async getUserprofileImage(userId: string) {
     const data: any = await this.userService.getProfileImages(userId)
     if (data != null) {
-      this.userImagePath = data.userProfileImages[1].filePath;
+      this.userImagePath = data.userProfileImages[0].filePath;
     }
   }
 

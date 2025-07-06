@@ -3,7 +3,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Create_Role } from 'src/app/contracts/roles/create-role';
 import { SpinnerType } from 'src/app/Enums/enums';
-import { JobService } from 'src/app/services/common/jobs/job.service';
+import { JobService } from 'src/app/services/common/models/job.service';
 import { RoleService } from 'src/app/services/common/models/role.service';
 
 @Component({

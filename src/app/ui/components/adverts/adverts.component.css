@@ -1,0 +1,107 @@
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 45px;
+  background-color: #f8fbfd;
+}
+
+/* Filter container kart genişliğinde olacak */
+.filter-container {
+  width: 100%;
+  max-width: 1300px; /* kart alanının genişliği neyse o */
+}
+
+/* Buton */
+.filter-button {
+  width: 100%;
+  background-color: #f0f4f8;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #2c3e50;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: background-color 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #f8fbfd;
+}
+
+/* Panel başlangıçta gizli */
+.filter-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  background: #f8fbfd; /* 👈 Burayı güncelledim */
+  border-radius: 12px;
+  margin-top: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* Açılınca aktif */
+#filterToggle:checked ~ .filter-panel {
+  max-height: 500px;
+  padding: 20px;
+}
+
+
+.dropdown-list {
+  opacity: 0.75;
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+.Input {
+  width: 100%;
+}
+
+/* button css */
+.button-wrapper{
+  display: flex;
+  justify-content: space-between;
+}
+
+.search-button {
+  background-color: #549ad7; /* Materyal mavi tonu */
+  color: white;
+  padding: 10px 24px;
+  max-height: 56px;
+  border: none; 
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-button:hover {
+  background-color: #66a0d3;
+  transform: scale(1.02);
+}
+
+.clear-button {
+  background-color: #e0e0e0; /* Açık gri */
+  color: #333;
+  padding: 10px 24px;
+  max-height: 56px;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.clear-button:hover {
+  background-color: #d5d5d5;
+  transform: scale(1.02);
+}
