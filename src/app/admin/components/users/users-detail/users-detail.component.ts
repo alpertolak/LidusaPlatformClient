@@ -24,6 +24,8 @@ export class UsersDetailComponent implements AfterViewInit {
   //boolean değişkenler tanımlanıyor
   isAdminChecked: boolean
   isTwoFactorChecked: boolean
+  suspendChecked: boolean
+  profileState:boolean
 
   constructor(
     private userService: UserService,
@@ -34,7 +36,6 @@ export class UsersDetailComponent implements AfterViewInit {
   ) { }
   
   onSubmit(username: string, name: string, lastName: string, email: string, phoneNumber: string) {
-
     this.spinner.show(SpinnerType.save)
 
     //kullanıcın yeni bilgileri kayıt ediliyor
@@ -47,7 +48,9 @@ export class UsersDetailComponent implements AfterViewInit {
     user.phoneNumber = phoneNumber
     user.isAdmin = this.isAdminChecked
     user.twoFactorEnabled = this.isTwoFactorChecked
-    
+    user.suspend = this.suspendChecked
+    user.profileState = this.profileState
+
     this.userService.UpdateUserAsync(user, () => {
       this.spinner.hide(SpinnerType.save)
       this.toastrService.success("kullanıcı bilgileri güncellenmiştir")
@@ -77,11 +80,13 @@ export class UsersDetailComponent implements AfterViewInit {
 
   async onModalOpen() {
     //gelen kullanıcı verisi iç içe olduğu için ayılanarak user değişkenine atanıyor
-    
+    debugger
     var data: any = await this.userService.getUserByIdOrUsernameOrEmailAsync(this.UserId)
     this.user = data.user as User
     this.isAdminChecked = data.user.isAdmin as boolean
     this.isTwoFactorChecked = data.user.twoFactorEnabled as boolean
+    this.suspendChecked = data.user.suspend as boolean
+    this.profileState = data.user.profileState as boolean
   }
 
   async onModalClose() {

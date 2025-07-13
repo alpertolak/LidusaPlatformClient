@@ -60,11 +60,11 @@ export class UserService {
     return await promiseData
   }
 
-  async getFilteredUsersAsync(username: string, name: string, email: string, phoneNumber: string, roleId: string, page: number, size: number, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<ListPaginationUsers> {
+  async getFilteredUsersAsync(username: string, name: string, email: string, phoneNumber: string, roleId: string,suspend:boolean, page: number, size: number, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<ListPaginationUsers> {
     const observable: Observable<ListPaginationUsers> = this.httpService.Get({
       controller: "users",
       action: "get-filtered-users",
-      queryString: `username=${username}&name=${name}&email=${email}&phoneNumber=${phoneNumber}&RoleId=${roleId}&page=${page}&size=${size}`
+      queryString: `username=${username}&name=${name}&email=${email}&phoneNumber=${phoneNumber}&RoleId=${roleId}&suspend=${suspend}&page=${page}&size=${size}`
     })
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)

@@ -11,7 +11,7 @@
 
       <mat-form-field>
         <mat-label>Hizmet</mat-label>
-        <mat-select [formControl]="jobForm" multiple>
+        <mat-select [formControl]="jobForm" multiple (selectionChange)="filterAdverts()">
           <mat-select-trigger>
             {{jobForm.value?.[0] || ''}}
             @if ((jobForm.value?.length || 0) > 1) {
@@ -28,12 +28,12 @@
 
       <mat-form-field class="Input">
         <mat-label>İsim</mat-label>
-        <input [formControl]="nameForm" matInput placeholder="örn. Alper">
+        <input [formControl]="nameForm" matInput placeholder="örn. Alper" (keydown.enter)="filterAdverts()">
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Cinsiyet</mat-label>
-        <mat-select [formControl]="genderForm" multiple>
+        <mat-select [formControl]="genderForm" multiple (selectionChange)="filterAdverts()">
           <mat-select-trigger>
             {{genderForm.value?.[0] || ''}}
             @if ((genderForm.value?.length || 0) > 1) {
@@ -51,12 +51,12 @@
 
       <mat-form-field class="Input">
         <mat-label>Şehir</mat-label>
-        <input [formControl]="cityForm" matInput placeholder="örn. İstanbul">
+        <input [formControl]="cityForm" matInput placeholder="örn. İstanbul" (keydown.enter)="filterAdverts()">
       </mat-form-field>
 
       <mat-form-field class="Input">
         <mat-label>İlçe</mat-label>
-        <input [formControl]="districtForm" matInput placeholder="örn. Sancaktepe">
+        <input [formControl]="districtForm" matInput placeholder="örn. Sancaktepe" (keydown.enter)="filterAdverts()">
       </mat-form-field>
 
       <div class="button-wrapper">
@@ -84,15 +84,19 @@
     <div class="row gy-4">
 
       <div *ngFor="let item of adverts" class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
-        <div class="team-member">
+        <div class="team-member" *ngIf="item.profileImagesPaths && item.profileImagesPaths.length > 0">
           <a href="adverts-detail">
             <div class="member-img">
-              <img [src]="item.profileImagesPaths[0]" class="img-fluid" alt="">
+              <div class="image-wrapper">
+                <img [src]="item.profileImagesPaths[0]" class="img-fluid" alt="">
+              </div>
               <div class="social">
-                <a href=""><i class="bi bi-twitter-x"></i></a>
-                <a href=""><i class="bi bi-facebook"></i></a>
-                <a href=""><i class="bi bi-instagram"></i></a>
-                <a href=""><i class="bi bi-linkedin"></i></a>
+                <a *ngIf="item.twitterLink && item.twitterPerm" target="_blank" [href]="item.twitterLink"><i class="bi bi-twitter-x"></i></a>
+                <a *ngIf="item.facebookLink && item.facebookPerm" target="_blank" [href]="item.facebookLink"><i class="bi bi-facebook"></i></a>
+                <a *ngIf="item.instagramLink && item.instagramPerm" target="_blank" [href]="item.instagramLink"><i class="bi bi-instagram"></i></a>
+                <a *ngIf="item.linkedinLink && item.linkedinPerm" target="_blank" [href]="item.linkedinLink"><i class="bi bi-linkedin"></i></a>
+                <a *ngIf="item.youtubeLink && item.youtubePerm" target="_blank" [href]="item.youtubeLink"><i class="bi bi-youtube"></i></a>
+                <a target="_blank" href="https://wa.me/{{item.phoneNumber}}?text=merhaba,%20hizmetiniz%20hakkında%20bilgi%20almak%20istiyorum."><i class="bi bi-whatsapp"></i></a>
               </div>
             </div>
           </a>

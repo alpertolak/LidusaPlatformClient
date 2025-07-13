@@ -92,4 +92,6 @@ export class FileUploadOptions {
   DocumentList?: boolean = false //kullanılan sayfaya özel dosya listesi oluşturulacak mı?
   HiddenZone?: boolean = false //kullanılan sayfaya özel dosya yükleme alanı gizlensin mi?
   afterClose?: () => void
+  backgroundColor?: string = "#549ad7"; //kullanılan sayfaya özel arka plan rengi
+  borderColor?: string = "#549ad7"; //kullanılan sayfaya özel
 }

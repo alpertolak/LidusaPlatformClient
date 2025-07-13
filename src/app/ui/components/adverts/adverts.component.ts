@@ -36,10 +36,10 @@ export class AdvertsComponent implements OnInit {
   async loadAdverts() {
     var adverts: any = await this.advertService.getAllAdverts(true, false)
     this.adverts = adverts.allAdverts;
+    console.log(this.adverts);
   }
 
   async filterAdverts() {
-    debugger
     var jobs: string[] = this.jobForm.value as string[];
     var genders: string[] = this.genderForm.value as string[];
     var data: any = await this.advertService.filterAdverts(jobs, this.nameForm.value as string, genders, this.cityForm.value as string, this.districtForm.value as string);

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { User_Document } from 'src/app/contracts/users/user-document';
 import { User_Profile_Image } from 'src/app/contracts/users/user-profile-image';
 import { JobAppeal } from 'src/app/entities/JobAppeal';
+import { User } from 'src/app/entities/User';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { FileUploadOptions } from 'src/app/services/common/file-upload/file-upload.component';
 import { HttpClientService } from 'src/app/services/common/http-client.service';
@@ -27,19 +28,20 @@ export class ProfileComponent implements OnInit {
   selectedDistrict: any;
 
 
-  DescriptionMaxLength: number = 300; //açıklama için Karakter sınırı
+  DescriptionMaxLength: number = 1200; //açıklama için Karakter sınırı
 
   //document için değişkenler
   showAll: boolean = false
   public UserDocuments: User_Document[] = [];// kullanıcının yüklediği belgeler
   public UserDocumentsCount: number;
 
+
   //HTML bölümünde form nesnesine ulaşabilmek için get fonsksiyonu
+  defaultProfileImage: string = "../../../../assets/common/profile.jpg"
   profileForm: FormGroup //profil formu
   changePasswordForm: FormGroup //şifre değiştirme formu
   isChangePassword: boolean = false
-  userImage: User_Profile_Image[];
-  userImagePath: string = "../../../../assets/common/profile.jpg"
+  userImagePath: string = this.defaultProfileImage
   userId: string = localStorage.getItem('UserId') as string
   userRoles: string[] = []
   public isHasJob: boolean = false // kullanıcı iş başvurusu yapmış mı kontrolü için değişken
@@ -62,7 +64,7 @@ export class ProfileComponent implements OnInit {
     accept: ".png, .jpg",
     buttonName: "Resim seç",
     queryString: `userId=${this.userId}`,
-    multiple: true
+    multiple: false
   }
 
   constructor(
@@ -82,12 +84,13 @@ export class ProfileComponent implements OnInit {
 
   async getUserJobAppeal(UserId: string) {
     var data: any = await this.jobAppealService.getJobAppealById(UserId)
+    console.log(data)
     if (data.jobAppeal.appealJob != null) {
       this.jobAppeal = data.jobAppeal
       this.jobAppealState = data.jobAppeal.appealState
-      await this.setAppealDate(data.jobAppeal.decisionDate, data.jobAppeal.appealState)
+      await this.setSpanVisibility(data.jobAppeal.appealState)
       this.updateMessageClasess()
-      console.log(this.messageClasess)
+      // console.log(this.messageClasess)
     }
   }
   async createForm() {
@@ -104,14 +107,26 @@ export class ProfileComponent implements OnInit {
       district: ['', Validators.required],
       neighborhood: ['', Validators.required],
       twoFactorEnabled: [false],
-      personalDescription: ['', [Validators.required, Validators.maxLength(this.DescriptionMaxLength)]],
-      userJob: ['', [Validators.required]]
+      personalDescription: ['', [Validators.required, Validators.minLength(100), Validators.maxLength(this.DescriptionMaxLength)]],
+      userJob: ['', [Validators.required]],
+      instagramLink: ['', [Validators.pattern('https?://.+')]],
+      instagramPerm: [true],
+      facebookLink: ['', [Validators.pattern('https?://.+')]],
+      facebookPerm: [true],
+      twitterLink: ['', [Validators.pattern('https?://.+')]],
+      twitterPerm: [true],
+      linkedinLink: ['', [Validators.pattern('https?://.+')]],
+      linkedinPerm: [true],
+      youtubeLink: ['', [Validators.pattern('https?://.+')]],
+      youtubePerm: [true],
+      profileState: [true] // profil durumu, ilan aktif mi değil mi
     });
   }
   async getUser() {
     this.spinnerService.show(SpinnerType.load)
     var data: any = await this.userService.getCurrentUserAsync(() => {
     })
+    console.log(data)
     //apiden gelen data ile form elemanlarına değerler atanır
     this.profileForm.patchValue({
       id: data.user.id,
@@ -126,18 +141,28 @@ export class ProfileComponent implements OnInit {
       district: data.user.district,
       neighborhood: data.user.neighborhood,
       userJob: data.user.userJob,
-      gender: data.user.gender
-
+      gender: data.user.gender,
+      instagramLink: data.user.instagramLink,
+      instagramPerm: data.user.instagramPerm == null ? true : data.user.instagramPerm,
+      facebookLink: data.user.facebookLink,
+      facebookPerm: data.user.facebookPerm == null ? true : data.user.facebookPerm,
+      twitterLink: data.user.twitterLink,
+      twitterPerm: data.user.twitterPerm == null ? true : data.user.twitterPerm,
+      linkedinLink: data.user.linkedinLink,
+      linkedinPerm: data.user.linkedinPerm == null ? true : data.user.linkedinPerm,
+      youtubeLink: data.user.youtubeLink,
+      youtubePerm: data.user.youtubePerm == null ? true : data.user.youtubePerm,
+      profileState: data.user.profileState,
     });
     this.spinnerService.hide(SpinnerType.load)
 
-    // console.log(this.profileForm)
+    console.log(this.profileForm)
 
     //kullanıcının rolleri çekiliyor
     this.getUserRoles(data.user.id)
 
-    //kullanıcı resimi çekiliyor
     this.getUserprofileImage(data.user.id)
+
 
     //kullanıcının iş başvurusu var mı kontrol ediliyor
     this.getUserJobAppeal(data.user.id)
@@ -184,6 +209,7 @@ export class ProfileComponent implements OnInit {
     this.userService.UpdateUserAsync(this.profileForm.value, () => {
       this.spinnerService.hide(SpinnerType.save);
       this.toastrService.success('Profiliniz başarıyla güncellendi', 'Başarılı');
+      this.getUser(); // güncellenen bilgileri tekrar çek
     }, () => {
       this.spinnerService.hide(SpinnerType.save);
       this.toastrService.error('Profiliniz güncellenirken bir hata oluştu', 'Hata');
@@ -263,18 +289,25 @@ export class ProfileComponent implements OnInit {
   updateMessageClasess() {
     const stateClasses: stateCssClasses = new stateCssClasses()
 
-    //sadece true veya false gelme duruma göre sınıflar atanıyor, default değerleri boş gelme durumda kullanıyor
+    // sadece true veya false gelme duruma göre sınıflar atanıyor, default değerleri boş gelme durumda kullanıyor
     if (this.jobAppealState == true) {
       stateClasses.alert = "success"
       stateClasses.svg = "success-svg"
       stateClasses.prompt_wrap = "success-prompt-wrap"
       stateClasses.prompt_link = "success-prompt-link"
     }
-    else if (this.jobAppealState == false) {
+    if (this.jobAppealState == false) {
       stateClasses.alert = "danger"
       stateClasses.svg = "danger-svg"
       stateClasses.prompt_wrap = "danger-prompt-wrap"
       stateClasses.prompt_link = "danger-prompt-link"
+    }
+
+    if (this.profileForm.get('profileState')?.value == false) {
+      stateClasses.alert = "alert"
+      stateClasses.svg = "alert-svg"
+      stateClasses.prompt_wrap = "alert-prompt-wrap"
+      stateClasses.prompt_link = "alert-prompt-link"
     }
 
     this.messageClasess = stateClasses
@@ -290,24 +323,17 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  async setAppealDate(apiDateStr: string, state: boolean) {
-    const apiDate = new Date(apiDateStr);
+  async setSpanVisibility(state: boolean) {
+    debugger
+    this.ShowSuccessSpan = false // başlangıçta span gizlenir
 
-    // Şu anki tarih
-    const now = new Date();
+    if (state == null || state == false) this.ShowSuccessSpan = true // eğer başvuru durumu null veya false ise span gösterilir
+    else if (this.userImagePath == this.defaultProfileImage) this.ShowSuccessSpan = true
+    else if (!this.profileForm.get('personalDescription')?.value) this.ShowSuccessSpan = true
 
-    // 3 gün önceki tarih
-    const threeDaysAgo = new Date();
-    threeDaysAgo.setDate(now.getDate() - 3);
-
-    if (state == true && threeDaysAgo > apiDate)
-      this.ShowSuccessSpan = false
-    else
-      this.ShowSuccessSpan = true
   }
 
   async getUserDocument() {
-    debugger
     setTimeout(async () => {
       var data: any = await this.userService.getUserDocuments(this.userId)
       this.UserDocuments = data.userDocuments
@@ -320,6 +346,28 @@ export class ProfileComponent implements OnInit {
 
   toggleShowAll() {
     this.showAll = !this.showAll;
+  }
+
+  stopAdvert() {
+    this.spinnerService.show(SpinnerType.save);
+    var user: User = this.profileForm.value as User;
+    user.profileState = false;
+    this.userService.UpdateUserAsync(user, () => {
+      this.getUser();
+      this.spinnerService.hide(SpinnerType.save);
+      this.toastrService.success('İlan durduruldu', 'Başarılı');
+    });
+  }
+
+  startAdvert() {
+    this.spinnerService.show(SpinnerType.save);
+    var user: User = this.profileForm.value as User;
+    user.profileState = true;
+    this.userService.UpdateUserAsync(user, () => {
+      this.getUser();
+      this.spinnerService.hide(SpinnerType.save);
+      this.toastrService.success('İlan aktif edildi', 'Başarılı');
+    });
   }
 }
 

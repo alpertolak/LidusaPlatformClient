@@ -30,14 +30,13 @@ export class UsersListComponent {
   userDetailId: string;
   roles: any[]
   isFilterUse: boolean = false
-  displayedColumns: string[] = ['username', 'name', 'email', 'role', '2FA', 'edit']
+  displayedColumns: string[] = ['username', 'name', 'email', 'role', '2FA', 'suspend', 'edit']
   dataSource: MatTableDataSource<List_Users>
   @ViewChild(MatPaginator) paginator: MatPaginator
 
-  async getFilteredUsers(username: string, name: string, email: string, phoneNumber: string, roleIndex: number) {
-
+  async getFilteredUsers(username: string, name: string, email: string, phoneNumber: string, roleIndex: number, suspend: string) {
     //hiçbir filtre yapılmadan butona basılırsa 
-    if (username == "" && name == "" && email == "" && phoneNumber == "" && roleIndex == 0) {
+    if (username == "" && name == "" && email == "" && phoneNumber == "" && roleIndex == 0 && suspend == "null") {
       this.isFilterUse = false
       this.getAllUsers()
     }
@@ -47,7 +46,7 @@ export class UsersListComponent {
       this.spinner.show(SpinnerType.load)
       var roleId = roleIndex > 0 ? this.roles[roleIndex - 1].id : ""
       //TODO page ve size bilgilerini verek gelen verileri sayfala, api falan ayarla hep
-      const filteredUsers: ListPaginationUsers = await this.userService.getFilteredUsersAsync(username, name, email, phoneNumber, roleId, this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize : 5, () => {
+      const filteredUsers: ListPaginationUsers = await this.userService.getFilteredUsersAsync(username, name, email, phoneNumber, roleId, suspend == "True" ? true : false, this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize : 5, () => {
         this.spinner.hide(SpinnerType.load) //successcallback
       }, (error) => {
         this.spinner.hide(SpinnerType.load) //errorcallback
@@ -85,14 +84,14 @@ export class UsersListComponent {
   //ESC tuşuna basılınca filtreyi sıfırlar
   @HostListener('document:keydown.escape', ['$event'])
   handleEscape(event: KeyboardEvent) {
-    if(this.isFilterUse) this.clearFilter()
+    if (this.isFilterUse) this.clearFilter()
   }
 
   //tablo üzerinden sayfalama elemanı seçildiğinde bu fonksiyon tetiklenir
-  async pageChanged(username: string, name: string, email: string, phoneNumber: string, roleIndex: number) {
+  async pageChanged(username: string, name: string, email: string, phoneNumber: string, roleIndex: number, suspend: string) {
 
     //filtre bilgileri varsa ve sayfalama isteniyorsa
-    if (this.isFilterUse) await this.getFilteredUsers(username, name, email, phoneNumber, roleIndex)
+    if (this.isFilterUse) await this.getFilteredUsers(username, name, email, phoneNumber, roleIndex, suspend)
 
     //filte yoksa bütün kullanıcılar listelenir
     else await this.getAllUsers()
