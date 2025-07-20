@@ -35,8 +35,9 @@ export class UsersListComponent {
   @ViewChild(MatPaginator) paginator: MatPaginator
 
   async getFilteredUsers(username: string, name: string, email: string, phoneNumber: string, roleIndex: number, suspend: string) {
+    debugger
     //hiçbir filtre yapılmadan butona basılırsa 
-    if (username == "" && name == "" && email == "" && phoneNumber == "" && roleIndex == 0 && suspend == "null") {
+    if (username == "" && name == "" && email == "" && phoneNumber == "" && roleIndex == 0 && suspend == "") {
       this.isFilterUse = false
       this.getAllUsers()
     }
@@ -46,7 +47,7 @@ export class UsersListComponent {
       this.spinner.show(SpinnerType.load)
       var roleId = roleIndex > 0 ? this.roles[roleIndex - 1].id : ""
       //TODO page ve size bilgilerini verek gelen verileri sayfala, api falan ayarla hep
-      const filteredUsers: ListPaginationUsers = await this.userService.getFilteredUsersAsync(username, name, email, phoneNumber, roleId, suspend == "True" ? true : false, this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize : 5, () => {
+      const filteredUsers: ListPaginationUsers = await this.userService.getFilteredUsersAsync(username, name, email, phoneNumber, roleId, suspend, this.paginator ? this.paginator.pageIndex : 0, this.paginator ? this.paginator.pageSize : 5, () => {
         this.spinner.hide(SpinnerType.load) //successcallback
       }, (error) => {
         this.spinner.hide(SpinnerType.load) //errorcallback

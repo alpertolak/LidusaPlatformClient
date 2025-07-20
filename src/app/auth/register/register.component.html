@@ -27,6 +27,7 @@
             <!--username hata mesajları-->
             <small class="errorMessage" *ngIf="submitted && component.userName.errors?.required">Bu alan
                 zorunludur</small>
+                <small class="errorMessage" *ngIf="submitted && component.userName.errors?.usernameTaken">Bu kullanıcı adı zaten kullanımda</small>
             <small class="errorMessage" *ngIf="submitted && (component.userName.errors?.minlength || component.userName.errors?.maxlength)">Kullanıcı
                 adı 3-50 karater arasında olabilir</small>
 

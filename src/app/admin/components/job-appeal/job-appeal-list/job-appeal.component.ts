@@ -7,6 +7,7 @@ import { List_JobAppeals } from 'src/app/contracts/JobAppeal/list-jobAppeals';
 import { ListPaginationJobAppeals } from 'src/app/contracts/JobAppeal/list-pagination-JobAppeals';
 import { SpinnerType } from 'src/app/Enums/enums';
 import { JobAppealService } from 'src/app/services/common/models/job-appeal.service';
+import { UserService } from 'src/app/services/common/models/user.service';
 
 @Component({
   selector: 'app-job-appeal',
@@ -18,7 +19,7 @@ export class JobAppealComponent implements OnInit, AfterViewInit {
   constructor(
     private _jobAppealService: JobAppealService,
     private _spinner: NgxSpinnerService,
-    private _toastrService: ToastrService,
+    private _toastrService: ToastrService
   ) { }
 
   public AppealDetailId: string;

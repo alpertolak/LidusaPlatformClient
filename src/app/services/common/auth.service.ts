@@ -30,6 +30,7 @@ export class AuthService {
     localStorage.removeItem('refreshToken');
     this.identityCheck();
   }
+  
 }
 
 export let _isAuthenticated: boolean

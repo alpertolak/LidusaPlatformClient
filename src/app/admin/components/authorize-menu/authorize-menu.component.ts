@@ -5,6 +5,7 @@ import { DialogService } from 'src/app/services/common/dialog.service';
 import { ApplicationService } from 'src/app/services/common/models/application.service';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { AuthorizeMenuDialogComponent } from 'src/app/dialogs/authorize-menu-dialog/authorize-menu-dialog.component';
+import { UserService } from 'src/app/services/common/models/user.service';
 
 interface ITreeMenu {
   name?: string,
@@ -38,20 +39,20 @@ export class AuthorizeMenuComponent implements OnInit {
 
   async ngOnInit() {
     this.dataSource.data = (await this.applicationService.getAuthorizeDefinitionEndpoints())
-    .map(m => {
-      const treeMenu: ITreeMenu = {
-        name: m.name,
-        actions: m.actions.map(a => {
-          const _treeMenu: ITreeMenu = {
-            name: a.definition,
-            code: a.code,
-            menuName: m.name
-          }
-          return _treeMenu;
-        })
-      };
-      return treeMenu;
-    });
+      .map(m => {
+        const treeMenu: ITreeMenu = {
+          name: m.name,
+          actions: m.actions.map(a => {
+            const _treeMenu: ITreeMenu = {
+              name: a.definition,
+              code: a.code,
+              menuName: m.name
+            }
+            return _treeMenu;
+          })
+        };
+        return treeMenu;
+      });
   }
 
   treeControl = new FlatTreeControl<ExampleFlatNode>(

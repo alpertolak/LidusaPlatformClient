@@ -19,7 +19,7 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private toastrService: ToastrService,
-    private spinnerService : NgxSpinnerService,
+    private spinnerService: NgxSpinnerService,
     private router: Router,
   ) { }
 
@@ -50,9 +50,9 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(50)
       ]],
       phoneNumber: ['', [
-        Validators.required, 
-        Validators.pattern("^[0-9]*$"), 
-        Validators.minLength(10), 
+        Validators.required,
+        Validators.pattern("^[0-9]*$"),
+        Validators.minLength(10),
         Validators.maxLength(10)]],
       password: ["", [
         Validators.required,
@@ -77,24 +77,36 @@ export class RegisterComponent implements OnInit {
 
   submitted: boolean = false
   async onSubmit(user: User) {
-    debugger
+
 
     this.spinnerService.show(SpinnerType.load)
     this.submitted = true
-    if (this.frm.invalid){
+    if (this.frm.invalid) {
       this.spinnerService.hide(SpinnerType.load)
       return //form üzerinde herhangi bir hata varsa return ederek kayıt işlemini iptal eder
-    } 
+    }
 
-    const result: any = await this.userService.createUserAsync(user)
+    debugger
+    //kullanıcının girdiği username sistemde kayıtlı mı diye kontrol ediliyor
+    var username = this.frm.get('userName')?.value;
 
-    if (result.succeeded) {
-      this.toastrService.success(result.message, "Başarılı")
-      this.spinnerService.hide(SpinnerType.load)
-      this.router.navigate(["auth/login"])
-    }else{
-      this.toastrService.error(result.message,"Hata")
-      this.spinnerService.hide(SpinnerType.load)
+    var usernameCheck = await this.userService.usernameCheck(username); // eğer userID gönderilmezse kontrol sırasında çakışma yaşanacaktır
+    if (usernameCheck) {
+      this.frm.get('userName')?.setErrors({ usernameTaken: true });
+      this.toastrService.error('Formda hata var, lütfen kontrol edin.', 'Hata');
+        this.spinnerService.hide(SpinnerType.load)
+    }
+    else {
+      const result: any = await this.userService.createUserAsync(user)
+
+      if (result.succeeded) {
+        this.toastrService.success(result.message, "Başarılı")
+        this.spinnerService.hide(SpinnerType.load)
+        this.router.navigate(["auth/login"])
+      } else {
+        this.toastrService.error(result.message, "Hata")
+        this.spinnerService.hide(SpinnerType.load)
+      }
     }
   }
 }

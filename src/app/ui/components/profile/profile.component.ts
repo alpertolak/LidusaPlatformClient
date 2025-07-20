@@ -84,13 +84,12 @@ export class ProfileComponent implements OnInit {
 
   async getUserJobAppeal(UserId: string) {
     var data: any = await this.jobAppealService.getJobAppealById(UserId)
-    console.log(data)
+    // console.log(data)
     if (data.jobAppeal.appealJob != null) {
       this.jobAppeal = data.jobAppeal
       this.jobAppealState = data.jobAppeal.appealState
       await this.setSpanVisibility(data.jobAppeal.appealState)
       this.updateMessageClasess()
-      // console.log(this.messageClasess)
     }
   }
   async createForm() {
@@ -123,10 +122,11 @@ export class ProfileComponent implements OnInit {
     });
   }
   async getUser() {
+
     this.spinnerService.show(SpinnerType.load)
     var data: any = await this.userService.getCurrentUserAsync(() => {
     })
-    console.log(data)
+    // console.log(data)
     //apiden gelen data ile form elemanlarına değerler atanır
     this.profileForm.patchValue({
       id: data.user.id,
@@ -156,7 +156,7 @@ export class ProfileComponent implements OnInit {
     });
     this.spinnerService.hide(SpinnerType.load)
 
-    console.log(this.profileForm)
+    // console.log(this.profileForm)
 
     //kullanıcının rolleri çekiliyor
     this.getUserRoles(data.user.id)
@@ -193,8 +193,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onUserFormSubmit() {
-    //this.logValidationErrors(this.profileForm)
+  async onUserFormSubmit() {
     if (!this.profileForm.valid) {
       //yapay zeka bilgisiyle yazıldı.
       Object.keys(this.profileForm.controls).forEach(field => {
@@ -204,16 +203,27 @@ export class ProfileComponent implements OnInit {
       this.toastrService.error('Formda hata var, lütfen kontrol edin.', 'Hata');
       return;
     }
-    this.spinnerService.show(SpinnerType.save);
-    //kullanıcı bilgilerini güncellemek için bilgiler api'ye gönderilir
-    this.userService.UpdateUserAsync(this.profileForm.value, () => {
-      this.spinnerService.hide(SpinnerType.save);
-      this.toastrService.success('Profiliniz başarıyla güncellendi', 'Başarılı');
-      this.getUser(); // güncellenen bilgileri tekrar çek
-    }, () => {
-      this.spinnerService.hide(SpinnerType.save);
-      this.toastrService.error('Profiliniz güncellenirken bir hata oluştu', 'Hata');
-    });
+
+    //kullanıcının girdiği username sistemde kayıtlı mı diye kontrol ediliyor
+    var userId = this.profileForm.get('id')?.value
+    var username = this.profileForm.get('userName')?.value;
+
+    var usernameCheck = await this.userService.usernameCheck(username, userId); // eğer userID gönderilmezse kontrol sırasında çakışma yaşanacaktır
+    if (usernameCheck) {
+      this.profileForm.get('userName')?.setErrors({ usernameTaken: true });
+      this.toastrService.error('Formda hata var, lütfen kontrol edin.', 'Hata');
+    } else {
+      this.spinnerService.show(SpinnerType.save);
+      //kullanıcı bilgilerini güncellemek için bilgiler api'ye gönderilir
+      this.userService.UpdateUserAsync(this.profileForm.value, () => {
+        this.spinnerService.hide(SpinnerType.save);
+        this.toastrService.success('Profiliniz başarıyla güncellendi', 'Başarılı');
+        this.getUser(); // güncellenen bilgileri tekrar çek
+      }, () => {
+        this.spinnerService.hide(SpinnerType.save);
+        this.toastrService.error('Profiliniz güncellenirken bir hata oluştu', 'Hata');
+      });
+    }
   }
 
   get remainingChars(): number {
@@ -324,7 +334,6 @@ export class ProfileComponent implements OnInit {
   }
 
   async setSpanVisibility(state: boolean) {
-    debugger
     this.ShowSuccessSpan = false // başlangıçta span gizlenir
 
     if (state == null || state == false) this.ShowSuccessSpan = true // eğer başvuru durumu null veya false ise span gösterilir

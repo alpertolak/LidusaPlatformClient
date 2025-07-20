@@ -77,9 +77,10 @@
           <td>
             <input id="input_username" type="text" class="form-control" formControlName="userName" />
             <div *ngIf="profileForm.get('userName')?.invalid &&profileForm.get('userName')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('userName')?.errors?.['required']">Kullanıcı adı gereklidir.</div>
-              <div *ngIf="profileForm.get('userName')?.errors?.['minlength']">Kullanıcı adı en az 3 karakter olmalıdır.</div>
-              <div *ngIf="profileForm.get('userName')?.errors?.['maxlength']">Kullanıcı adı en fazla 50 karakter olabilir.</div>
+              <div *ngIf="profileForm.get('userName')?.errors?.['usernameTaken']">Bu kullanıcı adı zaten kullanımda</div>
+              <div *ngIf="profileForm.get('userName')?.errors?.['required']">Kullanıcı adı gereklidir</div>
+              <div *ngIf="profileForm.get('userName')?.errors?.['minlength']">Kullanıcı adı en az 3 karakter olmalıdır</div>
+              <div *ngIf="profileForm.get('userName')?.errors?.['maxlength']">Kullanıcı adı en fazla 50 karakter olabilir</div>
             </div>
           </td>
         </tr>
@@ -88,9 +89,9 @@
           <td>
             <input id="input_name" type="text" class="form-control" formControlName="name" />
             <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('name')?.errors?.['required']">İsim gereklidir.</div>
-              <div *ngIf="profileForm.get('name')?.errors?.['minlength']">İsim en az 3 karakter olmalıdır.</div>
-              <div *ngIf="profileForm.get('name')?.errors?.['maxlength']">İsim en fazla 50 karakter olabilir.</div>
+              <div *ngIf="profileForm.get('name')?.errors?.['required']">İsim gereklidir</div>
+              <div *ngIf="profileForm.get('name')?.errors?.['minlength']">İsim en az 3 karakter olmalıdır</div>
+              <div *ngIf="profileForm.get('name')?.errors?.['maxlength']">İsim en fazla 50 karakter olabilir</div>
             </div>
           </td>
         </tr>
@@ -101,9 +102,9 @@
           <td>
             <input id="input_lastname" type="text" class="form-control" formControlName="lastName" />
             <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('lastName')?.errors?.['required']">Soyisim gereklidir.</div>
-              <div *ngIf="profileForm.get('lastName')?.errors?.['minlength']">Soyisim en az 3 karakter olmalıdır.</div>
-              <div *ngIf="profileForm.get('lastName')?.errors?.['maxlength']">Soyisim en fazla 50 karakter olabilir.</div>
+              <div *ngIf="profileForm.get('lastName')?.errors?.['required']">Soyisim gereklidir</div>
+              <div *ngIf="profileForm.get('lastName')?.errors?.['minlength']">Soyisim en az 3 karakter olmalıdır</div>
+              <div *ngIf="profileForm.get('lastName')?.errors?.['maxlength']">Soyisim en fazla 50 karakter olabilir</div>
             </div>
           </td>
         </tr>
@@ -114,9 +115,9 @@
           <td>
             <input id="input_email" type="email" class="form-control" formControlName="email" />
             <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('email')?.errors?.['required']">Email adresi gereklidir.</div>
-              <div *ngIf="profileForm.get('email')?.errors?.['email']">Geçerli bir email adresi giriniz.</div>
-              <div *ngIf="profileForm.get('email')?.errors?.['maxlength']">Email adresi en fazla 50 karakter olabilir.</div>
+              <div *ngIf="profileForm.get('email')?.errors?.['required']">Email adresi gereklidir</div>
+              <div *ngIf="profileForm.get('email')?.errors?.['email']">Geçerli bir email adresi giriniz</div>
+              <div *ngIf="profileForm.get('email')?.errors?.['maxlength']">Email adresi en fazla 50 karakter olabilir</div>
             </div>
           </td>
         </tr>
@@ -127,10 +128,10 @@
           <td>
             <input id="input_phone" type="text" class="form-control" formControlName="phoneNumber" maxlength="10" />
             <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">Telefon numarası gereklidir.</div>
-              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['pattern']">Geçerli bir telefon numarası giriniz.</div>
-              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['minlength']">Telefon numarası en az 10 karakter olmalıdır.</div>
-              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['maxlength']">Telefon numarası en fazla 10 karakter olabilir.</div>
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['required']">Telefon numarası gereklidir</div>
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['pattern']">Geçerli bir telefon numarası giriniz</div>
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['minlength']">Telefon numarası en az 10 karakter olmalıdır</div>
+              <div *ngIf="profileForm.get('phoneNumber')?.errors?.['maxlength']">Telefon numarası en fazla 10 karakter olabilir</div>
             </div>
           </td>
         </tr>
@@ -141,8 +142,8 @@
           <td>
             <textarea id="personal_Description" [maxlength]="DescriptionMaxLength" formControlName="personalDescription" class="form-control" style="max-height: 250px;"></textarea>
             <div *ngIf="profileForm.get('personalDescription')?.invalid && profileForm.get('personalDescription')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('personalDescription')?.errors?.['required']">Kişisel açıklama gereklidir.</div>
-              <div *ngIf="profileForm.get('personalDescription')?.errors?.['minlength']">Kişisel açıklama en az 100 karakter olmalıdır.</div>
+              <div *ngIf="profileForm.get('personalDescription')?.errors?.['required']">Kişisel açıklama gereklidir</div>
+              <div *ngIf="profileForm.get('personalDescription')?.errors?.['minlength']">Kişisel açıklama en az 100 karakter olmalıdır</div>
             </div>
           </td>
           <td>
@@ -266,7 +267,7 @@
           <td>
             <input id="input_instagramLink" type="text" class="form-control" formControlName="instagramLink" />
             <div *ngIf="profileForm.get('instagramLink')?.invalid && profileForm.get('instagramLink')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('instagramLink')?.errors?.['pattern']">Geçerli bir Instagram linki giriniz.</div>
+              <div *ngIf="profileForm.get('instagramLink')?.errors?.['pattern']">Geçerli bir Instagram linki giriniz</div>
             </div>
           </td>
           <td style="vertical-align: middle; text-align: center;">
@@ -281,7 +282,7 @@
           <td>
             <input id="input_facebookLink" type="text" class="form-control" formControlName="facebookLink" />
             <div *ngIf="profileForm.get('facebookLink')?.invalid && profileForm.get('facebookLink')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('facebookLink')?.errors?.['pattern']">Geçerli bir Facebook linki giriniz.</div>
+              <div *ngIf="profileForm.get('facebookLink')?.errors?.['pattern']">Geçerli bir Facebook linki giriniz</div>
             </div>
           </td>
           <td style="vertical-align: middle; text-align: center;">
@@ -297,7 +298,7 @@
           <td>
             <input id="input_twitterLink" type="text" class="form-control" formControlName="twitterLink" />
             <div *ngIf="profileForm.get('twitterLink')?.invalid && profileForm.get('twitterLink')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('twitterLink')?.errors?.['pattern']">Geçerli bir Twitter linki giriniz.</div>
+              <div *ngIf="profileForm.get('twitterLink')?.errors?.['pattern']">Geçerli bir Twitter linki giriniz</div>
             </div>
           </td>
           <td style="vertical-align: middle; text-align: center;">
@@ -313,7 +314,7 @@
           <td>
             <input id="input_LinkedinLink" type="text" class="form-control" formControlName="linkedinLink" />
             <div *ngIf="profileForm.get('linkedinLink')?.invalid && profileForm.get('linkedinLink')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('linkedinLink')?.errors?.['pattern']">Geçerli bir Linkedin linki giriniz.</div>
+              <div *ngIf="profileForm.get('linkedinLink')?.errors?.['pattern']">Geçerli bir Linkedin linki giriniz</div>
             </div>
           </td>
           <td style="vertical-align: middle; text-align: center;">
@@ -328,7 +329,7 @@
           <td>
             <input id="input_youtubeLink" type="text" class="form-control" formControlName="youtubeLink" />
             <div *ngIf="profileForm.get('youtubeLink')?.invalid && profileForm.get('youtubeLink')?.touched" class="text-danger">
-              <div *ngIf="profileForm.get('youtubeLink')?.errors?.['pattern']">Geçerli bir Youtube linki giriniz.</div>
+              <div *ngIf="profileForm.get('youtubeLink')?.errors?.['pattern']">Geçerli bir Youtube linki giriniz</div>
             </div>
           </td>
           <td style="vertical-align: middle; text-align: center;">

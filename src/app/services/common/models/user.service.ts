@@ -48,11 +48,11 @@ export class UserService {
   }
 
 
-  async getUserByIdOrUsernameOrEmailAsync(UserIdOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User> {
+  async getUserByIdOrUsernameOrEmailAsync(UserIDOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User> {
     const observable: Observable<User> = this.httpService.Get({
       controller: "users",
       action: "get-user-by-id-or-username-or-email",
-      queryString: `UserIdOrUsernameOrEmail=${UserIdOrUsernameOrEmail}`
+      queryString: `UserIDOrUsernameOrEmail=${UserIDOrUsernameOrEmail}`
     })
 
     const promiseData = firstValueFrom(observable)
@@ -60,7 +60,7 @@ export class UserService {
     return await promiseData
   }
 
-  async getFilteredUsersAsync(username: string, name: string, email: string, phoneNumber: string, roleId: string,suspend:boolean, page: number, size: number, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<ListPaginationUsers> {
+  async getFilteredUsersAsync(username: string, name: string, email: string, phoneNumber: string, roleId: string, suspend: string, page: number, size: number, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<ListPaginationUsers> {
     const observable: Observable<ListPaginationUsers> = this.httpService.Get({
       controller: "users",
       action: "get-filtered-users",
@@ -70,24 +70,24 @@ export class UserService {
     promiseData.then(successCallback).catch(errorCallback)
     return await promiseData
   }
-  async assingRoleToUserAsync(userId: string, roles: string[], successCallback?: () => void, errorCallback?: (error: any) => void) {
+  async assingRoleToUserAsync(UserID: string, roles: string[], successCallback?: () => void, errorCallback?: (error: any) => void) {
     const observable: Observable<any> = this.httpService.Post({
       controller: "users",
       action: "assing-role-to-user"
-    }, { userId, roles })
+    }, { UserID, roles })
 
     //TODO en kolay http hata ayıklama yapısı
     const promisedata = firstValueFrom(observable)
     promisedata.then(successCallback).catch(errorCallback)
   }
 
-  async getRolesToUserAsync(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<string[]> {
+  async getRolesToUserAsync(UserID: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<string[]> {
 
     const observable: Observable<{ userRoles: string[] }> = await this.httpService.Get({
       controller: "users",
       action: "get-roles-to-user",
-      queryString: `UserId=${userId}`
-    }, userId)
+      queryString: `UserID=${UserID}`
+    }, UserID)
 
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)
@@ -95,11 +95,11 @@ export class UserService {
     return (await promiseData).userRoles
   }
 
-  async getUserIsAdminAsync(UserIdOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Is_Admin> {
+  async getUserIsAdminAsync(UserIDOrUsernameOrEmail: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Is_Admin> {
     const observable: Observable<User_Is_Admin> = await this.httpService.Get({
       controller: "users",
       action: "get-user-is-admin",
-    }, UserIdOrUsernameOrEmail)
+    }, UserIDOrUsernameOrEmail)
 
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)
@@ -119,6 +119,30 @@ export class UserService {
     return await promiseData
   }
 
+  async getAllUsernames(ExemptID?: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<UsernameResponse> {
+    const observable: Observable<UsernameResponse> = this.httpService.Get({
+      controller: "users",
+      action: "get-all-usernames",
+      queryString: `ExemptID=${ExemptID}`//kullanıcının adının kontrol edilebilmesi için verisi kaydedilecek kullanıcının ıd bilgisi api'ye gönderilir
+    })
+
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
+
+    return await promiseData
+  }
+
+  async usernameCheck(userName: string, ExemptID?: string) {
+    const names: UsernameResponse = await this.getAllUsernames(ExemptID);
+    const lowerCaseNames = names.allUsernames.map(name => name.toLowerCase());
+    debugger
+    if (lowerCaseNames.includes(userName.toLowerCase())) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async createUserAsync(user: User): Promise<Create_User> {
     const observable: Observable<Create_User | User> = this.httpService.Post<Create_User | User>({
       controller: "users",
@@ -127,12 +151,12 @@ export class UserService {
     return await firstValueFrom(observable) as Create_User
   }
 
-  async changePassword(userid: string, currentPassword: string, newPassword: string, successCallback?: (message: string) => void, errorCallback?: (error: any) => void): Promise<void> {
+  async changePassword(UserID: string, currentPassword: string, newPassword: string, successCallback?: (message: string) => void, errorCallback?: (error: any) => void): Promise<void> {
     const observable: Observable<any> = this.httpService.Post({
       controller: "users",
       action: "password-change"
     }, {
-      userid: userid,
+      UserID: UserID,
       CurrentPassword: currentPassword,
       NewPassword: newPassword
     });
@@ -141,12 +165,12 @@ export class UserService {
   }
 
   //GENÇAY DERS.60
-  async passwordUpdateAsync(userId: string, resetToken: string, password: string, passwordConfirm: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
+  async passwordUpdateAsync(UserID: string, resetToken: string, password: string, passwordConfirm: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
     const observable: Observable<any> = this.httpService.Post({
       controller: "users",
       action: "password-update"
     }, {
-      UserId: userId,
+      UserID: UserID,
       resetToken: resetToken,
       Password: password,
       PasswordConfirm: passwordConfirm
@@ -155,21 +179,21 @@ export class UserService {
     promiseData.then(successCallback).catch(errorCallback)
   }
 
-  async getProfileImages(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Profile_Image[]> {
+  async getProfileImages(UserID: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Profile_Image[]> {
     const observable: Observable<User_Profile_Image[]> = this.httpService.Get<User_Profile_Image[]>({
       controller: "users",
       action: "Get-User-Profile-Images",
-    }, userId)
+    }, UserID)
 
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)
     return await promiseData
   }
-  async getUserDocuments(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Document[]> {
+  async getUserDocuments(UserID: string, successCallback?: () => void, errorCallback?: (error: any) => void): Promise<User_Document[]> {
     const observable: Observable<User_Document[]> = this.httpService.Get<User_Document[]>({
       controller: "users",
       action: "GetUserDocuments"
-    }, userId)
+    }, UserID)
 
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)
@@ -177,12 +201,27 @@ export class UserService {
     return await promiseData
   }
 
-  async DeleteAllUserDocumentsById(userId: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
+  async DeleteAllUserDocumentsById(UserID: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
     const observable: Observable<any> = this.httpService.Delete<any>({
-      action: "DeleteAllUserDocumentsById",
-      controller: "users"
-    }, userId)
+      controller: "users",
+      action: "DeleteAllUserDocumentsById"
+    }, UserID)
     const promiseData = firstValueFrom(observable)
     promiseData.then(successCallback).catch(errorCallback)
   }
+
+  async DeleteUser(UserID: string, successCallback?: () => void, errorCallback?: (error: any) => void) {
+    const observable: Observable<any> = this.httpService.Delete<any>({
+      controller: "users",
+      action: "DeleteUser",
+    }, UserID)
+
+    const promiseData = firstValueFrom(observable)
+    promiseData.then(successCallback).catch(errorCallback)
+  }
+
+}
+
+interface UsernameResponse {
+  allUsernames: string[];
 }

@@ -75,17 +75,27 @@ export class LoginComponent implements OnInit {
 
   async onSubmit(userLogin: { UserNameOrEmail: string, password: string }) {
     this.submitted = true
-
+    debugger
     if (this.frm.invalid) {
       this.submittedClass = true //eğer kullanıcı formu submit ettiyse ve hata varsa hata sınıfları inputlar veriliyor
       return //form üzerinde herhangi bir hata varsa return ederek giriş işlemini iptal eder
     }
     this.spinnerService.show(SpinnerType.load)
+
+    //kullanıcı bilgileri çekiliyor
+    var user: any = await this.userService.getUserByIdOrUsernameOrEmailAsync(userLogin.UserNameOrEmail);
+
+    //suspend edilen kullanıcıya geçiş izni verilmez
+    if (user.user.suspend) {
+      this.spinnerService.hide(SpinnerType.load)
+      this.toastrService.error("Kullanıcı askıya alınmıştır", "Hata")
+      return;
+    }
+    
     this.userAuthService.login(userLogin.UserNameOrEmail, userLogin.password, async () => {
       this.authService.identityCheck();
 
       //kullanıcının ıd bilgisini gelecekteki işlemleri için localstorage kaydediliyor
-      var user: any = await this.userService.getUserByIdOrUsernameOrEmailAsync(userLogin.UserNameOrEmail);
       localStorage.setItem("UserId", user.user.id)
 
       this.ActivatedRoute.queryParams.subscribe(async params => {
